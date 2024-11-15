@@ -5,12 +5,20 @@ import plotly.graph_objects as go
 import numpy as np
 import random
 import logging
+import tocutil
 
 try:
-	dash.register_page(__name__,title="PhysicsBlog")
+	dash.register_page(__name__,title="John the Physicist")
+
+	toc = tocutil.TocEntry(
+		date='2024-11-04', 
+		title='Post Template', 
+		description="Use this as a basis for other posts", 
+		logical_order=1, 
+		difficulty=1, 
+		topics=["infra","stuff"]
+	)
 			
-	slider = dcc.Slider(min=0, max=20, step=5, value=10,id='example-slider')
-	
 	layout = html.Div([
 		dbc.Row([
 			dbc.CardGroup([
@@ -20,11 +28,14 @@ try:
 						dcc.Markdown(
 	"Some stuff in markdown. An in-line equation ${\\phi} = {0}$",mathjax=True
 						),
+						dcc.Markdown(
+	"$$\\left|{\\phi}\\right> = \\left|{0}\\right>$$",mathjax=True
+						),
 					])
 				]),
 				dbc.Card([
 					html.Div(dcc.Graph(id='example-graph')),			
-					html.Div(slider),			
+					html.Div(dcc.Slider(min=0, max=20, step=5, value=10,id='example-slider')),			
 				]),
 			]),
 		],justify='center')

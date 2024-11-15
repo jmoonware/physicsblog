@@ -10,7 +10,7 @@ import settings
 # start last-chance exception block
 try:
 
-	dash.register_page(__name__,title="PhysicsBlog", path='/')
+	dash.register_page(__name__,title="John the Physicist", path='/')
 
 	# Layout
 	layout=[]
@@ -44,11 +44,11 @@ try:
 	)
 	# final credits
 	layout.append(
-		html.Div("Built with Dash and Dash Bootstrap Components",style={'color':'grey','text-align':'center','font-size':'0.75em'})
+		html.Div("Built with Dash and Plotly",style={'color':'grey','text-align':'center','font-size':'0.75em'})
 	)
 
 except Exception as ex:
-	logging.getLogger(__name__).error("Home: Last chance exception:"+str(ex))
-	logging.getLogger(__name__).info("Home: Exit on last-chance exception")
+	logging.getLogger(__name__).error(__name__ + ": Last chance exception:"+str(ex))
+	logging.getLogger(__name__).info(__name__ + ": Exit on last-chance exception")
 finally:
-	logging.getLogger(__name__).info("Home: Reached finally OK")
+	logging.getLogger(__name__).info(__name__ + ": Reached finally OK")

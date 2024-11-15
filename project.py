@@ -7,6 +7,7 @@ from dash.exceptions import PreventUpdate
 import logging
 from logging import handlers # why?
 import settings
+import tocutil
 
 # utility functions
 def StartDataLogging():
@@ -31,9 +32,10 @@ try:
 	server=flask.Flask(__name__)
 	app=dash.Dash(__name__,server=server,use_pages=True,
 		external_stylesheets=[dbc.themes.BOOTSTRAP],
+		eager_loading=True,
 		meta_tags=[{'name':'viewport','content':'width=device-width, initial-scale=1'}]
 			)
-	app.title = 'PhysicsBlog'
+	app.title = 'John the Physicist'
 
 	traprock_logo = 'assets/traprock_logo_crop.png'
 
@@ -46,11 +48,12 @@ try:
 					dbc.NavItem(dbc.NavLink("About",href=dash.page_registry['pages.about']['path'])),
 					dbc.NavItem(dbc.NavLink("Contact",href=dash.page_registry['pages.home']['path']+"#contact")),
 					dbc.NavItem(dbc.NavLink("Template",href=dash.page_registry['pages.post_template']['path'])),
+					dbc.NavItem(dbc.NavLink("Contents",href=dash.page_registry['pages.toc']['path'])),
 				],
 				brand=dbc.Row(
 					[
                         dbc.Col(dcc.Link(html.Img(src=traprock_logo, height="40px"),href=dash.page_registry['pages.home']['path'])),
-                        dbc.Col(dbc.NavbarBrand("PhysicsBlog", className="ms-2",href=dash.page_registry['pages.home']['path'])),
+                        dbc.Col(dbc.NavbarBrand("John the Physicist", className="ms-2",href=dash.page_registry['pages.home']['path'])),
                     ],
                     align="center",
 				)
@@ -62,6 +65,10 @@ try:
 	)
 
 	app.layout=html.Div(children=layout)
+
+	# now update the table of contents 
+	tocutil.update("pages")
+		
 	
 	# Endpoints
 	@server.route('/about', methods=['GET'])
@@ -73,7 +80,7 @@ try:
 		return(Response(status=200))
 
 except Exception as ex:
-	logging.getLogger(__name__).error("Last chance exception:"+str(ex))
-	logging.getLogger(__name__).info("Exit on last-chance exception")
+	logging.getLogger(__name__).error(__name__+ ": Last chance exception:"+str(ex))
+	logging.getLogger(__name__).info(__name__+ ": Exit on last-chance exception")
 finally:
-	logging.getLogger(__name__).info("Reached finally OK")
+	logging.getLogger(__name__).info(__name__+ ": Reached finally OK")

@@ -3,14 +3,14 @@ from dash import dcc
 import dash_bootstrap_components as dbc
 from dash import html
 
-dash.register_page(__name__,title="PhysicsBlog")
+dash.register_page(__name__,title="John the Physicist")
 
 layout = html.Div([
 	dbc.Row([
 		dbc.CardGroup([
 			dbc.Card([
 				dbc.CardBody([
-					html.H4('About PhysicsBlog',style={'text-align':'center'}),
+					html.H4('About John the Physicist',style={'text-align':'center'}),
 					dcc.Markdown(
 "Some stuff in markdown."
 					),
