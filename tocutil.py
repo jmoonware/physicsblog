@@ -4,6 +4,7 @@ import os
 import logging
 import importlib
 import pandas as pd 
+import settings, os
 
 # the table of contents entries
 toc_entries = []
@@ -20,7 +21,7 @@ class TocEntry:
 		self.prerequisites=prerequisites
 
 def update(post_path):
-	raw_files = glob.glob(os.path.join(post_path,"*_meta.py"))
+	raw_files = glob.glob(os.path.join(settings.project_path,post_path,"*_meta.py"))
 	for f in raw_files:
 		fn = os.path.split(f)[-1].split('.')[0]
 		candidate = importlib.import_module(post_path+"."+fn)

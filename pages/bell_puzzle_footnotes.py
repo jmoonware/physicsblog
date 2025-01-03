@@ -2,10 +2,15 @@ import dash
 from dash import dcc
 import dash_bootstrap_components as dbc
 from dash import html
+import logging
+import glob
+import settings,os
 
 dash.register_page(__name__,title="John the Physicist")
 
-with open('bellcalcs.py') as f:
+# logging.getLogger(__name__).error('files are ' + str(glob.glob('*')))
+
+with open(os.path.join(settings.project_path,'bellcalcs.py')) as f:
 	code_text = ''.join(f.readlines())
 
 layout = html.Div([

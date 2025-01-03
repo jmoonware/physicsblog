@@ -18,7 +18,7 @@ def StartDataLogging():
 	logging.basicConfig(format=logFormatString,handlers=[sh,rfh],level=level)
 	logging.captureWarnings(True)
 	logger=logging.getLogger(__name__)
-	logger.critical("Logging Started, level={0}".format(level))
+	logger.critical("JTP Logging Started, project_path is {1}, level={0}".format(level,settings.project_path))
 
 ########
 # Start of exec

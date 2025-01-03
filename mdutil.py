@@ -1,6 +1,7 @@
 import re
 import os
 from dash import html, dcc
+import settings, os
 
 def get_section(file, start='', end=''):
 	''' Args: 
@@ -19,7 +20,7 @@ def get_section(file, start='', end=''):
 		is_section=False
 	else: # just start collecting
 		is_section=True
-	with open(fn,'r') as f:
+	with open(os.path.join(settings.project_path,fn),'r') as f:
 		for l in f.readlines():
 			if re.search(start_pattern,l):
 				is_section=True
