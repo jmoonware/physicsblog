@@ -5,14 +5,13 @@ from flask import request, Response, make_response
 import flask
 from dash.exceptions import PreventUpdate
 import logging
-import settings, os
 
 # start last-chance exception block
 try:
 
 	dash.register_page(__name__,title="John the Physicist", path='/')
 
-	fp_anim = os.path.join(settings.project_path,"assets/test.mp4")
+	fp_anim = "assets/test.mp4"
 
 	# Layout
 	layout=[]
