@@ -1,0 +1,168 @@
+
+[comment]: # (start_post)
+
+## Bell's Inequality
+
+The spooky stuff attributed to Quantum Mechanics inevitably leads to a discussion of Bell's Inequality. Bell's Inequality describes the relationship between outcomes of pairs of objects prepared in a specific way. This inequality must be true if the world works in an intuitive way: i.e. the "common sense" ideas that objects (quantum or otherwise) actually exist in a single 'real' state and don't communicate with each other faster than the speed of light. So any violation of this inequality must mean something in the Universe doesn't work the way we expect it should. 
+
+In this post, we will explore the rules of the logic puzzle, then in the next post we will compare the results to the Classical and Quantum Mechanics predictions. Note that Bell's Inequality is a purely classical construct - it doesn't have anything to do with quantum mechanics _per se_. So don't worry for now if you haven't thought about multiparticle wave functions in a while (or ever.)
+
+The history of Bell's Inequality starts with Einstein, Podolsky and Rosen [EPR](assets/EPR_original.pdf), who proposed the famous "EPR Paradox". This paradox was supposed to be a real "gotcha", as it pointed out that the quanta in Quantum Mechanics appear to _actually_ be in multiple places at once, which EPR argued, can't be right. There must be more to the story, some "hidden variable" that we just don't know about yet. It took about 30 more years of noodling until John Stuart Bell [1964](assets/bell_1964.pdf) first proposed a quantitative method to test if indeed there was something "hidden" in quantum theory. This would be Bell's Inequality, which we will now explain.
+
+So, the logic puzzle. First, objects in this puzzle always occur in pairs. Each pair always has the same shape, but each object of a pair has one of only two possible colors.
+
+Like these pair of circles (representing the balls we will use below):
+
+&#9679, &#9675
+
+One circle (ball) is always black, and the other is always white. 
+
+Place the ball pair in a tray, then pick out a ball at random. The color of the grabbed ball (say black) determines that the other ball in the tray must be the opposite (in this case white.) There are simply no other possibilities.
+
+So far so good - let's go to the next step. The trays above are used to stock a vending machine. This vending machine is a little weird - it has two outputs, one on either side of the machine, the left and the right side. The vending trays are always stocked with pairs of objects, and one object of the pair goes to the left output, and one goes right (the little glowing cups at the bottom of Figure 1.) 
+
+[comment]: # (Figure1)
+
+**Figure 1**: Bell's vending machine that dispenses single pairs of balls
+
+Every time we put in a coin, a tray dumps a pair of objects that end up in the output cups on the little dials (we will get to the dials in a minute.) A table representation of the output could look like this:
+
+| Coin# | &#8195Left&#8195  | Right     |
+|:-----:|:-------:|:---------:|
+| 1     | &#x25CB | &#x25CF   |
+| 2     | &#x25CF | &#x25CB   |
+| 3     | &#x25CF | &#x25CB   |
+| 4     | &#x25CB | &#x25CF   |
+| 5     | &#x25CB | &#x25CF   |
+| etc.  |  ...    |  ...      |
+
+**Table 1:** Example one-shape vending machine output. A series of coins represents a trial.
+
+If we use a Venn Diagram to illustrate the machine output, it would look like this [1](bell-puzzle-footnotes):
+
+[comment]: # (Figure2) 
+** Figure 2:** Venn Diagram of outcomes of one white/black object pair
+&#8195
+
+Here, the Venn diagram illustrates the complete output states of the Left side of the machine. There is a second Venn diagram for the Right side which is the exact complement of the Left. To construct the Right Venn diagram, invert the colors of all the objects for the Left Venn diagram, as the opposite color must go to the other side. I will only show Left Venn diagrams.
+
+Let's introduce some math notation that will be helpful below. The probability of getting a white ball _b_ on the left (and necessarily a probability of getting a black ball on the right) is $P(b_w, b_b)$. In this notation, the quantities in the parentheses are the left and right outputs, respectively. Similarly, the probability of getting a black ball on the left is $P(b_b, b_w)$. Since these are the only two possibilities, we get:
+
+$$P(b_w, b_b) + P(b_b, b_w) = 1$$
+
+This seems just like you would expect - but even this simple case illustrates a key assumption we usually take for granted. The very simple equation above _adds_ two probabilities, which means the two outcomes are _mutually exclusive_. It is a trivial fact in this case, but as we build out toward Bell's full inequality (and get to how Quantum Mechanics calculates) it will become a crucial property of the system.
+
+Let's add the possibility of buying _two_ pairs of objects with a coin, but the second pair is shaped differently, as cubes. We are going to modify the vending machine so that we can set the left/right dials at the bottom to collect a certain _shape_. 
+
+[comment]: # (Figure3)
+
+**Figure 3:** Two-shape output Bell vending machine, with dials set to collect balls on the left and cubes on the right.
+
+Every time we put in a coin, a vending tray dumps two pairs of objects. We get one of each (one ball and one square go to each vending tray.) Now the output might look like this:
+
+| Coin# | &#8195Left&#8195  | Right     |
+|:-----:|:-------:|:---------:|
+| 1     | &#9679  | &#x25A0   |
+| 2     | &#9675  | &#x25A0   |
+| 3     | &#9679  | &#x25A1   |
+| 4     | &#9675  | &#x25A0   |
+| 5     | &#9675  | &#x25A1   |
+| etc.  |  ...    |  ...      |
+
+**Table 2:** Example two-object vending machine output set to (left:ball, right:cube)
+
+Now note carefully that we are only allowed to pick out one type of shape from each side. The other shapes are there, but we only collect the color of the shape picked out. 
+
+In the two-object dispense case, we can still determine the complete state of the output. If we pull out a black ball on the left and a white square on the right, we have completely determined the outcome of the vending machine. We don't need to look at the other shapes. There are only four possibilities, as illustrated with this Venn Diagram:
+
+[comment]: # (Figure4)
+** Figure 4: ** Venn diagram of possible outcomes (of left side) when dials are set to (left:ball, right:cube)
+
+So let's highlight the left outcome of "left:ball(white), right:cube(white)." This means that the left side has one white ball and one black cube as indicated in the Venn diagram:
+
+[comment]: # (Figure5)
+** Figure 5: ** The orange boundary is the outcome $P(b_w,c_w)$, that is, left:ball, white; right:cube, white.
+
+We can also choose a subset that includes _either_ outcome for the cubes, like this:
+
+[comment]: # (Figure6)
+** Figure 6: ** The orange boundary is the outcome where we get a white ball for either outcome of the cube side. i.e. $P(b_w,c_w) + P(b_w,c_b)$
+
+Just looking at the figures above, we can immediately see an inequality:
+
+$$P(b_w,c_w) < P(b_w,c_w) + P(b_w,c_b)$$
+
+In other words, those extra outcomes where the cube is black (on the right) have to increase the size of the crescent area where we only collect the white cubes on the right.
+
+By now you might be wondering, just what I am getting at? Of course $x < x+y$, if $y$ is always positive. I am belaboring this point because we are going to add a _third_ possibility, and things won't be quite as obvious.
+
+So now let's consider three shapes (circle, square, and triangle.) As before, we set the vending machine to collect a single type of object for each side. 
+
+[comment]: # (Figure7)
+** Figure 7: ** Three-pair vending machine
+
+If we set the machine to (left:ball, right:cube) then the example output is the same as in Table 2 above.
+
+But the Venn Diagram now looks like this:
+
+[comment]: # (Figure8)
+** Figure 8: ** Venn diagram for three object pairs. The objects indicate the complete state of the left side of the machine, although we only get to look at one type of object per coin operation.
+
+Look at the crescent shape from $P(b_w,c_b)$ from before - we cut it into two sections with the third "triangle" possibility. Now, the probability of a left white ball and a white right cube is:
+
+$$P(b_w,c_w) = P(b_w,c_w;t_w) + P(b_w,c_w;t_b)$$
+
+This area is represented in orange here:
+
+[comment]: # (Figure9)
+** Figure 9: ** Venn diagram for three object pairs, where orange boundary represents $P(b_w,c_w)$
+
+We also cannot fully determine the machine output any more with a single coin - we simply do not know what is happening with the "triangle" pieces with these settings. So we need to compare outcomes where we change the settings on the machine between runs. So, for instance, we could also look at $P(b_w,t_w)$, illustrated in the orange boundary here:
+
+[comment]: # (Figure10)
+** Figure 10: ** Venn diagram for three object pairs, where orange boundary represents $P(b_w,t_w)$
+
+And similarly, we can look at the case where we set for (left:triangle, right:cube):
+
+[comment]: # (Figure11)
+** Figure 11: ** Venn diagram for three object pairs, where orange boundary represents $P(t_w,c_w)$
+
+Combining all three areas gives the following diagram.
+
+[comment]: # (Figure12)
+** Figure 12: ** Bell's Inequality, graphical proof
+
+The green area ($P(b_w,c_w)$) is always contained in the orange and blue boundaries. That is, the sum of the blue and orange areas always contains the green area. The equation form of this statement is Bell's Inequality [2](bell-puzzle-footnotes):
+
+$$P(b_w,c_w) < P(b_w,t_w) + P(t_w,c_w)$$ 
+
+So that's basically it. If you can see that the green area in Figure 12 is always less than the areas enclosed in the blue and orange boundaries, then you understand Bell's Inequality.
+
+Even though we just proved Bell's Inequality, here is a little simulator you can play with to convince yourself. The blue and orange dots represent the left and right sides of the inequality, respectively (so for each trial, the orange dot should be above the corresponding blue dot.)
+
+[comment]: # (three_shape_simulator)
+** Simulation 1: ** Bell's Inequality Simulator. Orange dots should be above the corresponding blue dots. Large red dots indicate a violation.
+
+
+So far we haven't talked about any rule which determines why a particular color of an object goes to one side of the machine or the other. The "bias" sliders in the simulation above allow you to bias which color goes to a side. In this simulation, a bias = 0.5 means that the probability of getting a black or white object on the left side is 50% (i.e., a fair coin-flip.) Biasing to, say, 0.1 means that black is received ~90% of the time.
+
+If you change the default settings to say bias the cube and triangle dispenses to 0.1 or so, you will start seeing red dot "Violations", where Bell's Inequality is violated! Didn't we just prove that couldn't happen?
+
+Well, one of the "weaknesses" of Bell's Inequality is that it is a statement about _statistics_. In other words, if there aren't enough observations, then there could be enough random noise to violate the inequality. All you can say is that the inequality holds to a certain level of statistical significance. Fortunately, in practice it isn't too hard to generate many observations, so the likelihood of violating the inequality through pure random chance can be made very small.
+
+I ran the simulation many times for you with various numbers of coins to give you an idea how many observations are needed before we are sure Bell's Inequality should not be violated in practice. Of course, we have to be good little statisticians and say that we can determine only to some likelihood (p-value) that any observed non-violation is due to pure chance. 
+
+[comment]: # (Figure13)
+** Figure 13: ** Probability of Bell violations due to pure chance. Adding more coins can drive the probability of observing a violation to very low levels.
+
+Before we leave the classical world for quantum mechanics, let's discuss some other ways we can violate Bell's Inequality (besides with the random statistical noise we just discussed.) 
+
+What if the vending machine had some sort of sensor on the output that could determine what kind and color of object is about to be dispensed? Then, as, say, a white cube is heading toward the right side, the machine might change the outcome on the left (i.e, choose a different ball color for one of the other shapes.) So if the outputs somehow depend on each other in some way, Bell's Inequality may not hold. In the simulation above, you can turn on and off the output interactions with the lower "LR-X" slider ("LR-X" stands for "Left-Right Interaction".) I put the entire simulation code in a footnote [here](bell-puzzle-footnotes) so you can see how it works. Basically, if LR-X is 1, then ball/cube outcomes are perfectly correlated. If it is 0 (the default), then the outputs don't interact in any way. 
+
+[comment]: # (Figure14)
+** Figure 14: ** Probability of Bell violations when the outputs can influence each other. If we make, say, the right:cube outcome depend completely on the left:ball outcome, we will see Bell's Inequality violated about half the time no matter how many coins we use.
+
+This is an example of the "locality" requirement. In a system violating Bell's Inequality through output interaction, then changing the setting on the right would take a finite time to affect what happens on the left. That's what relativity, classical mechanics, and common sense would predict. 
+
+We are going to see in the next post, however, that when using pairs of entangled quanta, the right side settings must influence the left side results, somehow, instantaneously. It's a big mystery, but it has been proven true many times.
+

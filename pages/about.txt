@@ -1,0 +1,18 @@
+### Welcome to my digital open space
+
+John the Physicist&#x2122 ('JTP' [1](about-footnotes) ) covers physics and math topics that I, John, find interesting. Nothing here is terribly original, although I do try to make it look nice. If you find the posts useful, then great. Most professional physicists will probably regard this blog as the equivalent of a child's crayon picture of the universe. So be it.
+My goal is to explain  physics topics quantitatively to myself, and ultimately anyone with a little bit of curiosity. I do use some equations, so if you don't have a hard sciences background, it is helpful to read the posts in logical order.
+
+Sometimes I use swear words in the posts. Tastefully and appropriately, of course, but if you are easily offended then I would give this site a miss.
+
+I didn't want to turn this place into a garbage dump, so I haven't allowed comments. Maybe some day I'll put some of this content on an ephemeral, attention stealing platform, and see what happens. Until then, if you feel the absolute need to contact me, or if you find a mistake that I should fix, then use my email (you already know it, right?) Otherwise you can find me on the one social media platform that seems unavoidable in technology circles, [LinkedIn](https://www.linkedin.com/in/john-a-moon-physics).
+
+[comment]: # (this is a comment)
+
+I am not trying to monetize anything - I could care less if anyone ever reads the information here. I just wanted a place to direct people for more details if they happened to hear me frothing at the mouth about, say, the logarithm in the Second Law of Thermodynamics.
+
+##### Meta info about this site
+
+I wanted to avoid as much website platform framework mumbo-jumbo as possible. I also wanted some interactive plotting, animation, and navigation logic, so I use the [Dash/Plotly](https://dash.plotly.com/) framework. I use [Blender](https://www.blender.org/) for some of the animations. I am hosting this on a simple cloud instance - it's not going to scale or handle 10k requests per second. If that situation develops, something has going seriously wrong in my life.
+
+Posts are edited in text markdown as the Good Lord intended, then individually included in the site contents, with Python code as needed for the interactive stuff. Don't judge me.

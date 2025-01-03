@@ -7,7 +7,6 @@ from dash.exceptions import PreventUpdate
 import logging
 from logging import handlers # why?
 import settings
-import tocutil
 
 # utility functions
 def StartDataLogging():
@@ -45,10 +44,8 @@ try:
 		dbc.Row([
 			dbc.NavbarSimple(
 				children=[
-					dbc.NavItem(dbc.NavLink("About",href=dash.page_registry['pages.about']['path'])),
-					dbc.NavItem(dbc.NavLink("Contact",href=dash.page_registry['pages.home']['path']+"#contact")),
-					dbc.NavItem(dbc.NavLink("Template",href=dash.page_registry['pages.post_template']['path'])),
 					dbc.NavItem(dbc.NavLink("Contents",href=dash.page_registry['pages.toc']['path'])),
+					dbc.NavItem(dbc.NavLink("About",href=dash.page_registry['pages.about']['path'])),
 				],
 				brand=dbc.Row(
 					[
@@ -66,10 +63,6 @@ try:
 
 	app.layout=html.Div(children=layout)
 
-	# now update the table of contents 
-	tocutil.update("pages")
-		
-	
 	# Endpoints
 	@server.route('/about', methods=['GET'])
 	def about_message():

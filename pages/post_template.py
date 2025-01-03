@@ -5,19 +5,9 @@ import plotly.graph_objects as go
 import numpy as np
 import random
 import logging
-import tocutil
 
 try:
 	dash.register_page(__name__,title="John the Physicist")
-
-	toc = tocutil.TocEntry(
-		date='2024-11-04', 
-		title='Post Template', 
-		description="Use this as a basis for other posts", 
-		logical_order=1, 
-		difficulty=1, 
-		topics=["infra","stuff"]
-	)
 			
 	layout = html.Div([
 		dbc.Row([
