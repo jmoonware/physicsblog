@@ -5,6 +5,7 @@ from flask import request, Response, make_response
 import flask
 from dash.exceptions import PreventUpdate
 import logging
+import dash_player as dp
 
 # start last-chance exception block
 try:
@@ -17,7 +18,14 @@ try:
 	layout=[]
 	layout.append(
 		dbc.Row([
-			html.Video(src=fp_anim,controls=False,autoPlay=True,loop=True),
+			dp.DashPlayer(
+				url=fp_anim,
+				playing=True,
+				loop=True,
+				muted=True,
+				playsinline=True,
+				width='100%',
+			),
 
 #			dbc.CardGroup([
 #		        dbc.Card([
