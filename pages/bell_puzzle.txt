@@ -3,9 +3,9 @@
 
 ## Bell's Inequality
 
-The spooky stuff attributed to Quantum Mechanics inevitably leads to a discussion of Bell's Inequality. Bell's Inequality describes the relationship between outcomes of pairs of objects prepared in a specific way. This inequality must be true if the world works in an intuitive way: i.e. the "common sense" ideas that objects (quantum or otherwise) actually exist in a single 'real' state and don't communicate with each other faster than the speed of light. So any violation of this inequality must mean something in the Universe doesn't work the way we expect it should. 
+The spooky stuff attributed to Quantum Mechanics inevitably leads to a discussion of Bell's Inequality. Bell's Inequality describes the statistical relationship between outcomes of selecting pairs of objects. This inequality must be true if the world works in an intuitive way: i.e. the "common sense" ideas that objects (quantum or otherwise) actually exist in a single 'real' state and don't communicate with each other faster than the speed of light. So any violation of this inequality must mean something in the Universe doesn't work the way we expect it should. 
 
-Before we start, a bit of historical context. The history of Bell's Inequality starts with Einstein, Podolsky and Rosen [EPR](assets/EPR_original.pdf), who proposed the famous "EPR Paradox". This paradox was supposed to be a real "gotcha", as it pointed out that the quanta in Quantum Mechanics appear to _actually_ be in multiple places at once, which EPR argued, can't be right. There must be more to the story, some "hidden variable" that we just don't know about yet. It took about 30 more years of noodling until John Stuart Bell [1964](assets/bell_1964.pdf) first proposed a quantitative method to test if indeed there was something "hidden" in quantum theory. 
+Before we start, a bit of historical context. In 1935, Einstein, Podolsky and Rosen [EPR](assets/EPR_original.pdf) proposed the famous "EPR Paradox". This paradox was supposed to be a real "gotcha", as it pointed out that the quanta in Quantum Mechanics appear to _actually_ be in multiple places at once, which EPR argued, can't be right. There must be more to the story, some "hidden variables" that we just don't know about yet. It took about 30 more years of noodling until John Stuart Bell [1964](assets/bell_1964.pdf) first proposed a quantitative method to test if indeed there was something "hidden" in quantum theory. 
 
 In this post, we will describe Bell's Inequality as a logic puzzle, then in the next post we will compare the results to the Classical and Quantum Mechanics predictions. Note that Bell's Inequality is a purely classical construct - it doesn't have anything to do with quantum mechanics _per se_. So don't worry (for now) if you haven't thought about multiparticle wave functions in a while (or ever.)
 
@@ -117,7 +117,7 @@ This area is represented in orange here:
 [comment]: # (Figure9)
 ** Figure 9: ** Venn diagram for three object pairs, where orange boundary represents $P(b_w,c_w)$
 
-We also cannot fully determine the machine output any more with a single coin - we simply do not know what is happening with the "triangle" pieces with these settings. So we need to compare outcomes where we change the settings on the machine between runs. So, for instance, we could also look at $P(b_w,t_w)$, illustrated in the orange boundary here:
+We also cannot fully determine the machine output any more with a single coin - we simply do not know what is happening with the "triangle" pieces with these settings. In this classical case, though, the triangles definitely have a certain state, even though we can't measure it. To get the full output statistics of the machine, we need to compare outcomes where we change the settings between runs. So, for instance, we could also look at $P(b_w,t_w)$, illustrated in the orange boundary here:
 
 [comment]: # (Figure10)
 ** Figure 10: ** Venn diagram for three object pairs, where orange boundary represents $P(b_w,t_w)$
