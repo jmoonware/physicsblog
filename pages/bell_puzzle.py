@@ -15,20 +15,20 @@ def build_sim_layout():
 		dbc.Stack([	
 			dbc.Row([
 				dbc.Col(dcc.Markdown("Bias &#x25D1"),width={'size':2,'offset':1},align='center'),
-				dbc.Col(dcc.Slider(min=0, max=bias_range, step=1, value=bias_range/2,id='bell_slider_bias_ball',marks=bias_marks),width={'size':9},align='center'),
+				dbc.Col(dcc.Slider(min=0.1, max=bias_range, step=1, value=bias_range/2,id='bell_slider_bias_ball',marks=bias_marks),width={'size':9},align='center'),
 			],align='center'),	
 			dbc.Row([
 				dbc.Col(dcc.Markdown("Bias &#x25E8"),width={'size':2,'offset':1},align='center'),
-				dbc.Col(dcc.Slider(min=0, max=bias_range, step=1, value=bias_range/2,id='bell_slider_bias_cube',marks=bias_marks),width={'size':9},align='center'),
+				dbc.Col(dcc.Slider(min=0.1, max=bias_range, step=1, value=bias_range/2,id='bell_slider_bias_cube',marks=bias_marks),width={'size':9},align='center'),
 			],align='center'),	
 			dbc.Row([
 				dbc.Col(dcc.Markdown("Bias &#x25EE"),width={'size':2,'offset':1},align='center'),
-				dbc.Col(dcc.Slider(min=0, max=bias_range, step=1, value=bias_range/2,id='bell_slider_bias_tri',marks=bias_marks),width={'size':9},align='center'),
+				dbc.Col(dcc.Slider(min=0.1, max=bias_range, step=1, value=bias_range/2,id='bell_slider_bias_tri',marks=bias_marks),width={'size':9},align='center'),
 			],align='center'),	
 	
 			dbc.Row([
 				dbc.Col(dbc.Label("Coins"),width={'size':1,'offset':1},align='center'),
-				dbc.Col(dbc.Input(type="number", min=3, max=1000, step=1, value=100,id='bell_two_coins'),width={'size':6,'offset':1},align='center'),			
+				dbc.Col(dbc.Input(type="number", min=3, max=200, step=1, value=50,id='bell_two_coins'),width={'size':6,'offset':1},align='center'),			
 			],align='center'),			
 			dbc.Row([
 				dbc.Col(dbc.Label("Trials"),width={'size':1,'offset':1},align='center'),
@@ -48,7 +48,7 @@ try:
 
 	bias_marks={}
 	bias_range=10
-	for i in range(bias_range+1):
+	for i in range(1,bias_range+1):
 		bias_marks[i]="{0:.1f}".format(float(i)/bias_range)
 	
 	pmd = []
