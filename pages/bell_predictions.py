@@ -66,15 +66,10 @@ try:
 	mdutil.build_markdown(__name__,"Figure4","Figure5","assets/q_cor_bell.png",pmd)
 	mdutil.build_markdown(__name__,"Figure5","",None,pmd)
 	
-	layout = html.Div([
-		dbc.Row([
-			dbc.CardGroup([
-				dbc.Card([
-					dbc.CardBody(pmd),
-				]),
-			]),
-		],justify='center'),
-	])
+	layout = dbc.Row(pmd,
+		justify='center',
+		style={'padding-left':'0.75em','padding-right':'0.75 em'}
+	)
 	
 	@callback(
 		Output(component_id='bell_graph_pol', component_property='figure'),
