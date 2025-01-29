@@ -76,15 +76,25 @@ The polarizing beam splitter just directs one of the two components of an $E$ ve
 
 What we want to do is calculate the correlation between one of the left and and one of the right detectors for a given set of $\theta_L, \theta_R$. Let's look at the $VV$ correlation, i.e. the correlation of the horizontal detectors on left and right respectively. Don't worry,  we would come to the same conclusions from the other combos. This can be calculated as:
 
-$$C_{VV}(\theta_L,\theta_R) = n(\theta_L)n(\theta_R) \propto \Big|\left[\hat{x}\cdot R(\theta_L)E_L\right]\left[\hat{x}\cdot R(\theta_R)E_R\right]\Big|^2$$ 
+$$\begin{aligned}
+C_{VV}(\theta_L,\theta_R) &= n(\theta_L)n(\theta_R) \\
+&\propto \Big|\left[\hat{x}\cdot R(\theta_L)E_L\right]\left[\hat{x}\cdot R(\theta_R)E_R\right]\Big|^2
+\end{aligned}$$ 
 
 Substituting in the rotated electric fields yields:
 
-$$C_{VV}(\theta_L,\theta_R) \propto \Big|[r\cos(\theta_L)-(1-r)\sin(\theta_L)][-r\sin(\theta_R)+(1-r)\cos(\theta_R)]\Big|^2$$
+$$\begin{aligned}
+C_{VV}&(\theta_L,\theta_R) \propto \Big|[r\cos(\theta_L)-(1-r)\sin(\theta_L)]\\ 
+ &\times [-r\sin(\theta_R)+(1-r)\cos(\theta_R)]\Big|^2
+ \end{aligned}$$
+ 
 
 Now remember that any terms with $r(1-r)$ are always zero - so we can ignore the cross terms and end up with:
 
-$$C_{VV}(\theta_L,\theta_R) \propto \Big|\left[r^2\cos(\theta_L)\sin(\theta_R)+(1-r)^2\sin(\theta_L)\cos(\theta_R)\right]\Big|^2$$
+$$\begin{aligned}
+C_{VV}&(\theta_L,\theta_R) \propto \\
+&\Big|\left[r^2\cos(\theta_L)\sin(\theta_R)+(1-r)^2\sin(\theta_L)\cos(\theta_R)\right]\Big|^2
+\end{aligned}$$
 
 So, finally we are getting closer to the point of this post. Can we use the equation for $C_{VV}$ to see if Bell's Inequality is violated? Yes, we can!
 
@@ -153,11 +163,15 @@ So just like in the classical case, rotating the polarization from a pure $H$ or
 
 Putting all these together, and only looking at the $VV$ correlation, results in an equation with four terms. I'll show the first and last steps here, the rest is just algebra. I am also going to drop the explicit dependence on $\mathbf{x_L}, \mathbf{x_R}$, and the $L, R$ notation, which is implied as above by the order in the products.
 
-$$C^{(Qr)}_{VV} = \frac{1}{r^2+(1-r)^2}\Big|[\psi_V\psi_V]^*\Big\lbrace r\big[(\cos(\theta_L)\psi_H - \sin(\theta_L)\psi_V)(\cos(\theta_R)\psi_V + \sin(\theta_R)\psi_H)\big]+(1-r)\big[(\cos(\theta_L)\psi_V + \sin(\theta_L)\psi_H)(\cos(\theta_R)\psi_H - \sin(\theta_R)\psi_V)\big]\Big\rbrace\Big|^2$$
+$$\begin{aligned}
+C^{(Qr)}_{VV} &= \frac{1}{r^2+(1-r)^2}\Big|[\psi_V\psi_V]^*\Big\lbrace \\
+&\times r\big[(\cos(\theta_L)\psi_H - \sin(\theta_L)\psi_V)(\cos(\theta_R)\psi_V + \sin(\theta_R)\psi_H)\big] \\
+&+(1-r)\big[(\cos(\theta_L)\psi_V + \sin(\theta_L)\psi_H)(\cos(\theta_R)\psi_H - \sin(\theta_R)\psi_V)\big]\Big\rbrace\Big|^2
+\end{aligned}$$
 
 This looks scary but simplifies when you realize we only need look at the two $VV$ terms:
 
-$$C^{(Qr)}_{VV} = \frac{1}{r^2+(1-r)^2}\Big|r\cos(\theta_L)\sin(\theta_R) + (1-r)\sin(\theta_L)\cos(\theta_R)\Big|^2$$
+$$C^{(Qr)}_{VV} = \frac{\Big|r\cos(\theta_L)\sin(\theta_R) + (1-r)\sin(\theta_L)\cos(\theta_R)\Big|^2}{r^2+(1-r)^2}$$
 
 When we leave the factors containing $r$ as-is, then we are talking about the case where the particles are definitely in one state or the other. And, it reproduces exactly what we derived for the classical case above! But if we are OK with the "two places at once" interpretation (i.e., set $r \rightarrow 1, (1-r) \rightarrow 1$ in the equation above, the equation simplifies even further:
 

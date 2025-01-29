@@ -30,15 +30,15 @@ def build_sim_layout():
 		html.P(" "),	
 		dbc.Stack([	
 			dbc.Row([
-				dbc.Col(dcc.Markdown("Time ($\\tau$, ps)",mathjax=True),width={'size':2,'offset':1},align='center'),
+				dbc.Col(dcc.Markdown("Time (ps)",mathjax=True),width={'size':3,'offset':0},align='center'),
 				dbc.Col(dcc.Slider(min=-tmax, max=tmax, step=int(2*tmax/10), value=0,id='bell_time'),width={'size':9},align='center'),
 			],align='center'),	
 			dbc.Row([
-				dbc.Col(dcc.Markdown("Rot (deg)"),width={'size':2,'offset':1},align='center'),
+				dbc.Col(dcc.Markdown("Rot (deg)"),width={'size':3,'offset':0},align='center'),
 				dbc.Col(dcc.Slider(min=0, max=180, step=22.5, value=22.5,id='bell_rot'),width={'size':9},align='center'),
 			],align='center'),	
 			dbc.Row([
-				dbc.Col(dcc.Markdown("Zoom (x)"),width={'size':2,'offset':1},align='center'),
+				dbc.Col(dcc.Markdown("Zoom (x)"),width={'size':3,'offset':0},align='center'),
 				dbc.Col(dcc.Slider(min=0, max=len(zoom)-1, step=1, value=2,id='bell_zoom',marks=zoom_marks),width={'size':9},align='center'),
 			],align='center'),	
 		],gap=3),		
