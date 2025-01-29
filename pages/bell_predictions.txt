@@ -1,0 +1,191 @@
+
+[comment]: # (start_post)
+
+## Bell's Inequality - Predictions
+
+In our [last post](https://jtp.timeswine.org/bell-puzzle), we derived Bell's Inequality using
+shaped, colored objects and a strange vending machine with two outputs.
+
+I used a vending machine to show how general Bell's Inequality is - it really just assumes that the objects in the Universe exist in the expected manner. But, you were probably left wondering, "so what?" 
+
+Here is what: What if I told you that at the quantum level, the left and the right sides of the vending machine are somehow instantaneously linked, no matter how far apart they are? And that, unlike the classical case, where all three object shapes exist and are definitely one color or the other, in the quantum case this seemingly obvious fact no longer holds? That is where we are going with this. The experiments proving these facts were the subject of the [2022](https://www.nobelprize.org/prizes/physics/2022/summary/) Nobel Prize in Physics, so this isn't some fusty old corner of science - people are still debating what this means, even if we have all the math we need (as we will see in a moment.)
+
+In this post, we will map the vending machine objects to photons, and the outcomes to clicks on single-photon detectors. We will then use both classical and quantum mechanics to predict what we would expect to see in a lab, and see if these predictions obey or violate Bell's Inequality.
+
+In order to create an experiment addressing Bell's Inequality, we need a gizmo to generate pairs of photons. Now, we could just keep attenuating a laser beam, end up with a stream of photons where the average number detected at any given moment is two. That's not going to work for playing around with Bell's Inequality, though. I'll explain why below, but it turns out it is very important that the photon pair has a specific property called _entanglement_. Hold that thought for a moment - it's easier to describe how entangled photon pairs are generated in practice, than describing entanglement itself. 
+
+Rather than pairs of colored balls, we are going to use pairs of photons. Here's an interactive plot to visualize what these pairs might look like: 
+
+[comment]: # (Figure1)
+**Figure 1**: Interactive plot of photon pair generator. Note that the speed of light in vacuum is 300 $\mu m/ps$, where $1 ps = 10^{-12} s$. Field amplitudes are cartoon-ish (especially in the vicinity of the crystal) but directionally correct. $P+$ corresponds to the non-linear polarization $P_{NL}$ rotated around $\hat{z}$ by $+45^o$.
+
+A common way to create complementary pair of photons is as follows: A crystal with a non-linear index of refraction $P_{NL}$ converts a pump photon with an energy $\Large{\varepsilon}_p$ into two other, lower energy, photons $\Large{\varepsilon}_L$, $\Large{\varepsilon}_R$, where to conserve energy $\Large{\varepsilon}_p = \Large{\varepsilon}_L \normalsize{+} \Large{\varepsilon}_R$. The non-linearity (a dependence of the dielectric constant $\epsilon\sim E_LE_R$) is used to create a polarization in the crystal that matches the pump frequency (and the index of the crystal matches the momentum of all three photons.) You can read about all the details of spontaneous parametric downconversion [here](https://en.wikipedia.org/wiki/Spontaneous_parametric_down-conversion). Typical values of photon energies are ~3.1 eV [1](bell-predictions-footnotes) ($\lambda\sim 400$ nm, deep blue in color) for the pump photon and half that (~1.55 eV or $\lambda\sim 800$ nm, deep red in color) for the two created photons. I did my Ph.D. using this property of crystals -  [here](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.50.10608) is the main paper from that work. 
+
+Incidentally, there is one other important detail. As I drew in the plot above, the nonlinear polarization $P_{NL}$ is oriented at a $45^o$ angle with respect to the $\hat{z}$ axis - that gives red photons along both the $\hat{x}$ (or $V$) and $\hat{y}$ (or $H$) directions (one photon for each direction.) Which polarization goes left or right is determined by the crystal orientation (if I used a rotation of $-45^o$ instead, the red photon polarizations would exchange.) 
+
+This rotation property is the key to how _entangled_ pairs are made. This next step will seem like a dirty trick, but it works: we take a copy of the crystal above, and put it back-to-back with the first crystal, but rotating it by 90 degrees (so we have a two crystal sandwich, one with $P_{NL}$ at $45^o$, one at $-45^o$). So a complementary pair can be created in either the first or second crystal, but because the emission paths overlap you can't be sure which crystal created the photon pair. Surely, you must be thinking, the photon is created in one _or_ the other crystal (not "both") even if their emission paths overlap. Hold that thought, and read on! 
+
+Now that we have a way to create our entangled photon pairs, we need a way to detect the polarization state. Each photon is directed to an analyzer that looks like Figure 2. There are three types of components of the detector for each side: 
+
+[comment]: # (Figure2)
+**Figure 2**: The optics required for detecting polarization states of individual photons. This represents one side of the experiment (say, the L side.) An identical set of optics is needed for the R side (so, e.g., 4 detectors in total.)
+
+1. A half-wave plate (HWP). A half-wave plate rotates the polarization of an incident photon by an amount depending on the HWP orientation around the $\hat{z}$ axis.
+2. A polarizing beam splitter (PBS). This optic will transmit photons that are vertically polarized, and reflect photons that are horizontally polarized. If an incident EM wave is polarized somewhere between horizontal and vertical, it will partially reflect or transmit each polarization component. For individual photons, the input polarization state (set by the HWP) will modify the probability of transmission or reflection.
+3. A pair of detectors behind the two output ports of the PBS. Only one detector will click for any given incident photon (they are indivisible, remember?)
+
+If you haven't figured it out by now, we made the following mappings from the vending machine to the real world:
+
+- object pairs -> photon pairs
+- type selector (dial) -> half-wave plate (theta)
+- color (back/white) -> detected polarization (H/V)
+
+With that background, we are ready to make some predictions. Now, common sense would tell you that for a "classical photon" pair, the pair is in either the $(E_H, E_V)$ or $(E_V, E_H)$ states where the first term in the parentheses is the left state, the other term is the right state. For now we can assume that either case is equally likely when we make a pair. So the left-hand state could be represented as:
+
+
+$$E_L = rE_H + (1-r)E_V$$ 
+
+$$E_R = rE_V + (1-r)E_H$$
+
+where $r$ is a random variable that is either 0 or 1. When $r=1$, the left photon is horizontally polarized, and when $r=0$ the left side is vertically polarized.
+
+The total electric field for the photon pair is just the sum:
+
+$$E_T = E_L + E_R$$
+
+We won't use $E_T$ directly in the classical calculation, because $E_L$ is basically zero at the right detector, and vice-versa.
+
+Now, we are going to introduce the effect of the half-wave plates and polarizers. Let's switch over to vector notation to deal with the local $\hat{x}, \hat{y}$ plane for left and right sides. So our basis vectors look like:
+
+$$\hat{e}_V = \hat{x} = \begin{bmatrix}1 \\ 0 \end{bmatrix}, 
+\hat{e}_H = \hat{y} = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$$
+
+A half-wave plate rotates the polarization state before the beam-splitters by an amount $\theta$, where theta is measured in the $\hat{x}, \hat{y}$ plane. This operation is a 2x2 matrix which can multiply any vector in the $\hat{x}, \hat{y}$ plane:
+
+$$R(\theta) = 
+\begin{bmatrix}
+\cos(\theta) & -\sin(\theta) \\
+\sin(\theta) & \cos(\theta)
+\end{bmatrix}$$
+
+For example, if we apply $R$ to say $\hat{e}_V$:
+
+$$R\hat{e}_V = \hat{x}\cos(\theta) + \hat{y}\sin(\theta) = \begin{bmatrix}\cos(\theta)\\\sin(\theta)\end{bmatrix}$$
+
+The polarizing beam splitter just directs one of the two components of an $E$ vector to either be transmitted or reflected. So if the $V$ direction is along $\hat{x}$, all we need to do is take the dot product of $\hat{x}\cdot\mathbf{v}$, where $\mathbf{v}$ is any vector wave headed through the beamsplitter.  
+
+What we want to do is calculate the correlation between one of the left and and one of the right detectors for a given set of $\theta_L, \theta_R$. Let's look at the $VV$ correlation, i.e. the correlation of the horizontal detectors on left and right respectively. Don't worry,  we would come to the same conclusions from the other combos. This can be calculated as:
+
+$$C_{VV}(\theta_L,\theta_R) = n(\theta_L)n(\theta_R) \propto \Big|\left[\hat{x}\cdot R(\theta_L)E_L\right]\left[\hat{x}\cdot R(\theta_R)E_R\right]\Big|^2$$ 
+
+Substituting in the rotated electric fields yields:
+
+$$C_{VV}(\theta_L,\theta_R) \propto \Big|[r\cos(\theta_L)-(1-r)\sin(\theta_L)][-r\sin(\theta_R)+(1-r)\cos(\theta_R)]\Big|^2$$
+
+Now remember that any terms with $r(1-r)$ are always zero - so we can ignore the cross terms and end up with:
+
+$$C_{VV}(\theta_L,\theta_R) \propto \Big|\left[r^2\cos(\theta_L)\sin(\theta_R)+(1-r)^2\sin(\theta_L)\cos(\theta_R)\right]\Big|^2$$
+
+So, finally we are getting closer to the point of this post. Can we use the equation for $C_{VV}$ to see if Bell's Inequality is violated? Yes, we can!
+
+We can simplify this even further if we recall that since $r$ can be only 0 or 1, we only need to look at the first term of the equation (the second is equivalent, just with the $\theta$ values increased by $90^o$.
+
+So, 
+
+$$C_{VV}(\theta_L,\theta_R) \propto \cos^2(\theta_L)\sin^2(\theta_R)$$
+
+The form of Bell's Inequality for the classical correlation function is:
+
+$$C_{VV}(\theta_a,\theta_b) < C_{VV}(\theta_a,\theta_c) + C_{VV}(\theta_c,\theta_b)$$
+
+I dropped the $L,R$ subscripts as they are implied by the position in the parentheses. The subscripts $a, b, c$ are just three different angles that can be any value in the interval $[0,2\pi]$.
+
+Let's re-write this as:
+
+$$C_{VV}(\theta_a,\theta_c) + C_{VV}(\theta_c,\theta_b) - C_{VV}(\theta_a,\theta_b) > 0$$
+
+So, if that inequality ever drops below zero, Bell's Inequality is violated. Here's a plot of this function of 3 variables:
+
+[comment]: # (Figure3)
+**Figure 3**: Plot of Bell's Inequality using the classical correlation function. Any values less than zero would be colored red.
+
+As the plot shows, Bell's Inequality is never violated (there are no red areas.) And this means we (probably) did the calculation correctly, as this is a purely classical system with independent left and right detectors. 
+
+How do we describe the quantum state? Unlike the classical case above, quantum mechanics deals with _probability amplitudes_. The state $\Psi_T$ is no longer a simple sum of the fields. In fact, each photon state (taken alone) is $\Psi_L = a\psi_H(\mathbf{r}_L) + b\psi_V(\mathbf{r}_L)$, where $a,b$ are now complex numbers (and have to satisfy $|\Psi_L|^2=1$.) Somewhat uncomfortably, this implies each photon can be in both the H and V states _at the same time_. That bothers many people (Einstein included.) It is very tempting to think this is just a convenience, and the photon is "in reality" only in one state at a time. But we know from the [double-slit experiment](https://en.wikipedia.org/wiki/Double-slit_experiment), that it isn't just a convenience - the photon must be in both states at once to describe the experimental outcomes. If you want to explore this concept further, the go-to layman's book on the subject is Feynman's [QED](https://en.wikipedia.org/wiki/QED:_The_Strange_Theory_of_Light_and_Matter). 
+
+If that wasn't bad enough, the situation gets even worse when we try to represent the _pair_ of photons with an overall wave function. If these are just two ordinary photons that were made by completely unrelated events, then the overall wavefunction $\Psi_T$ is:
+
+$$\Psi_{T} = \Psi_L\Psi_R$$
+
+The wave functions multiply, not add like a classical field above, because we are working with probability amplitudes. 
+
+Note that we can't simply let, say, $\Psi_L$ go to zero as in the classical case, and have $\Psi_T$ still represent the "left-over" right photon. With probability amplitudes, when we want to remove an independent particle from the total field, we need to sum it over all possible values in a special way: 
+
+$$\Psi_L^*\Psi_{T} = \Psi_L^*\Psi_L\Psi_R = \Psi_R$$
+
+because we use the fact that $\Psi_L^*\Psi_L=1$ (i.e., the left particle is _somewhere_.) 
+
+But we don't get all the possibilities when $\Psi_T$ is the multiplied form above - the form $(a_L\psi_H+b_L\psi_V)(a_R\psi_H+b_R\psi_V)$ isn't completely general. Another perfectly valid form for the overall wavefunction is $a\psi_H\psi_H + b\psi_H\psi_V + c\psi_V\psi_H + d\psi_V\psi_V$. It is comically easy to find choices of $a,b,c,d$ that cannot be written as the simple product of $\Psi_L\Psi_R$. For instance, if we write:
+
+$$\Psi_{T} = \frac{1}{\sqrt{2}}\left[\psi_H(\mathbf{r}_L)\psi_V(\mathbf{r}_R) + \psi_V(\mathbf{r}_L)\psi_H(\mathbf{r}_R)\right]$$
+
+This cannot be factored into the product of two independent wavefunctions, and so it is called _entangled_. And it is also completely bonkers. It says that the any result calculated using this wavefunction requires contributions from both polarizations on each side. Instantly! Which is the core of the EPR paradox, and which Einstein believed to his grave could not possibly be true (because there goes relativity...)
+
+But maybe this apparent "both places at once" is just a convenience? What if we introduce our random $r$ into the quantum equation? That would make more sense, so it would look like this:
+
+$$\Psi^{(r)}_{T} = \frac{1}{\sqrt{r^2+(1-r)^2}}\left[r\psi_H\psi_V + (1-r)\psi_V\psi_H\right]$$
+
+That looks better [2](bell-predictions-footnotes)!  Now "in reality" only one state is present at a given detector. Technically, this can be factored into independent wavefunctions ($r$ is 0 or 1, no other possibilities.) And this is exactly what we would expect with our two-layer crystal pair-generator above. Surely, as we observed above, the photon pair originates in one or the other crystal (not some goofy "both" situation...)
+
+So let's go on to calculate our quantum correlation function. We will look at two cases, $C^{Qr}_{VV}$, where the $Qr$ stands for "quantum, but with reality", and $C^{Q}_{VV}$, the pure quantum mechanical result.
+
+I will state without proof that we can use the same vector notation as the classical case, and even seemingly the same rotation matrix [3](bell-predictions-footnotes). I'll denote $R$ as $\hat{R}$ so we don't forget it is now a quantum operator, but it's going to work the same as the classical rotation matrix. We will revisit this when we talk about why we need the imaginary number $i$ for quantum mechanics. 
+
+Further, we have to define exactly what the "quantum correlation function" is. In the classical case, we looked at the $\hat{x}$ component of the fields and multiplied them together to calculate their correlation. In quantum mechanics, we can get the probability amplitude of a state (kind of analogous to the field) by taking the inner product of the state we are interested in with the overall wavefunction, then taking the absolute value square to convert it to probability. In quantum mechanics, when we take inner products (a generalization of the $\hat{x}\cdot\mathbf{v}$ operation with classical vectors) we use the conjugate state function (which is why we use $\psi_H^*$ etc. below, where $^*$ means complex conjgate.) [4](bell-predictions-footnotes)
+
+Don't get too hung up on those details for the moment - for now, here is the calculation:
+
+$$C^{(Qr)}_{VV} = \Big|[\psi_V(\mathbf{r}_L)\psi_V(\mathbf{r}_R)]^*\hat{R}(\theta_R)\hat{R}(\theta_L)\Psi^{(r)}_T\Big|^2$$
+
+Remember, the $\hat{R}$ operators only work on the side (left or right) they are associated with.
+
+So just like in the classical case, rotating the polarization from a pure $H$ or $V$ states mixes in the other state. 
+
+Putting all these together, and only looking at the $VV$ correlation, results in an equation with four terms. I'll show the first and last steps here, the rest is just algebra. I am also going to drop the explicit dependence on $\mathbf{x_L}, \mathbf{x_R}$, and the $L, R$ notation, which is implied as above by the order in the products.
+
+$$C^{(Qr)}_{VV} = \frac{1}{r^2+(1-r)^2}\Big|[\psi_V\psi_V]^*\Big\lbrace r\big[(\cos(\theta_L)\psi_H - \sin(\theta_L)\psi_V)(\cos(\theta_R)\psi_V + \sin(\theta_R)\psi_H)\big]+(1-r)\big[(\cos(\theta_L)\psi_V + \sin(\theta_L)\psi_H)(\cos(\theta_R)\psi_H - \sin(\theta_R)\psi_V)\big]\Big\rbrace\Big|^2$$
+
+This looks scary but simplifies when you realize we only need look at the two $VV$ terms:
+
+$$C^{(Qr)}_{VV} = \frac{1}{r^2+(1-r)^2}\Big|r\cos(\theta_L)\sin(\theta_R) + (1-r)\sin(\theta_L)\cos(\theta_R)\Big|^2$$
+
+When we leave the factors containing $r$ as-is, then we are talking about the case where the particles are definitely in one state or the other. And, it reproduces exactly what we derived for the classical case above! But if we are OK with the "two places at once" interpretation (i.e., set $r \rightarrow 1, (1-r) \rightarrow 1$ in the equation above, the equation simplifies even further:
+
+$$C^{(Q)}_{VV} = \frac{1}{2}\Big|\cos(\theta_L)\sin(\theta_R) + \sin(\theta_L)\cos(\theta_R)\Big|^2$$
+
+Using a long-forgotten trig identity, we end up with the simple and elegant solution that,  according to quantum mechanics,
+
+$$C^{(Q)}_{VV} = \frac{1}{2}\sin^2(\theta_L + \theta_R)$$
+
+[comment]: # (Figure4)
+**Figure 4**: Plot of quantum correlation function (next to classical correlation function for comparison.) Experimentally the quantum correlation function models the observed data. 
+
+Now, let's plug this quantum prediction into Bell's Inequality:
+
+$$\sin^2(\theta_a+\theta_c) + \sin^2(\theta_c+\theta_b) - \sin^2(\theta_a+\theta_b) > 0$$
+
+If I reproduce the plots I did in the classical case above, we are now seeing a lot of red areas!
+
+[comment]: # (Figure5)
+**Figure 5**: Plot of Bell's Inequality using the quantum correlation function. Any values less than zero are colored red. Looks like the Universe has some explaining to do!
+
+And there it is my friends. Quantum mechanics predicts that there are certain settings on the half wave plates that violate Bell's Inequality. 
+
+Remember, we found out in the Bell Puzzle that we can violate the inequality if the left and right side somehow depend on each other. And we see it explicitly in how we constructed this correlation function - when we let $r \rightarrow 1, (1-r) \rightarrow 1$, we kept the cases where each side was in both the horizontal and vertical polarizations at the same time. If we keep the $r$'s, then only one or the other can be true. So this is how the right side depends on the left in quantum mechanics.
+
+That's a lot to absorb. But we aren't done yet, because as soon as experiments verified that the quantum mechanical correlation function was correct, physicists began to come up with the most cockamamie "loopholes" to explain how the two outputs appear to be linked over space and time. These loopholes will be the subject of the next post.
+
+Finally, before I end this post: I will leave you with another puzzle. Apparently, we just showed that the left and right outputs are linked, independent of any time constraints. So if Alice on the other side of the planet starts fiddling with her half-wave plate, Bob's results will be affected instantaneously. Here is the puzzle: Can Alice send a message to Bob this way, faster than the speed of light would allow? When we get to the posts on Quantum Cryptography we will discuss this very scenario.
+
+
+

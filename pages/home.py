@@ -13,49 +13,38 @@ try:
 	dash.register_page(__name__,title="John the Physicist", path='/')
 
 	fp_anim = "assets/test.mp4"
+	front_image="assets/paradown.jpg"
 
 	# Layout
 	layout=[]
 	layout.append(
 		dbc.Row([
-			dp.DashPlayer(
-				url=fp_anim,
-				playing=True,
-				loop=True,
-				muted=True,
-				playsinline=True,
-				width='100%',
-			),
-
-#			dbc.CardGroup([
-#		        dbc.Card([
-#					dbc.CardBody([
-#						dcc.Markdown("$$e^{i\\pi}+1=0$$",mathjax=True),
-#						html.H4("Welcome",className='card-title'),
-#						html.P("Recent Posts",className="text-primary"),
-#					]),
-#				]),
-#			],style={'width':'95%'}),
+#			dp.DashPlayer(
+#				url=fp_anim,
+#				playing=True,
+#				loop=True,
+#				muted=True,
+#				playsinline=True,
+#				width='100%',
+#			),
+			html.Img(src=front_image), # width=500),
 		],justify='center',style={'margin-top':5})
 	)
 
-#	layout.append(
-#		dbc.Row([
-#			dbc.CardGroup([
-#		        dbc.Card([
-#					dbc.CardBody([
-#						html.H5("Contact",className='card-title',id='contact'),
-#						html.Br(),
-#						html.Div("Someplace USA",className="text-primary"),
-#						dbc.CardLink("someone@gmail.com",href="mailto:someone@gmail.com"),
-#					]),
-#				],color='light'),
-#			],style={'width':'95%'}),
-#		],justify='center',style={'margin-top':5})
-#	)
+	layout.append(
+		dbc.Row([
+			html.Br(),
+			html.H3("\"It is what it does.\"",style={'text-align':'center'}),
+			html.Br(),
+			html.Div("Reflections on physics, mathematics, finance, and anything else that I find interesting.",style={'text-align':'center'}),
+		],justify='center',style={'margin-top':5})
+	)
+
+	layout.append(html.Br())
+
 	# final credits
 	layout.append(
-		html.Div("Built with Dash and Plotly",style={'color':'grey','text-align':'center','font-size':'0.75em'})
+		html.Div("Built with Dash and Plotly",style={'color':'grey','text-align':'center','font-size':'0.5em'})
 	)
 
 except Exception as ex:

@@ -32,7 +32,7 @@ def get_section(file, start='', end=''):
 	
 	return(''.join(section))
 
-def build_markdown(name,start,end,image_path,body=[]):
+def build_markdown(name,start,end,image_path,body=[],width=300):
 	body.append(
 		dcc.Markdown(
 			get_section(name,start=start,end=end),
@@ -41,6 +41,6 @@ def build_markdown(name,start,end,image_path,body=[]):
 	)
 	if image_path!=None:
 		body.append(
-			html.Img(src=image_path, width=300)
+			html.Img(src=image_path, width=width)
 		)
 	return

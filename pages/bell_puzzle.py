@@ -52,13 +52,13 @@ try:
 		bias_marks[i]="{0:.1f}".format(float(i)/bias_range)
 	
 	pmd = []
-	mdutil.build_markdown(__name__,"start_post","Figure1","assets/bell_vending_one.png",pmd)
+	mdutil.build_markdown(__name__,"start_post","Figure1","assets/bell_vending_one.jpg",pmd)
 	mdutil.build_markdown(__name__,"Figure1","Figure2","assets/one_pair_venn.png",pmd)
-	mdutil.build_markdown(__name__,"Figure2","Figure3","assets/bell_vending_two.png",pmd)
+	mdutil.build_markdown(__name__,"Figure2","Figure3","assets/bell_vending_two.jpg",pmd)
 	mdutil.build_markdown(__name__,"Figure3","Figure4","assets/two_pair_venn.png",pmd)
 	mdutil.build_markdown(__name__,"Figure4","Figure5","assets/two_pair_b1.png",pmd)
 	mdutil.build_markdown(__name__,"Figure5","Figure6","assets/two_pair_b2.png",pmd)
-	mdutil.build_markdown(__name__,"Figure6","Figure7","assets/bell_vending_three.png",pmd)
+	mdutil.build_markdown(__name__,"Figure6","Figure7","assets/bell_vending_three.jpg",pmd)
 	mdutil.build_markdown(__name__,"Figure7","Figure8","assets/three_pair_venn.png",pmd)
 	mdutil.build_markdown(__name__,"Figure8","Figure9","assets/three_pair_venn_b1.png",pmd)
 	mdutil.build_markdown(__name__,"Figure9","Figure10","assets/three_pair_venn_b2.png",pmd)

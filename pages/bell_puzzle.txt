@@ -3,13 +3,22 @@
 
 ## Bell's Inequality
 
-The spooky stuff attributed to Quantum Mechanics inevitably leads to a discussion of Bell's Inequality. Bell's Inequality describes the statistical relationship between the results of selecting successive pairs of complementary objects. This inequality must be true if the world works in an intuitive way: i.e. the "common sense" ideas that objects (quantum or otherwise) actually exist in a single 'real' state and don't communicate with each other faster than the speed of light. So any violation of this inequality must mean something in the Universe doesn't work the way we expect it should. 
+The spooky stuff attributed to Quantum Mechanics inevitably leads to a discussion of Bell's Inequality. Bell's Inequality describes the statistical relationship between the results of selecting successive pairs of objects from complementary object sets. This inequality must be true if the world works in an intuitive way: i.e. the "common sense" ideas that objects (quantum or otherwise) actually exist in a single 'real' state and don't communicate with each other faster than the speed of light. So any violation of this inequality must mean something in the Universe doesn't work the way we expect it should. 
 
 Before we start, a bit of historical context. In 1935, Einstein, Podolsky and Rosen [EPR](assets/EPR_original.pdf) proposed the famous "EPR Paradox". This paradox was supposed to be a real "gotcha", as it pointed out that the quanta in Quantum Mechanics appear to _actually_ be in multiple places at once, which EPR argued, can't be right. There must be more to the story, some "hidden variables" that we just don't know about yet. It took about 30 more years of noodling until John Stuart Bell [1964](assets/bell_1964.pdf) first proposed a quantitative method to test if indeed there was something "hidden" in quantum theory. Experiments ensued, and in [2022](https://www.nobelprize.org/prizes/physics/2022/summary/) Aspect, Clauser, and Zeilinger were awarded the Nobel Prize "for experiments with entangled photons, establishing the violation of Bell inequalities and pioneering quantum information science." We will get to those quantum experiments in later posts. 
 
 In this post, we will describe Bell's Inequality as a logic puzzle. Note that Bell's Inequality is a purely classical construct - it doesn't have anything to do with quantum mechanics _per se_. So don't worry (for now) if you haven't thought about multiparticle wave functions in a while (or ever.)
 
-So, let's start out with some rules. First, objects in this puzzle always occur in pairs. Each pair always has the same shape, but each object of a pair has one of only two possible colors.
+There are two key aspects of Bell's Inequality: selection, and complementary pairs.
+The _gist_ of selection in Bell's Inequality can be described as follows: Take three objects, call them $a$, $b$, and $c$. Select a pair, $a$ and $b$ - there is one way to do this, we will call it $(a,b)$ (order doesn't matter for now.) There will always be more ways to select $a$ and something else plus $b$ and something else than our original $(a,b)$ selection. For example, in the case of a third object $c$, there are two ways to select objects that have $a$ or $b$: $(a,c)$ and $(b,c)$, i.e. two ways to do this. So, two choices: $(a,c)$ and $(b,c)$ > one choice, $(a,b)$. If we add another option $d$, there are two more ways to select pairs that contain either $a$ or $b$ (the selections $(a,d), (b,d)$), thus four choices > one choice. The inequality is true because those other choices _exist_. 
+
+How could this not be true? Well, what if someone removed $c$ any time you selected $a$ first (or vice versa.) Then there really is only a way to select $(a,b)$ and $(b,c)$ - you will never get an $(a,c)$ selection. Thus, one choice = one choice, which is no longer an _inequality_. The second selection depends on the first (the pairs you end up with are no longer independently chosen.) The selection process itself affects the set of outcomes for selecting the second object. 
+
+Now, let's introduce complementary pairs of objects. The "complementary" property can be anything as long as it is only two choices, so we will choose the colors black and white (denoted with subscripts "b" and "w".) So objects like as $a_b,a_w$, $b_b,b_w$, etc. This allows us to put a complete set of objects in two different locations (which will become important when we start talking about exactly _when_ we select each object.) For example, maybe $(a_b, b_w,c_w)$ is a set in one location, and $(a_w,b_b,c_b)$ is in some other location.  By introducing two sets that can be in different locations, we can start asking questions about exactly how (and _when_) one set affects (or doesn't) the choices in the other set.
+
+Here we present the proof of a relationship between the number of ways to select pairs from separated, complementary sets. This relationship must be true if selecting the first object from one set doesn't affect the selection choices of the second object from the other, spatially separated complementary set.
+
+So, let's start out with some rules. First, as we already described, objects in this puzzle always occur in pairs. In this puzzle, each pair always has the same shape, but each object of a pair has one of only two possible colors.
 
 Like these pair of circles (representing the balls we will use below):
 
@@ -46,7 +55,7 @@ If we use a Venn Diagram to illustrate the machine output, it would look like th
 
 Here, the Venn diagram illustrates the complete output states of the Left side of the machine. There is a second Venn diagram for the Right side which is the exact complement of the Left. To construct the Right Venn diagram, invert the colors of all the objects for the Left Venn diagram, as the opposite color must go to the other side. I will only show Left Venn diagrams.
 
-Let's introduce some math notation that will be helpful below. The probability of getting a white ball _b_ on the left (and necessarily a probability of getting a black ball on the right) is $P(b_w, b_b)$. In this notation, the quantities in the parentheses are the left and right outputs, respectively. Similarly, the probability of getting a black ball on the left is $P(b_b, b_w)$. Since these are the only two possibilities, we get:
+Let's extend the math notation introduced above that will be helpful below. The probability of getting a white ball _b_ on the left (and necessarily a probability of getting a black ball on the right) is $P(b_w, b_b)$. In this notation, the quantities in the parentheses are the left and right outputs, respectively. Similarly, the probability of getting a black ball on the left is $P(b_b, b_w)$. Since these are the only two possibilities, we get:
 
 $$P(b_w, b_b) + P(b_b, b_w) = 1$$
 
@@ -122,7 +131,7 @@ We also cannot fully determine the machine output any more with a single coin - 
 [comment]: # (Figure10)
 ** Figure 10: ** Venn diagram for three object pairs, where orange boundary represents $P(b_w,t_w)$
 
-And similarly, we can look at the case where we set for (left:triangle, right:cube):
+And similarly, we can look at the case where we set the dials for (left:triangle, right:cube):
 
 [comment]: # (Figure11)
 ** Figure 11: ** Venn diagram for three object pairs, where orange boundary represents $P(t_w,c_w)$

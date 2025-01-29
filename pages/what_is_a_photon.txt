@@ -1,0 +1,57 @@
+[comment]: # (start_post)
+
+## What is a photon?
+
+I am swerving pretty close to metaphysics here, but I promise that I will only describe what a photon does. Because that is what it _is_.
+
+Photons (and electrons, and some other less familiar bits) are considered _fundamental_. That is, they are not composed of anything other than themselves (no difficult-to-get-at sub-components like quarks in protons.)
+
+That means photons come and go as a single "unit". If they were truly point-particles, that might be easy to visualize. But since they are also _waves_, they blip in or out of existence as a whole unit, everywhere all at once. That is the root cause of almost all the quantum spookiness.
+
+I'll discuss what "blip in or out of existence" means in another post on measurement. But for now, let's just try to draw what a photon might _look like_ using mathematics.
+
+First, let's start with a "classical photon." In the classical world, electromagnetic (EM) fields are described by Maxwell's Equations. Since I like pretty equations, here are Maxwell's Equations in free space (no charges, currents, dielectrics, or magnetic materials):
+
+$$\nabla\times\mathbf{E} = -\partial_t\mathbf{B}$$
+
+$$\nabla\times\mathbf{B} = \mu_0\epsilon_0\partial_t\mathbf{E}$$
+
+$$\nabla\cdot\mathbf{B} = 0$$
+
+$$\nabla\cdot\mathbf{E} = 0$$
+
+
+Beautiful and scary, but don't worry, I'll just give you the solutions for this post. These can have linearly-polarized plane-wave solutions, where the E field travels along $\hat{z}$ at the speed of light $c$, and the polarization is in the $\hat{x}, \hat{y}$ plane. For instance, if the electric field is polarized along $\hat{x}$,
+
+$$\mathbf{E} = \hat{x}E_0 e^{i(kz-\omega t)}f(kz-wt)$$
+
+In reality, $\mathbf{E}$ is a 3-dimensional vector (with basis $(\hat{x},\hat{y},\hat{z})$ ) but if we are linearly polarized on one axis we don't need to write the other components (which are zero.) Futhermore, this plane wave extends to infinity in the $(\hat{x},\hat{y})$ plane, which also is an approximation. We could limit this to a beam with a radial profile $g(\rho)$, but it isn't going to make a difference in the calculations below (just assume that our detector collects all the photons for now.) The time dependence function $f$ is also going to just go along for the ride, so we will drop the explicit dependence on time.
+
+Now, we get to our first problem. Maxwell's Equations don't know about "photons" - the classical EM field can be subdivided forever into infinitesimal bits. That's not how the world is observed to work however. We have detectors (e.g. photomultipliers) that create a voltage (actually, a charge current converted to a voltage) proportional to the EM field. But if keep attenuating the EM field, eventually our detectors start "clicking", rather than the voltage just getting smaller and smaller. Those clicks represent photons, the fundamental bits of the Universe that cannot be subdivided any further.
+
+So, mathematically, how could we bolt quanta onto Maxwell's Equations? The simplest answer, and one that gets us surprisingly far, is constructing our $\hat{x}$ polarized wave above to contain a discrete amount of energy. That would be $\Large{\varepsilon}\normalsize{=\hbar\omega}$ for a single photon. For $n$ photons, $\Large{\varepsilon}_n\normalsize{=n\hbar\omega}$. Max Planck (in [1901](assets/Planck1901.pdf)) famously made this assumption when deriving the distribution for "black-body" radiation (the distribution of colors for hot things, like a hot piece of iron.) That's why $\hbar$ is called Planck's Constant, and not some-other-guy's constant.
+
+I'll have a lot more to say about this when we properly quantize the EM field in a "second" step below. However, for now, let's just treat the "classical photon" as an indivisible burst of EM radiation that satisfies Maxwell's Equations, and has an energy equal to discrete multiples of Planck's value.
+
+Mathematically, this means that the number of photons per unit time $\dot{n}$ through an area $A$:
+
+$$\frac{\int_A{IdA}}{\hbar\omega} = \dot{n}$$
+
+where $I = \frac{1}2 c\epsilon_0E^2$ is the intensity (in $W/m^2$) of the electric field. Summing over area and time leads to the total energy of the electric field in this case. So a "classical photon" associated with a time interval $\tau$ can be written as:
+
+$$\mathbf{E}_1 = \hat{x}\sqrt{\frac{2\hbar\omega}{c\epsilon_0\tau}}e^{i(kx-wt)}g(\rho)$$
+
+For $n$ photons,
+
+$$\mathbf{E}_n = \hat{x}\sqrt{\frac{2n\hbar\omega}{c\epsilon_0\tau}}e^{i(kx-wt)}g(\rho)$$
+
+[comment]: # (Figure1)
+This is what the classical electric field of "photons" with discrete energy $\hbar\omega$ might "look like"
+
+Now, what is $\tau$? It could be, e.g., associated with the integration time on a camera. But the quantity of $n/\tau$ appears above, which is just the average number of photons per second of a beam. We usually know what this is in the laboratory (we have plenty of tools to measure this.)
+
+And if we further assume that these bundles come at random times, we can even get the estimate of the _noise_ we expect to see - any steady stream of particles will follow Gaussian noise statistics (or Poisson statistics in the limit of numbers of particles detected.)
+
+Believe it or not, the representation above is enough to design the vast majority of optical measurement systems. 
+
+But this representation suffers from a problem. 
