@@ -36,7 +36,9 @@ def update(post_path):
 def get_topics():
 	all_topics = []
 	for te in toc_entries:
-		all_topics.extend(te.topics)
+		for topic in te.topics:
+			if not topic in all_topics:
+				all_topics.append(topic)
 	return all_topics
 
 def get_sortitems():
