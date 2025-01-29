@@ -182,7 +182,7 @@ Using a long-forgotten trig identity, we end up with the simple and elegant solu
 $$C^{(Q)}_{VV} = \frac{1}{2}\sin^2(\theta_L + \theta_R)$$
 
 [comment]: # (Figure4)
-**Figure 4**: Plot of quantum correlation function (next to classical correlation function for comparison.) Experimentally the quantum correlation function models the observed data. 
+**Figure 4**: Plot of quantum correlation function (next to classical correlation function for comparison.) Experimentally, the quantum correlation function models the observed data. Verification can be accomplished these days in an undergraduate laboratory, e.g. [this](https://arxiv.org/abs/quant-ph/0205171v1) reference.
 
 Now, let's plug this quantum prediction into Bell's Inequality:
 
