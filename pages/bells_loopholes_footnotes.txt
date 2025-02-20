@@ -1,0 +1,12 @@
+import dash
+from dash import dcc
+import dash_bootstrap_components as dbc
+from dash import html
+
+dash.register_page(__name__,title="John the Physicist")
+
+layout = dbc.Row([
+		dcc.Markdown(r"1. Some people think that the entanglement argument is the 'most correct' because it supposedly preserves unitarity of the wavefunction. I like this explanation, but I really don't think the unitarity argument is compellingly different from the many-worlds interpretation. See for instance []() ",mathjax=True), 
+		dcc.Markdown(r"2. ",mathjax=True), 
+		], 
+		justify='center',style={'padding-left':'0.75em','padding-right':'0.75em'})

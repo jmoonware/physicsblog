@@ -1,0 +1,234 @@
+[comment]: # (start_post)
+
+## Why is everything exponential?
+
+Well, not everything exactly. But a lot of things are, including some very important things. Such as the ultimate fate of the Universe.
+
+But let's not get ahead of ourselves...
+
+When I was in 10th grade, I remember doing linear interpolation of log tables (anyone born in the last 30 years: "what are log tables?") Those of us beyond a certain age will remember that math text books back in the day had tables of actual numerical values of functions, calculated to 5-6 digits, and listed page after goddamned page. These were calculated at some sampling resolution and included logs and trigonometric (sine, cosine, etc.) functions. Obviously, with modern computers (where I can just type ".1234" and hit the 'sin' button) these tables seem like a ridiculous artifact of a lost age, like Elizabethan collars or Roman flatware made from lead. I assure you, though, textbook function tables were a "thing" within living memory. 
+
+Back then, if we needed a more accurate value of a function between two listed samples (we were never told why), we resorted to [linear interpolation](https://en.wikipedia.org/wiki/Linear_interpolation). For instance, here is an example table taken from a textbook from the time. 
+
+[comment]: # (Figure1)
+** Figure 1 **: Example numerical logarithm values
+
+We spent weeks every year doing linear interpolations, even though after doing one or two interpolations, most people would either understand it thoroughly, or never be able to grasp it, ever. Anyway, out of sheer frustration at the boredom involved, I asked my 10th grade math teacher Mrs. Edwards one day, "why are logarithms important?" Her inspirational answer was "I don't know", then a blank stare at me. The class then continued with whatever lesson she was mechanically teaching. We always suspected Mrs. Edwards was a drinker. If she was, I can't blame her, given students like me. I responded to this environment by nearly flunking her class at one point because I refused to hand in homework. Here are my actual grades over the first two quarters of 1981:
+
+[comment]: # (Figure2)
+** Figure 2 **: One of the benefits of growing up in a nearly-hoarder situation - my mom kept all my report cards. Chemistry wasn't going well either...
+
+Can it be any surprise that I would have rather been playing Dungeons and Dragons with my nerd friends, and so quietly rolled out characters with 20-sided dice during math class instead of doing log tables?
+
+So logarithms (and exponentials) have always been a bit of a sore spot for me, causing me to think about them more than is probably healthy, hence this post. 
+
+First, there is the very nature of the exponential function itself. At this point, if you aren't sure what a function is, read [this post](what-is-a-function) and come back - don't worry, it will still be here when you get back.
+
+Doot do doot do do....
+
+OK exponential functions. 
+
+Exponentials show up as the solution to equations that look like:
+
+(rate of change of something) proportional to (something)
+
+This means, the amount something is changing depends on how much there is available to change. Another way of wording this is that the "slope" of an exponential is equal (or proportional to) to the value of this function at every point. Also, because the slope is the function, the slope of the slope (the curvature, or second derivative) is also equal to the function. And so on, forever.
+
+The way to say this in math is "a small change in $f$ ($df$) when you make a small change in $x$ ($dx$) is":
+
+ $$\frac{df}{dx} = f(x)$$
+
+Here '$d$' stands for a change, often called a 'delta' or 'differential'. The ratio $df/dx$ is the first derivative of $f$ with respect to $x$. This is what calculus is all about.
+ 
+In physics, the units need to make sense as well so if we are talking about something changing with time we might have:
+ 
+ $$\frac{df}{dt} = \nu f$$
+ 
+where $\nu$ has to have units of inverse time (so that we are measuring how much f changes with each "unit" change of time.)
+
+Tons of processes can be described with exponentials. Radioactive decay, current in diodes, velocity-dependent forces, the density of the atmosphere with height, and on and on, are all exponential.
+
+But how do we get values for this function where the slope is equal to its value everywhere? We have to go back to how the interpolation tables are actually calculated in my 10th grade text book. Remember that we learned that damn near any function can be put together from polynomials like this:
+
+$$f(x) = a_0 + a_1(x-x_0) + a_2(x-x_0)^2 + a_3(x-x_0)^3 + ...$$
+
+where the $a_n$ depend on the $n$'th derivative (i.e., taking the slope of the slope of the slope...n times)
+
+Substituting the exponential derivatives into the Taylor series we get just about the simplest values for $a_n$ imaginable (they are all 1!):
+
+$$f(x) = \sum\limits_{n=0}^{\infty}{\frac{x^n}{n!}}$$
+
+You might think, wait, won't $x^n$ get very large, going to infinity as $n$ goes to infinity? Indeed it does - but factorials get even larger, and in fact go something like $n^n$ when $n$ is large, so you can always find an $n$ where $n!$ is much larger than $x^n$. That is, the terms in the series go something like $(x/n)^n$, so $x/n$ eventually gets small after $n$ gets bigger than $x$.
+
+Thus, this series is a delight to work with just about everywhere. And, when we get to the post about $i$, I'll show the absolutely mind-blowing black-magic that happens when we add in imaginary numbers to this series.
+
+What are the properties of this function? You can plot it quite easily. It gets large very quickly with x. If you are fooling around with the values you might observe that f(x+1)/f(x) = constant ~ 2.71828...
+
+So for every unit (+1) change in x, we multiply f by ~2.71828. So f(x) can be written something like
+
+$$f(x) \simeq (2.71828)^x$$
+
+where x is the exponent.
+
+We can calculate this fold-change using the series at $x=1$. Let's call this value [$e$](https://en.wikipedia.org/wiki/E_(mathematical_constant)):
+
+so:
+
+$$f(1) = e = \sum\limits_{n=0}^{\infty}{\frac{1}{n!}}$$
+
+That lets us calculate any value of $e^x$, and even $e$ very precisely. And note, $e$ is an infinite series, the sum of all multiplicative inverse integer factorials, which suggests that it [isn't a rational number](https://en.wikipedia.org/wiki/Proof_that_e_is_irrational) (although, you can get a very, very good approximation of e taking only a few terms of the above series, which is a rational number.)
+
+Note that we can get the inverse of $e^x$ as well:
+
+$$x = \ln(f)$$ 
+
+where $\ln$ is the "natural" logarithm ("ln" is "logarithm naturel", said with a haughty French accent) of base $e$. The inverse just swaps $x$ and $y$ axes, thusly:
+
+[comment]: # (Figure3)
+** Figure 3 **: The inverse of $e^x$ is $\ln(x)$, which just swaps $x$ and $y$ in the graphs.
+
+So you can see why we use base $e$, even though it hardly seems "natural". I mean, shouldn't we use a more familiar number (like 2 or 10) as the base? Especially because you can always write an exponential as 
+
+$$10^{ax} = e^x$$
+
+taking the natural log of both sides gives
+
+$$ln(10)ax = x$$
+
+so:
+
+$$a = \frac{1}{\ln(10)}$$
+
+which results in:
+
+$$10^{\frac{x}{\ln(10)}} = e^x$$
+
+So we _could_ use a base 10 exponent if we wanted, which is a more familiar number.
+
+Unfortunately, we have that pesky factor of $a$ now. So all the $x$ values have to be scaled, which makes our beautiful formulas full of $a$'s everywhere. God help you if you forget one. And no, in physics and engineering, getting precisely the correct answer is still quite valuable, especially if you like bridges that don't fall down or planes that don't crash out of the sky. You can't bullshit your way out of a crumpled fuselage, like, say, in the humanities. So $e$ is in fact a pretty natural choice.
+
+Alright, enough about exponential functions. What has really troubled me is why we need a logarithm (i.e., an inverse exponential) in one of the most important physical Laws, namely, the Second Law of Thermodynamics:
+
+$$S = k \ln(\Omega)$$
+
+where $S$ is entropy (energy at a given temperature, in Joules/Kelvin), $k$ is Boltzmann's constant ($1.38\times 10^{-23}$ J/K), and $\Omega$ is the number of ways to arrange a system (the number of microstates, explained below.) 
+
+This formula is famously inscribed on Boltzmann's gravestone. Boltzmann died by suicide, by the way. So I am not the only person with issues about logarithms.
+
+All this sounds like gobbledygook if you haven't had a course in statistical mechanics, so I will explain how to think about all these quantities. 
+
+Most other physical laws are a little more like the rate of change (or curvature, second derivative) of this thing is proportional to the same thing or some other set of things.
+
+Like $F=ma$ (the rate of change of velocity $a=dv/dt$ is proportional to a force.) So if we have a force proportional to velocity (like air resistance of something falling), then the velocity decays exponentially in time (or it takes a logarithmic time to get a linear change in velocity...)
+
+So maybe the logarithm isn't that mysterious, if I can come up with an example as simple as Newton's Second Law.
+
+Before we go further, just what is a [microstate](https://en.wikipedia.org/wiki/Microstate_(statistical_mechanics))? You can click on that link, but basically how we are going to use it is as follows: a single "snapshot" of how particles are distributed at any point in time. Here, "distributed" could mean distributed in space and/or energy. 
+
+Many books on statistical mechanics appeal to the fact that Entropy (whatever that is, but we know it is some extensive quantity like heat, i.e. it scales with the overall size of the system) scales linearly if a system doubles in size, but the number of microstates goes up as the product of two systems of the starting size. And quantities that sum that are related by their product are clearly exponential (or logarithmic; I could have titled this post "why is everything logarithmic" but that doesn't sound as cool.) 
+
+But that sounds a little too hand-wavy. Let's approach this in another way: while we are on the subject of system doubling, is there an equation for "not in 10 billion years"? Turns out, there is.
+
+We were just talking about microstates, and one of the most non-intuitive things about microstates is that they are all equally likely to occur. That seems like it can't be true - the state where all the molecules are on one side of a room is equal to a state where the molecules are uniformly distributed in the room? I can't believe that is true. Even worse, the state where all the particles are crammed in one corner is just as likely as the one we always see, uniformly distributed everywhere.
+
+[comment]: # (Figure4)
+** Figure 4 **: Equally likely arrangements of particles in a 2-d box. There are a _lot_ more ways to get something that looks "uniform" than the case where all the particles are on one side.
+
+But, yes, my friends, it is [true](everything-exponential-footnotes)! There is a reason, however, that we have never observed this in practice (you haven't, right?)
+
+The number of microstates where the distribution is relatively uniform is _vastly_ larger than the number of microstates where the molecules are even a little out of equilibrium. Let's go through exactly how mind-bogglingly unlikely anyone will observe one of these rare microstates.
+
+Assuming $N$ unique possible particle positions (states), and $N_p$ particles, then the number of microstates (unique ways to distribute $N_p$ particles among $N$ states) can be calculated in a straightforward way. If we only allow one particle per state for the moment, then the number of possible ways to distribute 1 particle in $N$ states is $N$. If I add one more particle, then there are $N-1$ ways to add a particle (to states that don't already have a particle) And so on. Mathematically, 
+
+$$\Omega = N(N-1)(N-2)...(N-N_p-1)$$
+
+We can re-write this as:
+
+$$\Omega = \frac{N!}{(N-Np)!}$$
+
+I guess I could have also entitled this post as "why is  everything factorial". But that would be even less cool than logarithmic.
+
+We've glossed over something important here - the fact that we only allow one (or some number called $g$ for degeneracy) particle per state. Turns out that Quantum Mechanics will have something profound to say about this. But for now all we need is $g=1$. Also, another thing we fudged - we assumed one particle can be distinguished from another. That is, in our bag of starting marbles, each marble looks different (the green one, the white one, etc.) Quantum Mechanics also has something profound to say about this. In the mean time, though, it isn't unreasonable to assume that you really can't tell one, say, water molecule, from another, even in principle. So we have overcounted the states by $N_p!$ (that's $N_p$ factorial, not a surprising $N_p!$ Dammit, I mean $N_p$. Who uses exclamation points for math?) That is, once we add $N_p$ particles to the system, we have to ask how many ways we could have done this which end up with the same number of particles per state in the $N$ possibilities? If $N_p=2$, we could exchange the two positions and get the same answer. For 3 particles, we could swap any pair 3 times and get the same answer. For 4, we could swap sets of 3 particles (which could each have 3 sets of pairs exchanged) four times (so $4\cdot 3\cdot 2$.) So you can see where the overcounting by $N_p$ factorial comes from.
+
+So, finally, if we only allow one particle at a time in a state (true for, say, a system of hard spheres bouncing around in a volume V) and if particles are indistinguishable, then
+
+$$\Omega = \frac{N!}{(N-Np)!Np!}$$
+
+We haven't actually estimated what $N$ is, and won't need to until a bit later. But even without that, now we can ask some math questions. For instance, how likely is it we can see a system where we effectively reduce $N$ by half suddenly? 
+
+If $N \rightarrow N/2$, then the number of microstates in half as much volume is:
+
+$$\Omega_{1/2} = \frac{(N/2)!}{(N/2-Np)!Np!}$$
+
+We could punch this into our calculators and watch them blow up, but it's fairly straightforward to get an approximate answer - if $N \gg Np$, then $N!/(N-N_p)! \sim N^{N_p}$. So:
+
+$$\frac{\Omega_{1/2}}{\Omega} \sim \frac{1}{2^{N_p}}$$
+
+Just how small is that? For a 1 cm3 (1 mL) of air at room temperature, then $N_p ~\sim 10^5\times 10^{-6}/(1.38\times 10^{-23}\times 300) \sim 2.5\times 10^{19}$ particles
+
+So, remember that $2^{10} \sim 10^3$:
+
+$$\frac{\Omega_{1/2}}{\Omega} \sim 10^{-0.3*2.5\times 10^{19}}$$
+
+So a decimal point followed by $10^{19}$ zeros and then 1. Careful - not 19 zeros past the decimal, $10^{19}$ zeros! That is pretty small to say the least. Just how small? The universe has been around for ~10 billion ($10^{10}$) years, and with roughly 30 million seconds/year, then $3\times 10^{17}$ seconds. If we assume a 1 cm3 volume can come to equilibrium in say, 1 millisecond ($10^{-3}$ s), then the number of times that we might have a chance to observe such a fluctuation is:
+
+$$\frac{3\times 10^{20}}{10^{10^{19}}} \simeq 0$$
+
+That is basically the definition of "never". 
+
+If we were to write this number out on 8 1/2 x 11" sheets of paper, assuming at 8 pt font which is something like 3mm x 2mm per character, we can write $10^4$ zeros per sheet of paper. It would take $10^{19-4} = 10^{15}$ sheets of paper, and at $10^{-4}$ m (0.1 mm thickness) per sheet, we would need a $10^{11}$ m ($10^8$ km) stack of paper. The distance to the sun from Earth is $1.5 \times 10^8$ km, so about a stack of paper reaching from Earth to the Sun. 
+
+That's a lot of zeros. 
+
+We can flip this question around and ask: how small would the system have to be in order for there to have been a once-in-the-lifetime of the universe chance for this fluctuation to occur?
+
+Here we would want:
+
+$$2^{N_p} \sim 3\times 10^{20}$$
+
+so, 
+
+$$\frac{\ln(3\times 10^{20})}{\ln(2)} \sim 68$$
+
+That's right, 68 particles. At room temperature and standard pressure, that is a volume about 14 nm on a side (recall that many biological enzymes are on this order of this size.) And, even then, the sudden movement of all molecules to half the volume is still extraordinarily unlikely.
+
+Above we assumed a millisecond equilibrium time, but even making it much shorter for such a small volume wouldn't affect the result very much - the [Fermi answer](https://en.wikipedia.org/wiki/Fermi_problem) would still be 2 ($10^2 \sim 100$) particles for a once-in-a-universe-lifetime observation. In the spirit of "things to worry about", this is very near the bottom of the list.
+
+What does this have to do with the Second Law of Thermodynamics? First, isolated systems really hate to be out of equilibrium for long, because the sheer number of ways to be in equilibrium is astronomically (Earth to Sun size stacks of paper) larger than any other option. It also intuitively explains the "tending toward less order" interpretation of the Second Law. There are a LOT more ways to distribute things uniformly than there are even slightly less uniformly. So exponential (or logarithmic) behavior is going to cause the eventual heat death of the universe. Take that, Mrs. Edwards.
+
+Which brings us to, what the hell is entropy anyway? It was discovered via the fact that observationally, heat always went from high temperature to low temperature. So maybe there was an equivalent of "heat energy states" like we just saw in the spatial arrangements of atoms. Would the most likely arrangement of heat energy states also be uniform for the same reasons?
+
+How can we plausibly count the number of "heat energy states" in a system? Maybe an analogy with the spatial number of states (which we avoided calculating above) would help. Here, the number of places to put a particle of volume $V_p$ is $V/V_p$. That is, there are about $V/V_p$ states to add each new particle. So for every additional set of particles $dN_p$, we have $dN_p(V/V_p)$ more ways to arrange things. So the change in number of states $dN_s$ by adding a set of particles $dN_p$ is $dN_s = dN_p N_s$. Thus $N_s = \exp(N_p)$. Goddamn, exponentials again. 
+
+So we can take the famous logarithmic form of the Second Law and write an equivalent differential:
+
+$$\frac{d\Omega}{d(S/k)} = \Omega$$
+
+which says something like the change in the number of microstates due to a small change in entropy/Boltzmann's Constant (whatever that is) is proportional to the number of microstates that we have at the moment. 
+
+Now we are getting somewhere. The quantity $S/k$ (which has no units) can be thought of as the number of "energy particles" as in our volumetric space example above. Maybe it is a little clearer if we multiply top and bottom by the temperature T (so the variable is $(ST)/(kT)$ ). 
+
+So a count of the number of energy states is something like (total energy)/(energy per independent object).
+
+It has something to do with Temperature. In fact, the very definition of temperature is "that quantity proportional to the average energy per particle in a system at equilibrium." So the number of "energy particles" in a system has to be something like $N_e = Q/E_p$, or if $E_p$ is proportional to temperature by definition, $E_p = kT$, where $k$ is our world-famous Boltzmann's constant. So now we see that $(ST/kT) \sim Q/kT = N_e$, the number of energy particles in the system.
+
+Thus by similar arguments as before, any non-uniformity in energy particle count is going to be VASTLY more unlikely than the number of ways to make the counts non-uniform. Nature abhors an energy vacuum as well, it turns out. 
+
+That is, it's not that it is impossible for heat to flow from cold to hot (the equivalent of air molecules rushing to one side of the room), it is just so unlikely to observe (and capture it in a useful way) that it would be for all intents impossible. 
+
+This is why "Perpetual Motion of the Second Kind", i.e. spontaneous flow of heat from cold to hot, is astronomically (stacks of paper to the Sun) impossible. Otherwise, we could make a device that would wait for a system to spontaneously fluctuate (like a vacuum suddenly forming) and one could "mechanically capture" the increased pressure (or energy) and release it back, doing work in the process. That simply is not going to happen - we just saw how essentially impossible this is.
+
+All we had to assume here is that microstates (of space or energy) are equally likely in their respective "volumes", and what we observe in the grab-bag of the universe just depends on what is probably the most common sets of microstates. There is even a name for this assumption, of course, since we aren't making up new things here - the [Ergodic Hypothesis](https://en.wikipedia.org/wiki/Ergodic_hypothesis). We will go down a rabbit hole by Googling "violations of the ergodic hypothesis" in another post. The Ergodic Hypothesis isn't so accurate when talking about, say, galaxies, on a single-universe lifetime time scale. So maybe I shouldn't be so glib about the heat death of the universe. Still, for a simple gas, or a steam engine, or some system where you can ignore relativistic effects, it is the very definition of a damn good approximation. 
+
+So entropy is the energy equivalent of saying the molecules in a room will in practice never suddenly rush to one side. Neither will a system rearrange its energy states "to one side." It's just like rolling a $10^{10^{19}}$ sided die for D&D and expecting to hit that one value that would call the Gods to rescue you from your own foolish choices. 
+
+OK that is a lot. In summary, let's go back to Dungeons and Dragons:
+
+* Microstates (any specific arrangement of subunits in space or energy) are equally likely, like sides of a well-balanced die in D&D.
+* The universe plays D&D with ENORMOUS dies
+* There are lots more sides of the die that represent equilibrium (spatially, energetically) so that is in practice all we will observe in our lifetimes (or the lifetime of the universe for that matter)
+* Because of the way numbers and counting work, there are exponentially more ways to be in equilibrium, and this can be represented precisely as the Second Law of Thermodynamics.
+
+So that is why there is a natural log in the Second Law of Thermodynamics.
+
+In the next post, we will find out other surprising ways things can be exponential.

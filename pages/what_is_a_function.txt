@@ -1,0 +1,161 @@
+[comment]: # (start_post)
+
+## What is a function?
+
+I remember being in a second year college math class, and the professor was trying to explain what a function is. He described it as a black box (his illustration looked like a hand-operated meat grinder) where you put one number in the top and presto a different (ground up?) number shoots out the bottom.
+
+[comment]: # (Figure1)
+** Figure 1 **: Unhelpful illustration of a function
+
+I don't know about you, but I didn't find this particularly helpful. But it did remind me of ground meat, so it made hungry, and I started to daydream about grilling a hamburger.
+
+The most common example of a function we will need here at JTP can be shown with a 2-d plot of values. The horizontal (or $x$) axis could represent, say, a position from left to right on a grille. The vertical (or $T$) axis could represent the temperature at each position.
+
+Like this: 
+
+[comment]: # (Figure2)
+** Figure 2 **: Hypothetical Temperature versus position of the grille I was thinking about in my math class. 
+
+In this case, our function assigns a temperature T to each measurement point x. This is what functions do - assign a single number to say a point in space or time (or other things.) You don't have to assign a single number; you could assign a set of numbers (a vector) or a matrix (a tensor), or really, any old damn thing. But let's stick to simple numbers for now.
+
+You were probably taught the meat-grinder version of this using $f(x)$ where "$x$" is the independent variable (or, God help you, abscissa, which even I had to just look up to remember that it wasn't the ordinate.) In this case $f$ could be $\log(x)$, or $\sin(x)$, or some other three-letter button on your calculator. Apropos of nothing usually.
+
+Functions in physics do something vital, which is why I made this post: Functions take an input, and give you an output which is a _prediction_. If your fancy theory can't predict (or in this case accurately record) what is going to happen (or has happened) to something that can be measured, then it really isn't anything I want to spend time thinking about. 
+
+Nowadays, we can trivially plot 2-d or even 3-d functions. Libraries in common programming languages ([numpy](https://numpy.org/) and [scipy](https://scipy.org/) in Python for instance) make this just a few lines of code. Incidentally, when I started graduate school, I used a program called [Topdrawer](https://people.frib.msu.edu/~tsang/topdrawer/doc/topdrawer.html) for plotting. The plotting process started with finding a free terminal connected to the [IBM370](https://en.wikipedia.org/wiki/IBM_System/370) mainframe somewhere on campus. Then I used Topdrawer to create a file which was sent to a pen-plotter behind a service window in the computer science building. There I could go pick up my plot and see I forgot to add the damned labels or got the scale wrong. Sometimes it was easier to cut-and-paste the drawing (with literal scissors and glue) rather than regenerate it.
+
+By the time I graduated, plotting could all be done in one room on a single computer, and most of the PC's or Unix workstations could give you a screen preview before you committed to printing it on paper. Progress! In fact, my go-to test was to try to plot $\sin(x)$ vs. $x$ over a range $x \in [-10,10]$. If I could see it on the screen, I was set. Famously (well, not really) I wrote a driver for our [IBM-RT](https://en.wikipedia.org/wiki/IBM_RT_PC) workstations to do a graphical plot using [gnuplot](http://gnuplot.info/), which is still a thing apparently (gnuplot, not the RT workstations.)
+
+But how do these computer programs actually calculate $\sin(x)$? This was a deep mystery to me that caused consternation, and my 10th grade math teacher Mrs. Edwards (and frankly every other teacher until I got to college calculus) couldn't explain to me. To be fair, I probably didn't clearly frame the question like I am going to below - I remember asking once "but how do you ACTUALLY calculate these values if you don't have the tables?" I got the dreaded "I don't know" or some other bullshit answer. I remember we could derive some special cases (0, 1, etc. for logs, and for trig functions, some values at convenient angles like $\tan(45^o)=1$), but still no one showed me the answer. Someone somewhere came up with those values - but all I have is some black-box that says "at these points this function has this value, printed in the back of this god-awful math book." If I really only have things like multiplication and addition, how can I calculate these numbers?
+
+What I really meant to ask was: what is the algebraic representation of a function?
+
+Let's look at some special point where we can derive a value of the function - call it $x_0$. We might expect we can represent $f(x)$ near $x_0$ as: 
+
+$$f(x) = a_0 + a_1(x-x_0) + a_2(x-x_0)^2 + ...$$
+
+Here's a contrived example, showing how each added polynomial power fits the function $f(x)$ better and better:
+
+[comment]: # (Figure3)
+** Figure 3 **: Estimating the values of our hypothetical temperature versus position function. Adding more and more terms makes the approximation better and better. Here $x_0 = 0$.  
+
+Incidentally, representing a function by an infinite set of other functions is called "choosing a basis." This is a subject unto itself, but for now we will just use what is called the polynomial basis because the "basis functions" $(x-x_0)^n$ are familiar and easy to calculate.
+
+Using a polynomial basis doesn't help us though - we still don't know the values of any of the coefficients $a_n$. So all we have done is exchange one problem for another.
+
+We can at least guess $a_0$ - if we put in the value of $x=x_0$, then all the terms with an '$x$' are zero and we are left with $a_0 = f(x_0)$. Again, not exactly helpful. The function equals itself where we said it had this value. Duh.
+
+This is where we are going to be rescued by calculus. If we step away from any particular value by a small amount, say $dx$, then
+
+$$(x+dx)^n = \underbrace{(x+dx)(x+dx)...(x+dx)}_{\text{n times}}$$
+
+Here we can do a small amount of algebra - we need to collect only the terms that are the first power of $dx$ (and terms like $dx^2$, $dx^3$ etc. will be so small we can ignore them.)
+
+So, in the product above, only the terms that have $dx$ in one of the parentheses and $x$ in all the other $n-1$ parentheses are linear in $dx$. So we multiply $dx$ by $x$ $n-1$ times, and that term occurs in every parenthesis (so $n$ times)
+
+Thus, 
+
+$$(x+dx)^n \simeq x^n + nx^{n-1}dx + O(dx^{2+})$$
+
+where the $O()$ means "stuff that contains at least what is in the parentheses", in this case higher powers of $dx$.
+
+If we represent the "step away by $dx$" as $df$ for any function $f$ (here, $f(x)=x^n$), we get that:
+
+$$df = d(x^n) = (x+dx)^n-x^n = nx^{n-1}dx$$ 
+
+If you had calculus at some point in your life you will recognize this as the first derivative (the slope) of the $n$'th power of $x$.
+
+Now this is the trick: keep taking the derivative of the Taylor expansion above. For the $n$th derivative, when we set $x=x_0$ then only the first term will remain (all the others are zero). And so:
+
+$$\frac{d^nf}{dx^n}|_{x_0} = n!a_n$$
+
+where $\frac{d^{n}f(x_0)}{dx^n}$ is the $n$'th derivative of a function (evaluated at $x_0$), and $n!$ is "n factorial", i.e. $1\cdot 2\cdot 3\cdot ...\cdot n$.
+
+This lets us re-write all the $a$'s in the polynomial above as:
+
+$$f(x) = \sum\limits_{n=0}^{\infty}{\frac{d^{n}f(x_0)}{dx^n}\frac{(x-x_0)^n}{n!}}$$
+
+This is the world famous [Taylor Series](https://en.wikipedia.org/wiki/Taylor_series), and it is how we can calculate a value of any function, provided we know all the derivatives at a specific point. 
+
+Don't be scared of the $\infty$ sum, by the way. At some point, the series must "converge" to be useful, so you can stop the sum at whatever accuracy is needed for your calculations.
+
+Anyway, at least we know what all the $a_n$'s are now, but that also sounds unhelpful. How do I get all the derivatives?
+
+In general, finding these derivatives might not be particularly straightforward (although believe it or not, for the functions in the back of my 10th grade textbook, it actually is pretty easy.) 
+
+I'll do one with you, then we will move on to the functions you mainly need to make the universe work.
+
+Let's make a Taylor expansion of this simple algebraic function:
+
+$$f(x) = \frac{1}{1-x}$$
+
+around $x_0=0$. We don't need a Taylor expansion to calculate all the values of this function, of course; we can just plug in a value for $x$ and be done with it. Still, let's take a look at how it would work, because the result is pretty.
+
+The first rule to help us is the _chain rule_. This is:
+
+$$\frac{df(g(x))}{dx} = \frac{df}{dg}\frac{dg}{dx}$$
+
+So, if we want to find the derivative of:
+
+$$\frac{d}{dx}\left[\frac{1}{1-x}\right]|_{x=0}$$
+
+Using the chain rule, we get 
+
+$$\frac{d}{dx}\left[\frac{1}{1-x}\right]|_{x=0} = \frac{d}{df}(\frac{1}{f})\frac{d}{dx}(1-x) = -\frac{1}{(1-x)^2}\times{-1} = 1$$
+
+The second derivative similarly is 
+
+$$\frac{d^2}{dx^2}f(x) = 2f^3$$
+
+and so on; the $n$th derivative is $n!$ (when evaluated at $x=x_0=0.) 
+
+Substituting into the Taylor formula gives the pretty result (the $n!$ cancel top and bottom):
+
+$$f(x) = \frac{1}{1-x} = \sum\limits_{n=0}^{\infty} x^n$$
+
+That's about as simple as it gets for an infinite series.
+
+Here's what it looks like, adding in the first few terms to show how we get converge toward the expected value:
+
+[comment]: # (Figure4)
+** Figure 4 **: Function $f(x) = 1/(1-x)$. Adding more and more terms in the Taylor expansion makes the approximation better and better. As $x$ approaches 1, more and more terms are needed for a good approximation.
+
+If you are still with me, you will notice that this sum is not going to converge for $x \geq 1$. And we chose to expand around $x_0=0$ - if we tried $x_0=1$ of course, we would have a problem as the function goes to infinity there. These singularities in functions turn out to be quite interesting, but you have to avoid them with Taylor expansions. We will get back to these singularities when I try to convince you how outrageously useful complex numbers can be.
+
+Here we could get a simple formula for all the derivatives. We can't always be quite as lucky, but believe it or not we often can get all the derivatives from a relationship between a function and its first or second derivatives (such as almost all the equations of physics!)
+
+For instance, in the post on why everything is exponential, we will explore the famous case where:
+
+$$\frac{df}{dx} = f$$
+
+So the second derivative (the curvature) is:
+
+$$\frac{d^2f}{dx^2} = \frac{df}{dx} = f$$
+
+So all the derivatives are just $f(x)$, and $f(0)=1$! That also a leads to a very simple Taylor series:
+
+$$f(x) = \sum\limits_{n=0}^{\infty}\frac{x^n}{n!}$$
+
+[comment]: # (Figure5)
+** Figure 5 **: Function where $df/dx = f$ and $x_0 = 0$. The values take off really fast with $x$. Spoiler: this is an exponential function $e^x$.
+
+As another example, what if we know that:
+
+$$\frac{df}{dx} = 0$$
+
+and 
+
+$$\frac{d^2f}{dx^2} = -f$$
+
+Then each _odd_ derivative is zero, and each _even_ derivative is just the function itself (with alternating minus signs - that's important!)
+
+The resulting series is:
+
+$$f(x) = \sum\limits_{n=0}^{\infty}\frac{(-1)^nx^{2n}}{(2n)!}$$
+
+[comment]: # (Figure6)
+** Figure 6 **: Function where $d^2f/dx^2 = -f$, $df/dx=0$, and $x_0 = 0$. (Spoiler alert: this is $\cos(x)$, the solution to the wave equation.)
+
+These last two examples will actually get us quite far in physics, at least as far as anything you are likely to read about here.
+
+So now you know what a function is, or at least how to use simple algebra to calculate the value of any (one dimensional, scalar) function. Of course, we have barely scratched the surface - not all functions are simple number-in $\rightarrow$ number-out grinders that have convergent Taylor series everywhere. Some functions are as irregular as the surface of a hamburger. But don't worry about that for now - fire up the grille and move on to the next post, where we construct entire sandwiches of functions from other functions. 

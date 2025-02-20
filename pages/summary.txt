@@ -1,0 +1,22 @@
+[comment]: # (start_post)
+
+## Read this first
+
+I will try to get anyone with a bit of curiosity to the physics frontier with a minimum amount of mathematics. I take it as a challenge. But I can't do justice to some of the more interesting bits without some math.
+
+Famously, Richard Feynman wrote an entire book [QED](https://en.wikipedia.org/wiki/QED:_The_Strange_Theory_of_Light_and_Matter) explaining what got him the Nobel Prize in physics (a new way to think about quantum electrodymanics) without using too many equations. Feynman was exceptional even for an outlier - a great teacher as well as one of the brightest minds of 20th century physics (and an unabashed [self-promoter](https://en.wikipedia.org/wiki/Surely_You%27re_Joking,_Mr._Feynman!) as well.) The [Feynman Lectures](https://www.feynmanlectures.caltech.edu/) are a must-read for any student of physics.
+
+Feynman scrupulously avoids using math equations as much as possible in QED (he also took this as a challenge.) Instead, he explains a geometric "arrow" logic, which the reader has to accept. Now, if you are a physics student, then this graphical logic makes perfect sense, and even clarifies what you might have learned in a graduate-level physics class. 
+
+But I can imagine if you have never seen the underlying math before, it is a lot to accept. Little arrows that add head-to-tail, then we square the length of the resulting arrow? Plus the arrows spin around as you move around in time and space? Feyman would probably argue that it is actually as good a starting point as anywhere else, because there is no end of [why](https://fs.blog/richard-feynman-on-why-questions/) questions.
+
+I'm going to take a different approach. I think if we want to get to some of the cooler aspects of physics, we need math. Math is the language of physics, and the language of math is both accurate and precise. Any book on physics that doesn't use math will be like trying to take a literary classic and replace it with a comic book that has no dialog. You might kind of get the gist of the story, but the result may end up closer to a parody  ("Looks like these guys are harpooning whales. Why is one of the whales white? It seems to smash a lot of boats and bite things...")
+
+So here is what I think is the bare minimum required math background:
+
+* [What is a function](what-is-a-function)? (How to calculate the values of any function using multiplication, addition, some algebra, and a tiny bit of differential calculus)
+* How to make a [function from other functions](basis): (Linear combinations, vectors, bra-ket notation, and a tiny bit of integral calculus)
+* Why is [everything exponential](everything-exponential)? (Exponential and logarithmic functions)
+* The basics of [complex numbers](whats-up-with-i): (Feynman's spinning arrows)
+
+Don't worry, it won't be a full course on each topic, and I'll sneak in some funny stuff so it isn't too boring (I hope.) I'll only show you what is needed to get to the frontier, and I'll drop you off there. Good luck!

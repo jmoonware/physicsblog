@@ -1,0 +1,169 @@
+[comment]: # (start_post)
+
+## What's up with $i$?
+
+And by $i$, I don't mean 'myself' in some e. e. cummings sort of way. I am talking about the 'imaginary' number $i = \sqrt{-1}$. 
+
+First of all, what a disaster in branding. Calling something 'imaginary' implies it is made up, something we don't need to worry about going about our daily life. Then, to make matters worse, any number that contains $i$ is called 'complex'. Another tremendous marketing screw-up. We should have called them 'super friendly' numbers. Oh well, too late for that. 
+
+So we are left with the impression that $i$ is some complicated imaginary thing, like an overly-rule-bound board game. I can practically feel your eyes glazing over.
+
+In my high school, the advanced math class would cover complex numbers as a small section, apropos of nothing. A friend of mine who had this class (I only took the "idiot level" math classes until my senior year) came away with the following summary: 
+
+It ($i$) is an interesting concept, but not very useful. 
+
+In other words, boring and useless as hell.
+
+Remembering his boredom from long ago, I laugh. Far from boring, $i$ is one of the most beloved, useful numbers there is, at least if you do anything in physical sciences. You literally cannot describe the universe (using quantum mechanics) without $i$.  
+
+That last statement (that $i$ is essential to quantum physics, not just a convenient trick) is where we are going to go by the end of this essay, so stick with me here. 
+
+We will also find out below, $i$ is about as mysterious as '-1'. But that's probably not what you were taught about it, if you have even heard about $i$ before in your life. 
+
+So first, negative numbers. You've probably seen these in your bank account from time to time. But think about it. I have one apple sitting in front of me. If someone puts down two more apples, then there are 1+2=3 apples. Duh. If I take away all three apples, I have no apples (zero apples.) Can I take away four apples and have -1 apples? What does that even mean?
+
+Believe it or not, if you are taught math with apples, then it actually doesn't make any sense. But soon we figure out, -1 apples means you "owe me an apple." It is not a statement about a "real" apple in some sense, but one that could exist at some other point in time. Dare I say imaginary. 
+
+So a "negative" number is actually hard to visualize, but they are familiar since we have been taught how they work since we were very little.
+
+So we are already used to using numbers by what they do, as opposed to what they "are" (which you might think you know for the positive numbers.) So the definition $i = \sqrt{-1}$ is just like the definition of a negative number that we represent with a '-' symbol, like if $p$ is positive, then the negative of $p$ is the thing that give us $p + (-p) = 0$. 
+
+So forget about what $i$ "means". It is what it does. Which explains why I have it on the front page of this blog.
+
+Now let's see what kind of cool things you can do with $i$. 
+
+I've seen lots of write-ups of how $i$ allows us think about [complex numbers](https://en.wikipedia.org/wiki/Complex_number) in two dimensions, rotations, blah blah blah that is all a bore.
+
+I will cut to the chase here and show you the one thing physicists probably love the most about $i$ - remember my rant about [exponentials](everything-exponential)? That is, $f(x) = e^x$?
+
+We all love $e^x$ because it has the property $df/dx = f$ (the slope is equal to the value; in fact the slope of the slope is equal to the value too, ad infinitum), making the Taylor series simple, elegant, and convergent everywhere:
+
+$$e^x = 1 + x + x^2/2! + x^3/3! + ...$$
+
+What if we introduce $i$ to the exponent? That is, $e^{ix}$? We can write out the series for this:
+
+$$e^{ix} = 1 + (ix) + (ix)^2/2! + (ix)^3/3! + ...$$
+
+Now, here is where we use the definition of $i$ ($i^2=-1$, $i^4 = 1$, $i^6 = -1$, etc.)
+
+$$e^{ix} = 1 + ix - x^2/2! - ix^3/3! + x^4/4! + ix^5/5! + ...$$
+
+Any even power of $i = +/-1$ alternating signs, any odd power has an $i$ left over, then it acts like the even powers.
+
+That seems complicated, but here is what is going to blow your mind: If we collect the terms in the series by whether or not they are multiplied by 'i', we get:
+
+$$e^{ix} = \cos(x) + i\sin(x)$$
+
+So I can write solutions to something that oscillates back and forth (wave stuff) as an exponential! That "one weird trick" turns out to be _phenomenally_ useful. 
+
+It also leads to what some say is the most beautiful equation in the world (beauty being subjective of course):
+
+$$e^{i\pi} + 1 = 0$$
+
+which has $e$, $i$, $\pi$, 0, and 1 all hanging out together, like the Fab Four + 0 (maybe 0 is Phil Spector?)
+
+The function $e^{ix}$ is about the most useful thing ever in physics, because almost all (linear) physics equations have slopes or curvatures proportional to some value. For instance, electromagnetic waves, or probability amplitudes, or mass times acceleration, etc.
+
+Here are a few famous slope/curvature relationships in physics:
+
+* Curvature of amplitude with space proportional to curvature of amplitude with time (wave equation)
+* Slope (with time) of momentum equals forces (Newton's Second Law of Motion $F=dp/dt$)
+* Flow proportional to gradient (slope) of density (Diffusion)
+
+Now any equation that contains linear derivatives can be transformed into a statement about complex numbers, and I don't need all those long-forgotten relationships between sines and cosines.
+
+So we love $i$.
+
+The geometric interpretation of $e^{i\omega t}$ is also interesting. Put the "real" part on the $x$ axis (the $\cos(\omega t)$ part) and the imaginary parts (with $i$, the $\sin(\omega t)$ part) on the vertical axis. Then the complex number $e^{i\omega t}$ looks like:
+
+[comment]: # (Figure1)
+** Figure 1 **: The function $e^{i\omega t}$ looks like a spinning arrow with radius 1, that returns to pointing along the $x$ axis when $\omega t$ is an integer multiple of $2\pi$. 
+
+To get the "length" of any complex number, we take the complex conjugate (which just replaces every $i$ with $-i$) and multiply the conjugate with the initial number. That means the magnitude of the exponential function is $e^{-i\omega t}e^{i\omega t} = 1$.
+
+So these are Feynman's spinning arrows. He makes extensive use of these in the book QED. Note that changing $i$ to $-i$ just spins the arrow in the opposite direction.
+
+Now that we see what is behind these arrows, we can ask a harder question: is $i$ necessary in quantum mechanics, or just a convenience?
+
+Here are some true statements.
+
+A quantum is described by its probability amplitude wave function $\Psi$ (not just its position and momentum vs time, as in classical mechanics.)  Wave functions representing quanta have "quantum numbers" - the things that describe, say, energy, angular momentum, or spin.
+
+Physicists have a compact notation for this:
+
+$$\Psi = \left|\Psi\right>$$
+
+where the thing that looks like $|>$ is called a "ket". Whatever is inside the brackets are the quantum numbers for the system, which could represent momentum, spin, polarization, pretty much anything that can be measured.
+ 
+We also know that quanta can act like waves, so the amplitudes somewhere will have to be positive or negative. If wave function amplitudes can't be negative, then we couldn't describe a situation where two quanta interfere and sum to less probability (as in the [double-slit experiment](https://en.wikipedia.org/wiki/Double-slit_experiment).)
+
+By the way, the idea of needing to square a value to get an energy (or power through an area per unit time) was already well-understood by the time people started noodling about quantum mechanics. Famously, the harmonic oscillator stores energy with the square of the amplitude, but the position of the pendulum or spring can be positive or negative around its resting point. The same argument applies to electromagnetic waves (which can also push an electron in either direction depending on which way the wave is pointing at any given time.) So the idea that there is a "probability amplitude" that has to be squared to get a probability isn't that far-fetched. 
+
+So far, so good. Up to this point I could be describing a classical field theory, as long as, say, we "quantize" the energy states of the field (so the field can have only certain values of allowed energy.)
+
+A slightly more interesting constraint: The square of the wave function, when written as a probability, must sum to 1 if the quanta exists, and of course the probabilities are between 0 and 1.
+
+I'll give you the hand-wavy explanation. We already know that probability is conserved. Since translation in space, time, or rotation of an undisturbed (no quantum transitions) wavefunction has to preserve the overall probability,
+ 
+$$\left|\Psi(t)\right> = U(t)\left|\Psi(0)\right>$$
+
+where $U(t)$ is an operator that evolves our initial $t=0$ ket.
+
+Additionally, we want translations in time to _compound_.
+
+$$U(dt_1)U(dt_2) = U(dt_1+dt_2)$$
+
+which implies that
+
+$$\underbrace{U(dt)U(dt)***U(dt)}_{\text{N times}} = U(N dt)$$
+
+That is, two (or $N$) small translations in time are the same as the sum of a bigger translation with the same overall time. 
+
+In fact, for any function that has a first-order expansion like a Taylor series
+
+$$U(t) = 1 + at + ...$$
+
+And $Ndt = t$ then,
+
+Then 
+
+$$U(t) \sim (1+(at/N))^N = e^{at}$$
+
+Thus, we see that $U(t)$ must be exponential to compound in time. 
+
+Still, we don't necessarily need $i$. What's next? Probabilities are positive-definite between 0 and 1, so in order to calculate the probability of an outcome of a measurement, somewhere we need to turn the wavefunction amplitudes into a number from 0-1. If the overall wavefunction is $\Psi$, then the total probability of finding a quantum somewhere is:
+
+$$\left<\Psi|\Psi\right> =  1$$
+
+This has to hold over all time, so if we can propagate $\Psi$ using $U(t)$,
+
+$$\left<\Psi(0)|U^{\dagger}(t)U(t)|\Psi(0)\right> = \left<\Psi|\Psi\right> = 1$$
+
+where we have modified the $U$ on the left with the $\dagger$ symbol to mean "it comes from the left". If we are using functions that return ordinary real values $U=U^{\dagger}$.
+
+So, in some sense, we must have:
+
+$$\left|U^{\dagger}(t)U(t)\right| = 1$$
+
+Any real-valued (scalar) propagation function would have only trivial solutions (e.g. $U=\pm 1$.) That can't be right. But remember how we showed above that for any complex number $C = e^{ix}$, $|C|=1$? So we would be tempted to require any change to the wavefunction to be of the form $e^{\pm iX(t)}$, as long as $X = X^{\dagger}$ (the requirement for $X$ to be [Hermitian](https://en.wikipedia.org/wiki/Hermitian_matrix).) Such transforms in time are called "unitary", because they preserve the "unit" nature (i.e., sums to 1) of the wave function.
+
+This would imply that a wave function that evolves in time by some amount $dt$ can be written as [1](whats-up-with-i-footnotes):
+
+$$\Psi(t+dt) = e^{-iXdt}\Psi(t) \simeq (1 - iX dt)\Psi(t)$$
+
+This is actually just a first-order expansion of the Taylor series of this function:
+
+$$\Psi(t+dt) \simeq \Psi(t) + \frac{d\Psi}{dt}dt+...$$
+
+Comparing the coefficients of the $dt$ term implies:
+
+$$i\frac{d\Psi}{dt} = X\Psi$$
+
+Sharp-eyed readers recognize this as the [Schrodinger equation](https://en.wikipedia.org/wiki/Schr%C3%B6dinger_equation), where $X$ is usually denoted with $H/\hbar$, the Hamiltonian (divided by Planck's Constant in this case.) So at least this form of the propagator $U$ is consistent with one of the most important equations in Quantum Mechanics. We just had to assume unitarity and time-compounding, which led us to introduce $i$. 
+
+Thus, even Quantum Mechanics is exponential, but in a "wavy" way. 
+
+Speaking of wavy (as in "hand-wavy"), I'll point out that this is hardly a definitive proof. For instance, we could have defined two (or more) "hidden" dimensions of a vector operator $\mathbf{U} \sim u_a\hat{a}+u_b\hat{b}$, which would also have non-trivial solutions for $|U|^2 \equiv \mathbf{U}\cdot\mathbf{U} = 1$. Maybe one day I will write a complete post about it...
+
+But for now, I am going to just enjoy using $i$. 
+

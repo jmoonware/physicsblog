@@ -1,0 +1,22 @@
+
+[comment]: # (start_post)
+
+## Bell's Hidden Variable Theory
+
+This post is a deep-dive into Bell's original 1964 paper. It's an advanced topic so feel free to skip this post if you are looking for something a little easier to digest.
+
+I was motivated to write this post because I saw this graph, labelled in various ways, in a number of papers on Bell's Theorem:
+
+[comment]: # (Figure1)
+** Figure 1 **: Comparison of quantum pair correlation function and something called "hidden variable theory"
+
+The curves represent different ways to calculate a correlation function between particles. Mathematically, the graph is just a comparison of a sine wave and a triangle wave. Obviously, these two curves coincide at 0,$\pi/4$, $\pi/2$, etc. but the sine wave can deviate from the triangle by some amount between those points (the first maximum deviation is at $22.5^o$.)
+
+Now, if you read either of my Bell's Inequality posts so far, you saw how I compared one sort of classical construct (where waves were either in one state or another, but not _both_.) That allowed us to compare the classical and quantum results, and see how they differed. But all of my results ended up with some combination of sines and cosines too (even if they differed in important ways from the quantum results.) I couldn't for the life of me figure out how one would obtain a result that looked _linear_ in $\theta$.
+
+So that is one problem. Here is another thing: sharp-thinking readers would have called my sine/cosine results a "straw-man" argument anyway. I set up a "classical" theory (that appealed to our intuition) that I of course knew _a priori_ was incorrect. So it wasn't the only way to construct a classical theory. Maybe there is another classical theory that gives the same result for the quantum correlation function.
+
+What gives?
+
+
+

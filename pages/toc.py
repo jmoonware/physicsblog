@@ -20,11 +20,13 @@ try:
 					dbc.Accordion([
 						dbc.AccordionItem([
 							html.H4('Navigation Table',style={'text-align':'center'}),
-							html.Div("Sort by"),
+							html.H5("Sort by"),
 							html.Div(dcc.Dropdown(tocutil.get_sortitems(),multi=True,id='sort_dropdown')),
-							html.Div("Filter by topic"),
+							html.Div(dcc.Checklist([" Ascending"],id='sort_check')),
+							html.H5("Filter by topic"),
 							html.Div(dcc.Dropdown(tocutil.get_topics(),multi=True,id='topic_dropdown')),
-							html.Div(dbc.Button("Search",id='search_button')),
+#							html.Div(dbc.Button("Search",id='search_button')),
+							html.Div(dbc.CardLink("Summary Page",href='summary')),
 						],title="Navigation"),
 						],
 						start_collapsed=True,
@@ -43,20 +45,28 @@ try:
 	@callback(
 		Output(component_id='toc_cards', component_property='children'),
 		[
-			Input(component_id='search_button', component_property='n_clicks'),
+#			Input(component_id='search_button', component_property='n_clicks'),
 			Input(component_id='topic_dropdown', component_property='value'),
+			Input(component_id='sort_dropdown', component_property='value'),
+			Input(component_id='sort_check', component_property='value'),
 		],
 		)
 	def update_toc_table(*args):
-		nclk = args[0]
-		dd_val = args[1]
-		logging.getLogger(__name__).info(str((nclk, dd_val)))
-		recs = tocutil.get_recs(dd_val)
+#		nclk = args[0]
+		topic_dd_val = args[0]
+		sort_dd_val = args[1]
+		if args[2]!=None and len(args[2])>0:
+			sort_ascend=True
+		else:
+			sort_ascend=False
+#		logging.getLogger(__name__).info(str((nclk, topic_dd_val,sort_ascend)))
+#		logging.getLogger(__name__).info(str((topic_dd_val,sort_ascend)))
+		recs = tocutil.get_recs(topic_dd_val,sort_dd_val,sort_ascend)
 		cards = []
 		for r in recs:
 			cards.append(
 				dbc.Card([
-					dbc.CardHeader(r.date),
+					dbc.CardHeader(r.date_iso),
 					dbc.CardBody([
 						html.H4(r.title),
 						html.P(r.description),
@@ -65,7 +75,7 @@ try:
 							dbc.AccordionItem([
 								html.Span([
 									"Order ",
-									dbc.Badge("{0}".format(r.logical_order)), 
+									dbc.Badge("{0}".format(r.logical)), 
 									" Level ",
 									dbc.Badge("{0}".format(r.difficulty)),
 									" Topics ",
