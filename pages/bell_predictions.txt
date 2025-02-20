@@ -161,7 +161,7 @@ Remember, the $\hat{R}$ operators only work on the side (left or right) they are
 
 So just like in the classical case, rotating the polarization from a pure $H$ or $V$ states mixes in the other state. 
 
-Putting all these together, and only looking at the $VV$ correlation, results in an equation with four terms. I'll show the first and last steps here, the rest is just algebra. I am also going to drop the explicit dependence on $\mathbf{x_L}, \mathbf{x_R}$, and the $L, R$ notation, which is implied as above by the order in the products.
+Putting all these together, and only looking at the $VV$ correlation, results in an equation with four terms. I'll show the first and last steps here, the rest is just algebra. I am also going to drop the explicit dependence on $\mathbf{r_L}, \mathbf{r_R}$, and the $L, R$ notation, which is implied as above by the order in the products.
 
 $$\begin{aligned}
 C^{(Qr)}_{VV} &= \frac{1}{r^2+(1-r)^2}\Big|[\psi_V\psi_V]^*\Big\lbrace \\
