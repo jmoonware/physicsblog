@@ -12,7 +12,7 @@ At this point, people get creative. Does the wavefunction disappear (or "collaps
 In the example we gave so far violating Bell's Inequality, the photons were detected in a lab (where presumably the two photons were only separated by several meters at most.) That means the light-distance between detectors is very small, probably on the order of nanoseconds ($10^{-9} s$). To illustrate this, here is a diagram often used to show how 
 
 [comment]: # (Figure1)
-**Figure 1**: Space-time diagram of two detectors. The gray triangle represents "space-like" separation of the detectors, where any communication between Detector 1 (D1) and Detector 2 (D2) would violate causality.
+**Figure 1**: Space-time diagram of two detectors. The gray triangle represents "space-like" separation of the detectors, where any communication between Detector 1 (D1) and Detector 2 (D2) would violate causality (i.e., it would be faster than the speed of light allows.)
 
 But what if I want to put the detectors miles apart? It turns out this isn't very easy to do, because the photons can get lost along the way. I haven't included any non-ideal behavior so far because it just complicates the point I was trying to make. But if you DO include losses, then it doesn't take very many missed photons (or random noise detections) to make the uncertainty in our experiments large enough to give Bell some wiggle room.
 
@@ -68,7 +68,7 @@ $$\left<20|_C\right|\left<02\right|_D\left|\Psi_T\right>$$
 
 Mathematically, this measurement _removes_ the center terms, making the overall wavefunction unfactorizable, and thus leaves behind an entangled $L,R$ state.
 
-The Hensen _et al._ paper above used beam-splitter entanglement, but they didn't entangle  photon pairs, but physical spins in two different nitrogen vacancy centers in diamond. Which is even _more_ wild.
+The Hensen _et al._ paper above used beam-splitter entanglement, but they didn't entangle  photon pairs, but physical spins in two different nitrogen vacancy centers in diamond, separated by over a kilometer. Which is even _more_ wild.
 
 By the way, this isn't a very efficient method of generating entangled pairs.
 
