@@ -1,0 +1,325 @@
+[comment]: # (start_post)
+
+## Quantum Logic
+
+#### Post 3 in the Quantum Computing [Series](quantum-computing-series)
+
+Prerequisites:
+* The [basis](basis) post
+* Complex numbers [what's up with 'i'](whats-up-with-i)
+* Post 2 - Quantum [Warmup](quantum-warmup) 
+
+Suggested (still not needed for this post):
+* Post 1 - How encryption [works](how-encryption-works)
+
+Now, hopefully we understand how to create the "all states at once" register, and we should have an idea about how to cause the states to interact (and possibly have constructive/destructive interference) with each other. We also know how to make the quantum equivalent of a NOT and an XOR gate (the CNOT gate), although at the moment of this writing real-world implementations of this gate make a ridiculous amount of errors. We also introduced the single-qubit Hadamard gate, which let's us mix our "0" and "1" states in a way that can't be done with a classical bit (although it is very much like a waveplate in optics.)
+
+Despite the shortcomings in the state-of-the-art, let's assume the engineering is going to get better. If we assume we can make these gates which accept a combination of "off" and "on", how can we build them up to useful logic functions?
+
+The following problem will force us to address this question. Consider a function $f(x)$ that is "easy" to calculate but hard to invert (like, suggestively, multiplying two big prime numbers together.) And by "invert" $f(x)$ I mean this: given the value of $f(x)$, what is $x$?
+
+Before we get to factoring primes, let's consider a simpler but related example: finding the inverse of an arbitrary function. Let's start with a list of ascending numbers, where the list length is $N=2^3$. For the sake of this example, the list has values between 0 and 7. This restricts the value to what can be held in a 3-bit (or qubit) register. 
+
+Here is $x$:
+
+$$x=[0,1,2,3,4,5,6,7]$$
+
+Now let's scramble this list to a random order and call it $f(x)$: 
+
+$$f(x) = [3, 1, 0, 2, 4, 7, 6, 5]$$
+
+Each value is held in a position in memory from 0-7 (corresponding to a value of $x$.) I can even plot this function thusly:
+
+[comment]: # (Figure1)
+** Figure 1 **: Plot of $f(x)$ vs. $x$. This is a function, too, but can't be represented by anything but a couple lists of numbers. 
+
+Asking "what is the value of $f$ at position $x=3$?" is easy to calculate - fetching a value out of memory only takes one operation, in this case $f(3)=2$ (remember, we are 0-indexing so $f(0)$ is the first value, $f(0)=3$.)
+
+What if I asked you "find me where in memory the value of $f=7$ resides?" (and you didn't peek at the answer.) Since the numbers are in random order, the only thing we can do is start asking our function $f(x)$ if it returns 7 for some value of $x$, the memory position. Since there is no particular order to the data, we might as well start with $f(0)$. We find out that $f(0)=3$. That's not it. We look at the next one, $f(1)=1$. That's not it. And so on. Worst case, we have to run through the entire list to give us the memory position (if 7 happens to unluckily be the last value in the list.) Now, if we were truly random in the scramble, the position will be evenly distributed, so _on average_ we will have to compute $f(x) \simeq N/2$ times  (in this case 8/2 = 4 times on average.)
+
+Here, we can't "invert" $f(x)$ without basically trying all the values available.
+
+But in the previous post, we found out that, in some sense, we have _all_ $x$ values in a single quantum register, so if computing $f(x)$ is easy, doesn't this suggest a way to "try all the $x$ values" in parallel? That might allow us to get some sort of signal based on $x$ if I can get $f(x)$ quickly (like I can with a simple memory look-up.) 
+
+So what would this _quantum_ function look like? 
+
+First, what would $f(x)$ look like in the quantum case? Essentially, it has to transform an input register to a set out output values. In order to work through the gory details, let's simplify our earlier 8-value list to the first non-trivial example, two qubits. In this case we have $2^2 = 4$ values to play with. (Don't worry, the generalization to $n>2$ qubits is straightforward.) As before, we have the following possible $x$ values:
+
+$$x=[0,1,2,3]$$
+
+Let's scramble the list as we did above to make our corresponding $f(x)$ values.
+
+$$f(x) = [2,3,0,1]$$
+
+Let's decide we want to find where $f(x)=3$. Of course, the answer is $x=1$. But if I didn't show you the $f(x)$ list we would just have to search from one end to the other to figure out what position it is in. I know this seems silly for four values, but I found working through this example was the point where the quantum light bulb really turned on for me.
+
+[comment]: # (Figure2)
+** Figure 2 **: Behold, the circuit that allows us to "mark" the state we are looking for!
+
+There are several things that might be surprising about this circuit. First of all, we need other qubits to hold "all the values" of $f(x)$, since in some sense $x$ represents "all values". So maybe that isn't surprising, but it does double the number of qubits (or adds as many as needed to hold the maxiumum value of $f$ we are looking for.)
+
+Second, we have another qubit ("$q_m$") at the bottom. That is going to be the qubit that is going to indicate which joint-state holds $f(x)$ and $x$, which are composed together. The state $\left|q_m\right>=\left|1\right>$ will only be composed with the address/value pair we are looking for at the end of the calculation. Notice, with adding this additional qubit, our unitary operations will all have $2^5$ rows and columns, so our $U$ matrix is already 32x32 in this simple example!
+
+Finally, there are two unitary circuits. The first one $U_f$ "maps" the input state address to an $f(x)$ value (remember, each row the matrix represents an overall joint state of the qubits, so each row contains the address, the value, and a state $q_m$ that indicates whether or not we found a match. The second "C" comparator circuit, described below, compares an input classical value of $f(x)$ to whatever states the qubits are in at the moment.
+
+So, the first circuit: how do we hold "all the values" of $f(x)$ for an input $x$ in qubits? Basically, for every value of the "address" bits, we exchange the row that holds that address plus the corresponding $f(x)$ values. An example of "writing" the first value  (address=0, i.e. $\left|00\right>$, and function value "2", i.e. $\left|10\right>$ is:
+
+$$U_{f: 0\rightarrow 2} = 
+\begin{bmatrix}
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \mathbf{1} & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+\mathbf{1} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
+\end{bmatrix}$$
+
+So we "just" need an operation that exchanges two rows in the unitary matrix $U_f$ (I omitted the states with $q_m$ for now to keep the matrix down to $16\times 16$.) How hard can that be? We already saw that the CNOT gate does that very thing with any two qubits. However, this is more complicated - somehow we have to "tell" the circuit (from the classical computer) that the address 0 contains the number 2. So somehow I have to match the qubit states such that when a 0 is encountered on _both_ address qubit lines, exchange the coefficient of the |0000> state with the coefficient of the |0010> state.
+
+We will need an extension of the CNOT gate to do this, called the The Toffoli gate. The Toffoli gate (sometimes called the "controlled-controlled not" or CCNOT gate) has _two_ control lines, and it works logically like:
+
+$$\begin{matrix}
+\left|a\right> \rightarrow \left|a\right> \\
+\left|b\right> \rightarrow \left|b\right> \\
+\left|c\right> \rightarrow \left|c\oplus ab\right> 
+\end{matrix}$$
+
+Here is a picture of the circuit diagram.
+
+[comment]: # (Figure3)
+** Figure 3 **: The Toffoli gate - two control lines that both have to be "high" to "not" the $c$ qubit. If the black "dots" are open circles, then the logic sense is inverted (i.e., the gate activates on "low" for open-circle qubit lines.)
+
+The Toffoli gate contains a sneaky AND operation (as can be seen by the logic states above.) Unfortunately, it isn't possible to create a Toffoli gate out of _just_ CNOT and Hadamard gates. We need yet more gates to make a Toffoli gate.
+
+You can skip ahead to the "Doing Something" section below if you don't want to see the details of how the Toffoli gate can be built from simpler gates. Otherwise read on, it's quite an adventure!
+
+##### Gate logic interlude
+
+So here is the answer on how to build any unitary gate operation with two control lines (and the sneaky AND operation.) It isn't hard to understand, but I would never have guessed it in a million years. It is found in [this paper](https://arxiv.org/abs/quant-ph/9503016) authored by all the big guns in quantum computing. 
+
+We need a gate $V$ that acts as:
+
+$$\begin{matrix}V^2=X \\
+V^\dagger V=\mathbf{I}\end{matrix}$$
+
+In our case, $V^2=X$ the NOT gate, so we are going to need a controlled-$\sqrt{X}$ gate (sometimes called the "CSX" gate.)
+ 
+A circuit that does what we want looks as follows:
+
+[comment]: # (Figure4)
+** Figure 4 **: The Toffoli gate broken into CNOT and C-$\sqrt{X}$ (CSX) gates. 
+
+It's straightforward to see that the logic works by looking at each case. When both control lines are low, nothing gets applied. When the top line is high and the bottom low, $V^\dagger V$ gets applied (and the same thing happens when the top control is low and bottom control is high.) So those three cases give us back the identity matrix operation. Only when both lines are high does $V^2$ get applied, which, in this case, is $\sqrt{X}^2=X$. By the way, this works for any gate $V$ where $V^2=U$ and $V^\dagger V = \mathbf{I}$.
+
+So what does $\sqrt{X}$ look like? Well, we can use our hero $e^{ix}$ once again, by treating $X$ as a "generator of infinitesimal rotation". Bet you didn't realize that we could put _matrices_ in our power series for $e^{ix}$, right? But indeed we can! Since $X^{2}=\mathbf{I}$, then any even power of $X$ is $\mathbf{I}$. Odd powers will have one $X$ left over. And we are going to add a parameter (ordinary number) $\theta$, so the power series becomes $e^{i\theta X}$. Then just as before, we collect real and imaginary terms to result in:
+
+$$e^{iX\theta}=\mathbf{I}\cos(\theta)+iX\sin(\theta)$$
+
+ 
+
+So we can choose our $\theta$ to be $\pi/2$, then:
+
+$$e^{iX\frac{\pi}{2}}=iX$$
+
+Now we can take the square root of both sides (moving the overall phase $i$ to the other side):
+
+$$\sqrt{X}=SX=\sqrt{-i}e^{iX\frac{\pi}{4}}$$
+
+Now we can expand the exponent as before and collect terms:
+
+$$\begin{matrix} \sqrt{X}=\sqrt{-i}\frac{1}{\sqrt{2}}\left[\mathbf{I}+iX\right] \\
+\sqrt{X}=e^{-i\frac{\pi}{4}}\frac{1}{\sqrt{2}}\left[\begin{bmatrix} 1 & 0 \\ 0 & 1\end{bmatrix}+\begin{bmatrix} 0 & i \\ i & 0\end{bmatrix}\right]\\
+\sqrt{X}=\frac{1-i}{\sqrt{2}}\frac{1}{\sqrt{2}}\left[\begin{bmatrix} 1 & 0 \\ 0 & 1\end{bmatrix}+\begin{bmatrix} 0 & i \\ i & 0\end{bmatrix}\right]\\
+\sqrt{X}=\frac{1}{2}\begin{bmatrix} 1-i & 1+i \\ 1+i & 1-i\end{bmatrix}\end{matrix}$$
+
+Great! Now we know what the square-root-X ($SX$) gate matrix looks like. Now how in the hell would THAT be implemented? Unlike a simple CNOT gate which you can kind of see would flip the polarization state if the control has a vertical polarization (like a half-wave plate that comes and goes depending on the control polarization), this gate adds some strange amount of phase to each component depending on the control polarization. 
+
+As it turns out, the $SX$ matrix looks like a quarter wave plate with axis at $45^o$ to $\left|0\right>$. So if our single $\left|V\right>$ control photon could induce a quarter-wave-plate with that orientation, we would get our controlled root-X gate. For an optics person, it makes some amount of sense - two quarter wave plates applied in series ("$V^2$") gives us the half-wave plate (polarization flip) we are looking for. And the $V^\dagger$ is a quarter wave plate with the slow axis flipped by $90^o$, so it "undoes" the first quarter wave plate, giving us back our original state.
+
+A quick scan of the literature looking for experimental implementations, however, turned up nothing for CSX gates operated by single photons. That's disappointing, but not surprising. 
+
+So we have to pull another trick out of our behinds, but it is going to impose even more CNOT gate taxes. It turns out if you can find three more single-qubit operations $A,B,C$ such that:
+
+$$ABC = \mathbf{I}$$
+
+and
+
+$$AXBXC = U$$
+
+where $U$ is the operation (in this case, $\sqrt{X}$) we are implementing, then the following circuit can be used with our standard CNOT gates:
+
+[comment]: # (Figure5)
+** Figure 5 **: The CSX gate with CNOT, if we can figure out $A,B,C$ now.
+
+So, how do we find $A,B,C$? I can't use a gate that commutes with $X$, which the $SX$ gate does (it is reflection symmetric along the diagonal and anti-diagonal.) So I need something less symmetric, but with $SX$ left over when we multiply all five matrices together.
+
+We can start by noodling around with the phase gate $S$, which is the square root of the Pauli $Z$ matrix (a $180^o$ phase flip operation for the $\left|1\right>$ state.) The square root of the $S$ gate is the $T$ gate, also called the $\pi/8$ gate. And so on. Here they are explicitly:
+
+$$\begin{matrix}
+Z = \begin{bmatrix}
+1 & 0 \\
+0 & -1 \end{bmatrix}\\
+S = \begin{bmatrix}
+1 & 0 \\
+0 & i \end{bmatrix}\\
+T = \begin{bmatrix}
+1 & 0 \\
+0 & e^{i\pi/4}\end{bmatrix}\end{matrix}$$
+
+These gates appear to work in the _computational_ basis, that is, the "action" is aligned along the "0" or "1" axis (equivalent to a waveplate with the birefringent axis vertical or horizontal, so the matrix operation is diagonal.) We want something symmetric at the end, so playing with Hadamard gates might help us. After some trial and error, we can show that $HS^\dagger H = \sqrt{X}$. 
+
+So now we are reduced to finding $ABC=I$ and $AXBXC=S^\dagger$ (we can place Hadamard gates around each side in the end.) 
+
+We need three matrices where:
+
+$$ABC = \begin{bmatrix} 1 & 0 \\ 0 & e^{i\phi_A}\end{bmatrix}\begin{bmatrix} 1 & 0 \\ 0 & e^{i\phi_B}\end{bmatrix}\begin{bmatrix} 1 & 0 \\ 0 & e^{i\phi_C}\end{bmatrix} = I$$
+
+and:
+
+$$AXBXC = \begin{bmatrix} 1 & 0 \\ 0 & e^{i\phi_A}\end{bmatrix}X\begin{bmatrix} 1 & 0 \\ 0 & e^{i\phi_B}\end{bmatrix}X\begin{bmatrix} 1 & 0 \\ 0 & e^{i\phi_C}\end{bmatrix} = S^\dagger$$
+
+Also, we know that $XDX$ for any diagonal matrix $D$ interchanges the elements along the diagonal (right?) So, we end up with two equations and three (well, two) unknown phases:
+
+$$\begin{matrix}
+\phi_A + \phi_B + \phi_C = 0 \\
+\phi_A + \phi_C - \phi_B = -\frac{\pi}{2}\end{matrix}$$
+
+The second equation results after we factor out $e^{i\phi_B}$ from the overall matrix product (more on this below.)
+
+We can easily solve this for $\phi_A+\phi_C=-\pi/4$, $\phi_B=\pi/4$. So we can split up the phase $\phi_A$ and $\phi_C$ how we want. To keep the unique gate count down, let's choose $\phi_A=-\pi/4$, $\phi_C=0$. Then the CSX gate can be written with $T$, CNOT, and $H$ gates as:
+
+[comment]: # (Figure6)
+** Figure 6 **: Two equivalent ways to write the controlled square-root of X (CSX) gate. Almost.
+
+There is one final bit, though - there is an excess phase when we multiply our candidate $A,B,C$ together:
+
+$$T^\dagger XTX = e^{i\frac{\pi}{4}}S^\dagger$$
+
+Is that a problem? Well, yes! Here is where we have to think about exactly what this gate is doing - it can be a _superposition_ of $\left|00\right>,\left|10\right>,\left|01\right>$,and  $\left|11\right>$. In order to keep the phase shift to zero, the _product_ of global phases across qbits in a gate must give unity. Naively, you might think, "well JTP, I therefore need ANOTHER controlled gate to undo the global leftover phase in our gate." And you would be correct.
+
+But here is something really interesting! We can make a "controlled" phase gate with a single qubit phase gate! How is that?
+
+Recall that the $T$ gate does nothing when the state is "0", and adds a $\pi/4$ phase delay when the line is "1". But that is exactly what a controlled phase gate does! So I am off by an extra $T^\dagger$ gate on the control line of CSX gate: 
+
+[comment]: # (Figure7)
+** Figure 7 **: Controlled square-root of X gates (either one works the same.) Here we patched up the phase shift with the $T^\dagger$ single qubit gate on the control line. When the control line is "1", the extra $-\pi/4$ phase gets applied, and "undoes" the excess global phase of the lower qbit. Because remember, this is quantum mechanics and the overall state of the system is the _product_ of the qbits along any vertical slice (point in time) of the circuit!
+
+Explicitly, the output state of the circuit when the control line is "1":
+
+$$\left|\psi\right> = e^{-i\frac{\pi}{4}}\left|1\right>e^{i\frac{\pi}{4}}S^\dagger\left|s\right>$$
+
+So we can see how the global phases cancel between the qubits. We need to be careful to apply these phase corrections when building up from more basic gates. By the way, this "phase flipping" is going to come in handy in a big way in the next post.
+
+So, finally, here is the Toffoli circuit, in all its glory:
+
+[comment]: # (Figure8)
+** Figure 8 **: Ta da! The Toffoli gate from CNOT and single-qubit friends. Wow. I am starting to get the impression this quantum computing thing is going to have a lot of gates...and remember, if we want to invert the sense of either control line (to match other combinations of high/low control or address lines), we need one or two more X gates... 
+
+We are almost done! One more thing to do - we can reduce some of the pair-wise operations in the circuit above just be being clever about which order we write things, and which form of the $\sqrt{X}$ gate ($T^\dagger XTX$ vs $XTXT^\dagger$.) is used. Any two adjacent H's cancel, as do adjacent $TT^\dagger$, etc. 
+
+[comment]: # (Figure9)
+** Figure 9 **: Simplified Toffoli gate - just being clever about the order of operations and logic reduction allows some gate cancellation! 
+
+I also used some logic identities like this - see if you can convince yourself they are true.
+
+[comment]: # (Figure10)
+** Figure 10 **: CNOT logic identities.
+
+By the way, this isn't the exact form of the Toffoli gate found in most textbooks. But it is a good exercise to prove to yourself that this circuit works the same way.
+
+[comment]: # (Figure11)
+** Figure 11 **: The form of the Toffoli gate found in most textbooks. There often isn't a unique way to represent operations, although there are proofs about the minimum number of CNOT gates needed to implement an AND gate (five.)
+
+So all that to reduce our Toffoli gate to a collection of CNOT and one-bit gates. Note that the one-qubit gates don't require a nonlinear interaction with other qubits. So these can be implemented with static phase delays optically (although, as we already saw in the warmup, photons make inconvenient qubits for the most part.)
+
+One last thing before we move on - the set of so-called [Clifford Gates](https://en.wikipedia.org/wiki/Clifford_gates) consist of CNOT, $S$, and $H$, but aren't "complete" without the $T$ gate. That is, any conceiveable quantum logic function can be implemented from the Clifford gates plus $T$. We found this out the hard way above, but smarter people than me have proved it to be true.
+
+##### Doing something with the Toffoli Gate
+
+Whew, that was an interesting journey.
+
+Anyway, with the Toffoli gate we now have our AND operation. It only took a crap load of CNOT gates and quite a few other single qubit phase gates.  
+
+But we still haven't "written" the values of $f(x)$ to each position in quantum memory. So let's write f(0) (address $\left|00\right>$) to the output qubit lines with the following circuit.
+
+[comment]: # (Figure12)
+** Figure 12 **: Ta da! We wrote our first of four values to the data qubits! Remember that open circles on the control lines mean we have inserted an X gate before and after the connection to invert the sense of the control line logic.
+
+Looking carefully at this circuit, we "flipped" the most-significant (second) qubit in the output register when both values of the address lines are "0".
+
+Now, the question is, how do we write the next value $f(1)=3$ to the same qubit lines?
+
+I will forgive you if it doesn't seem immediately obvious:
+
+[comment]: # (Figure13)
+** Figure 13 **: Writing the first two values to our function output qubits. The blue arrows indicate which coefficients get swapped in each gate operation.
+
+Ah, now we see what is going on! For each qubit that is "high" in the output, we need a Toffoli gate (with the proper address match) to flip each bit sequentially. At the end of all the gate operations we have a superposition of:
+
+$$\left|\psi\right> = \frac{1}{2}[\left|0010\right> + \left|0111\right> + \left|1000\right> + \left|1101\right>]\left|0\right>$$
+
+Explicitly, the circuit for the $f(x)$ function looks like this:
+
+[comment]: # (Figure14)
+** Figure 14 **: All four values of $f(x)$ are written by this circuit. Note that we don't have to do anything for $f(2)=0$ as it started in the right state.
+
+So that is the circuit for $U_f$. 
+
+Already you are thinking, can we generalize the Toffoli gate for larger address values (4 is pretty restrictive.) But of course! Here is how we would build a 4-terminal Toffoli gate from our already familiar 3-terminal version:
+
+[comment]: # (Figure15)
+** Figure 15 **: Four terminal Toffoli gate requires three 3-terminal Toffoli gates, each of which requires 6 CNOT gates, and a bunch of other single qubit gates! Even larger Toffoli gates can be built this way as long as we pay the CNOT tax.
+
+Now, if you are a sharp-eyed reader, you are probably thinking, wait a minute - I really need to _hard wire_ all the $2^n$ values of $f(x)$? Each having on average like $n/2$ Toffoli gates? Doesn't that kind of defeat the purpose of quantum computing? I would literally need every value represented!
+
+Well, that is kind of how information works. A specific list of random numbers is what it is. It takes up $2^n$ values of memory somewhere. We need to write this into our qubits at some point.
+
+But I need to remind you of something very important - the lines in the circuit diagrams represent _flow of time_. So if I have a row of ions in a trap just sitting there, I am basically serially writing to them until they are in the correct qubit state for the next steps. But it takes time for each write, so serially transferring something $2^{1000}$ individual values into memory isn't feasible, despite having $n=1000$ qubits available (which might happen within a few decades.) 
+
+So although we used this example for illustration of how the quantum gate logic works, we aren't going to suggest general function inversion is a great application. A more interesting case is when $f(x)$ is a calculation, which we will get to in the next post.
+
+Now for the second circuit $U_C$. How do we tell the circuit which value to look for? Here, I fed in a qubit value that had "all the addresses" (since I don't know which value of $x$ is correct yet) and a single definite value of $f(x)$, here 3 (or "11" in binary.)
+
+What does $U_C$ look like inside? A classical comparator compares an input value $b_i$ with a compare value $b_c$, and would look something like this figure. Note that a multi-input AND gate can always be broken down into a series of $\log_2(n)$ two-input AND gate layers, like: 
+
+[comment]: # (Figure16)
+** Figure 16 **: A classical bitwise equality comparator. The corresponding bit pair of the input and compare value goes through XNOR gates. Unless all the XNOR gates produce "1", then there is a mis-match in the pattern of bits somewhere.    
+
+How could I do this with quantum gates? The Toffoli gate we met in the first cicuit will provide our AND operations. The CNOT gate itself acts as an XOR, and the "NOR" can be part of the Toffoli gate controls.
+
+If we input a definite value for comparison (represented by $qc_0$ and $qc_1$ for the least to most significant qubit), we end up with the following circuit diagram: 
+
+[comment]: # (Figure17)
+ ** Figure 17 **: The explicit circuit for $U_f$ and $U_C$.
+
+The $U_C$ circuit now (finally!) gives us some quantum parallelism: all four of the basis superposition states are compared together, but only the state (here $\left|01\right>\left|11\right>\left|0\right>$) that matches our input value of $f(x)$ flips the $q_m$ bit, so that state goes to $\left|01\right>\left|11\right>\left|1\right>$.
+ 
+Thus, our qubits are in the superposition state (provided we didn't make any errors...):
+
+$$\left|\psi\right> = \frac{1}{2}[\left|00100\right> + \left|01111\right> + \left|10000\right> + \left|11010\right>]$$
+
+So we are done, right? Well, what would happen if we _measured_ this state with our polarization sensitive detectors? In the above superposition, we have a 1 in 4 chance of finding the state where the last $q_m$ qubit is in the state $\left|1\right>$. So we have to read out the circuit about four times, maybe half that on average if we are lucky. 
+
+But dammit, that is _exactly_ how many tries it would take to just find $x$ classically! We have not done _jack shit_.
+
+Don't despair however, as we are about to use the interference trick to save the day. That is the basis of how [Grover's Algorithm](https://en.wikipedia.org/wiki/Grover%27s_algorithm), first described in 1996, solves this problem. But it isn't quite so straightforward - we have to figure out a few more circuits to make it happen. That is our next post.
+
+So in summary:
+
+* The H and CNOT gates are not enough - we need an AND gate, contained in the Toffoli gate, which completes our set and allows arbitrary quantum computation. 
+* It takes about six more CNOT gates to make an AND or Toffoli gate - that's a pretty big "gate tax" when even building one gate reliably is currently technologically challenging.
+* The "trick" with quantum computing of functions appears to be exchanging rows in the unitary matrix - this is swapping coefficients between basis functions in the superposition. That allows us to compute "all the values" of a function onto a limited set of qubits.
+* Extra qubits here and there allow us to "flag" a particular quantum basis state, which corresponds to our "answer", which is different enough to suggest we might have  something to work with.
+* Even with all of the above, we need to figure out how to rig our unitary operations to emphasize the "marked solution" - otherwise, there isn't a quantum advantage. That is the topic of our next post. 
+
+

@@ -1,0 +1,156 @@
+[comment]: # (start_post)
+
+## Quantum Key Exchange
+
+#### Post 6 in the Quantum Computing [Series](quantum-computing-series)
+
+Gahh! So Quantum Mechanics might eventually destroy the world financial system. Now what?
+
+Well, let's go back to our discussion about encryption. Although public key encryption relies on the fact that factoring numbers is hard, symmetric encryption (which uses the same key to encrypt/decrypt) can be made basically unhackable, even with a quantum computer.
+
+That's because the problem to be solved is essentially trying to guess a random number between the message size and $2^{256} \simeq 10^{77}$. That's gonna take a while. Even [Grover's Algorithm](https://en.wikipedia.org/wiki/Grover%27s_algorithm) and a quantum computer could only speed this up to like $10^{77/2}$. For reference, $\sim 3\times 10^{17}$ seconds is about the lifetime of the universe. And we can always make the keys larger.
+
+But, how would we hand out the key? If we don't trust the public Internet or cell network from prying eyes, we'd have to physically drive some piece of hardware to every web hosting service each time we wanted to send or receive a message. We might as well just talk to the robots in person when we arrive.
+
+That "hardware" could be as simple as a book, like in the bad old days, and some agreed upon way of picking which page to use. In the olden days, the Soviets used this theoretically unbreakable [one-time pad](https://en.wikipedia.org/wiki/One-time_pad) system, but made an incredibly [stupid blunder](https://en.wikipedia.org/wiki/Venona_project#Decryption) in reusing some of their random numbers. No encryption system survives incompetence. (By the way, here is a link to try out a one time [pad](https://www.boxentriq.com/code-breaking/one-time-pad) of your own.)
+
+Any physical key can be stolen or copied, and even if it is impractical to copy, it is a pain in the neck to have to physically distribute keys via a trusted courier. We want assurance that no one besides the intended recipient can ever touch the key, and where any tampering with the key is evident. 
+
+Public key encryption was supposed to help us here (by making the public key irrelevant to reading the encrypted message), but Shor's Algorithm burned down RSA in a bonfire of qubits. Don't despair though - this is where quantum mechanics will also rescue us, kind of like the fireman who turns out to be the arsonist. 
+
+Remember from the [Bell's Inequality](bell-predictions) posts, we can create pairs of photons that are entangled and thus correlated in a way that seems like it can't possibly be true, and yet is? Well, entangled photons not only don't break the Universe, they can be useful. 
+
+Consider what happens when two widely separated locations (A and B) measure their own lists of photon arrival times and polarization states.
+
+[comment]: # (Figure1)
+** Figure 1 **: Sending photons from A to B. Also pictured is a possible attacker C.
+
+Let's say Location A creates entangled photon pairs (using the [CNOT gate method](quantum-warmup) of quantum computing or otherwise), and sends one of the photons to Location B. Both A and B have polarization sensitive detectors and their clocks are synchronized so they can compare the corresponding photon pairs together when they are done measuring.
+
+Remember, the state we are sending is:
+
+$$\left|\psi\right> = \frac{1}{\sqrt{2}}[\left|HH\right> + \left|VV\right>]$$
+
+which is _entangled_, meaning that it can't be factored into the simple product of two independent states.
+
+Recall also, for detector settings of $\theta_A$ and $\theta_B$ at Location A and B respectively, the quantum mechanical correlation function between the lists of measurements of entangled states looks [like (1)](quantum-key-exchange-footnotes):
+
+$$C_{HH} = \frac{1}{2}\cos^2(\theta_A - \theta_B)$$
+
+In other words, when the detectors have the same setting, the results are perfectly correlated (because pairs of photons created in the same quantum transition have to conserve momentum.) How does one detector "coordinate" with the other one to make sure this is true? That's the big quantum mystery of entanglement, and this is what we are about to exploit. 
+
+The two lists of detections at A and B might look like:
+
+| Time | A  | B  |
+|:----:|:--:|:--:|
+| 1    | H  | V  |
+| 2    | H  | H  |
+| 3    | V  | V  |
+| 4    | H  | V  |
+| 5    | V  | H  |
+| etc. |... |... |
+
+**Table 1:** Example of photon detections at points A and B. Here, A and B don't have their detectors aligned (otherwise the results might perfectly correlate when using entangled pairs.)
+
+So just a random list of H's and V's in each case.
+
+For a larger number of detections, here are plotted the results, where the big red points correspond to where the same value is detected in both places. The third plot shows the correlation function, which must be summed over a number of received pairs to make sense: 
+
+[comment]: # (Figure2)
+** Figure 2 **: Example plot of received photon results at two locations, and the corresponding correlation functions. Here, the correlation function is binned for every 100 results. Column (a) aligned detectors, so perfect correlation, Column (b) is when detectors are different by $45^o$ (so it is a coin-flip if each detector receives the same value), and (c) is perfect anti-correlation. Note that if we had assigned (-1,1) to (H,V) instead of (0,1) the correlation functions would go between (-1,1) which is more in line with how "correlation" is normally defined. We will stick to (0,1) in this post.
+
+Remember, if the detectors are aligned such that $\theta_A=\theta_B$, then both lists are identical (but again, each list by itself looks random.) If $\theta_A-\theta_B=\pi/2$ (the detectors are at right angles), then the lists are perfectly anti-correlated (if A gets H, then B gets V for every detection event, and vice-versa.)
+
+Contrast this to the case where the photons are created in an unentangled state (so independent processes), and hence _do_ factor into independent states:
+
+$$\left|\psi\right>_{A,B} = r\left|H\right> + (1-r)\left|V\right>$$
+
+where $r \in \{0,1\}$ determines (randomly, evenly distributed) whether we are launching the photons in the $\left|HH\right>$ or $\left|VV\right>$ state. There are [gizmos](https://www.quandela.com/resources/quantum-computing-glossary/single-photon-sources/) (related scientific [paper](https://arxiv.org/abs/1910.08863)) that let us dispense individual photons this way, and we should use a good random number generator to choose $r$ for any particular pair. 
+
+The joint _unentangled_ state is:
+
+$$\left|\psi\right> = \left|\psi\right>_A\left|\psi\right>_B$$
+
+Remember that when we rotate the detector basis that $\left|H\right> \rightarrow \cos(\theta)\left|H\right> + \sin(\theta)\left|V\right>$, $\left|V\right> \rightarrow \cos(\theta)\left|V\right> - \sin(\theta)\left|H\right>$.
+
+That yields a correlation function that looks like:
+
+$$C^r_{HH}(\theta_A,\theta_B) = \left|\left<HH|\psi\right>\right|^2$$
+
+which is:
+
+$$C^r_{HH}(\theta_A,\theta_B) = r^4\cos^2(\theta_A)\cos^2(\theta_B)+(1-r)^4\sin^2(\theta_A)\sin^2(\theta_B)$$
+
+[comment]: # (Figure3)
+** Figure 3 **: Plots of quantum (top) and classical or unentangled (bottom) correlation functions for photon detection with various settings of $\theta_A$ and $\theta_B$.
+
+So here is how A will send a message to B: Location A makes $\theta_A$ a function of time,  changing the correlation function between two different settings $\theta_{A0}$ and $\theta_{A1}$. Location B just sits there making measurements (for now.) After the transmission, A sends his list to B (it doesn't matter if anyone sees this, as it looks like a series of random H and V states.) Then B takes A's list and computes the cross-correlation function. The correlation changes in time because A was changing his detector with time.
+
+How does this help us send a secure message? Well, let's say some spy breaks into your fiber network and puts a detector on the channel just like the one we have at Location B. And let's say the attacker at Point C has a photon gizmo of his own that can "replace" the photon he measured quickly enough so that Location B won't notice a change. Wouldn't that allow the attacker to "copy" the secret message?
+
+Well, maybe. Let's try this: Consider the case where $\theta_{A0}=0$ (aligned with the photon basis) and $\theta_{B0}=45^o$. The computed correlation functions we calculated above look like:
+
+$$C_{HH} = \left\{\begin{matrix}1 & \theta_{A0}=0 \\ \frac{1}{2} & \theta_{A1}=\frac{\pi}{4}
+\end{matrix}\right.$$
+
+Unfortunately, there is no difference between the entangled and unentangled photon correlations in this case! So we chose our detector settings poorly. If an Attacker C manages to measure and replace the photons on their way to B, neither A nor B could tell the difference. 
+
+Let's try again. What happens if I choose the settings where the entangled and unentangled photon pairs are maximally different? The choice of settings which maximizes the difference between the two cases is as follows (from Figure 3 above): the entangled case depends on the _difference_ of the angles, as opposed to the unentangled case. So when we set $\theta_{A0}=\pi/4$, $\theta_{A1}=-\pi/4$ and $\theta_B=\pi/4$, we get the most different results. In this case, the classical system correlation doesn't change when Location A flips between $\theta_{A0}$ and $\theta_{A1}$, whereas with the quantum entangled photons, the signal is either maximally correlated or anti-correlated for these two angles.
+
+Ah, here is where quantum mechanics comes to the rescue! If Attacker C measures a "V" photon for instance, and replaces it with another "V" photon he creates, then when that "imposter" photon gets to point B the receiver has a 50/50 chance of measuring H or V in the B detector's basis (which we set to $45^o$) independent of what A measures. So this has destroyed the correlation, and B will be certain that the signal was compromised. In this simple case, when B gets A's results and computes the correlation, B will just see a flat line. So C has a copy alright, but A and B know that the secret is out, and won't use this key for anything.
+
+What happened? When C measured his half of the entangled photon pair, he "disentangled" the state. Now when he creates a new, unentangled photon to replace his part of the original pair, the wave function of the system is just the plain-old boring factorizable joint state. The results at A and B no longer depend on one another!
+
+So C can't "clone" A's photons directly, despite measuring B's photon. This is an example of the [no cloning theorem](https://en.wikipedia.org/wiki/No-cloning_theorem). It is a deep property of the universe, and has no direct work-around.
+
+But C may be more clever than we give him credit for. If C knows exactly how A and B set up their detectors (it might be possible, as even A and B have to calibrate somehow), then C could send a photon that would guarantee the result that C just measured. That is bad. 
+
+Fortunately, there is a relatively simple counter-measure for this. Each Location A and B has to change settings in a random way. Most protocols use a pair of settings, aligned with (basis '+') or at $45^o$ (basis 'X') with the photon basis H and V. Location A goes ahead and sends the message, but both A and B randomly select which basis ('+','X') to use. Location C has no way of guessing which basis is used for each measurement. After the measurements, B sends his settings to A, and A sends back a marked list where their settings were in the same basis. When the basis in each location is the same, those measurements are either perfectly correlated or anti-correlated. Even if C sees this list exchange happen, he had no way to know which basis to use to "clone" his photon when his snooping was going on. So just as the simple case before, at least half of his photons are not going to correlate correctly. That is easy to detect as a drop in correlation of the photons that are supposed to be matches (or anti-matches). More than two settings can be added for even better "snooping detection" capability, but it trades off with the number of photons needed (i.e., it slows down the transmission.)
+
+Explicitly, here is a table of possible outcomes, showing a message where A's detector is always parallel to B. If A set his detector to perpendicular, then the results are perfectly _anti_ correlated (A and B get opposite results.) 
+
+| Time | &#8195 SA  | &#8195 MA  | &#8195 SB | &#8195 MB | &#8195 OA |
+|:----:|:--:|:--:|:--:|:--:|:--:|
+| 1    | +  | V  | X  | V  | &#8741 |
+| **2**    | **+**  | **H**  | **+**  | **H**  | &#8741 |
+| 3    | X  | V  | +  | H  | &#8741 |
+| 4    | +  | H  | X  | H  | &#8741 |
+| **5**    | **X**  | **V**  | **X**  | **V**  | &#8741 |
+| **6**    | **+**  | **H**  | **+** | **H**  | &#8741 |
+| 7    | X  | V  | +  | V  | &#8741 |
+| 8    | +  | V  | X  | H  | &#8741 |
+| 9    | X  | V  | +  | V  | &#8741 |
+| 10   | **X**  | **V**  | **X**  | **V**  | &#8741 |
+| 11   | **X**  | **V**  | **X**  | **H**  | &#10178 |
+| 12   | **+**  | **H**  | **+**  | **V**  | &#10178 |
+| 13   | X  | V  | +  | H  | &#10178 |
+| 14   | +  | H  | X  | H  | &#10178 |
+| 15   | X  | V  | +  | V  | &#10178 |
+| 16   | **+**  | **H**  | **+**  | **V**  | &#10178 |
+| 17   | X  | V  | +  | H  | &#10178 |
+| 18   | +  | V  | X  | V  | &#10178 |
+| 19   | X  | H  | +  | V  | &#10178 |
+| 20   | **X**  | **V**  | **X**  | **H**  | &#10178 |
+
+**Table 2:** Example of photon detections (MA="Measurement A", etc.) at points A and B, now where the detector basis (SA="Settings A", etc.) randomly changes for each photon pair. Photons 2,5,6, and 10 (**bolded**) were measured parallel (OA) in the same basis at both A and B, so correlate perfectly. Photons 10,11,12, and 16 and 20 (**bolded**) were measured perpendicular (OA) in the same basis at both A and B, so anti-correlate perfectly. Attacker C does not know the settings at each location. 
+
+There is another variant of this protocol, called [Ekert91](ekert91.pdf), that uses _three_ settings and calculates a [Bell's Inequality](bell-predictions) violation from the sets of measurements. If C is now guessing at 2 out of 3 basis directions, then any cloning is going to reduce the Bell violation by at least 1/3, and hence easily detect the snooping. 
+
+So that's it! Using the properties of entangled photon pairs, we just made a communication system that is theoretically unhackable, in the sense that the communicators A and B will always know if anyone was listening.
+
+Now wait a minute, you might be asking - no channel is perfect, so can't C exploit this and sample some of the photons on the way to B, and have B think it is random channel loss? That way C isn't really trying to "fool" B with false photons, but just has to convince B that the channel is losing some photons (which it must in practice.)
+
+Here's the thing: The channel does indeed have some signal-to-noise (SNR) level (represented by "holes" in the lists we showed above where one or the other site at A or B misses a photon.) The question becomes, at what point can B detect a degradation in the SNR large enough to be suspicious? It turns out, it is precisely the amount C would need to "steal" in order for C to get a sensible answer! In other words, if the noise of the channel is some value $\sigma$, then C needs enough stolen signal $S$ such that $S > \sigma$ to have any hope of making more than a random guess. But that is the same criterion that B would use to detect SNR degradation! So no, this isn't going to work unless A and B are careless. It does put some constraints on channel SNR stability, though.
+
+Of course, if C has complete control over communications between A and B, then C can tell whatever cockamamie thing to both A and B (the "man in the middle" attack.) So when A asks B if the key is secure, C could answer "Sure it is! I am 100% Yankee Doodle Dandy Comrade B, er Citizen B!". Location B can shout all he wants into the void, C will be laughing like [Boris Badenov](https://en.wikipedia.org/wiki/Boris_Badenov) as A transmits the message using the compromised key.
+
+That's why an _authenticated_ classical channel is needed for quantum key exchange, because part of the protocol relies on B and A coordinating their lists. But that's like saying C could just break into A's building and hit him with a stick until he tells him the secrets. That is only peripherally related to quantum mechanics, so not really interesting to JTP.
+
+Finally, you are dying to know, has anyone _actually built_ one of these systems? But of course! All that government research money isn't going to spend itself! Wikipedia has a relatively up to date [list](https://en.wikipedia.org/wiki/Quantum_key_distribution#Implementations) of real-world implementations, starting way back in 1991 when JTP was still aligning lasers in the basement of the physics building. And I'll also point out, just because it can be built, doesn't mean it will be available to everyone any time soon. A pile of specialized hardware is needed to communicate with single photons. So I expect us quantum peasants will be using public key encryption for a long time, which only requires math, and is free (in the sense that your time is free...)
+
+So there you have it.
+
+* Quantum entanglement provides a secure way to detect if anyone is listening to a key transmission
+* There are no known ways to "snoop" this transmission without detection, and this is a consequence of the way quantum mechanics works at a very deep level.
+* Of course, everyone has a plan until they are [punched in the face](https://quoteinvestigator.com/2021/08/25/plans-hit/) (paraphrasing the greate philosopher Mike Tyson.) Quantum mechanics doesn't help with man-in-the-middle attacks, or just getting literally attacked.
+* So is the financial system "saved" from quantum mechanics, by quantum mechanics? Well, if you have these fancy gizmos at either end of your fancy networks, then sure. But I think we are going to have to wait a long time until we can go to Best Buy and get our Quantum Certified Netgear router...

@@ -2,7 +2,7 @@
 
 ## What is the basis of this post?
 
-This post will contain some mathematical broccoli. Which is what, you ask? When I worked in the corporate world, I coined a term called "corporate broccoli". It's something that needs to be done and will be good for you, but for most people isn't particular pleasant. I always thanked people for eating the corporate broccoli.
+This post will contain some mathematical broccoli. Which is what, you ask? When I worked in the corporate world, I coined a term called "corporate broccoli". It's something that needs to be done and will be good for you, but for most people isn't particularly pleasant. I always thanked people for eating the corporate broccoli.
 
 Even though I dislike real-world broccoli (corporate or vegetable), I love mathematical broccoli. The happiest times of my life were spent working through how the functions of physics fit together. Does that make me a weirdo? Read on, and form your own opinions. If you don't find it super interesting, remember that we are going to need this stuff as we get into the cooler parts of quantum mechanics and quantum computing.
 
@@ -52,7 +52,7 @@ c
 
 ##### Orthogonal basis and inner products
 
-An inner product measures something about how much a function "looks like" another function. In the case of an orthogonal basis, the inner product of any two basis functions is zero if the functions don't exactly match. That's called _orthogonality_. These orthogonal functions look NOTHING like one another. That ensures if I change a coefficent of a basis function, I don't have to change any of the other coefficients. That's just saying, in our 3-d example, if I move left or right only, I have not moved up/down or back/forth.
+An inner product measures something about how much a function "looks like" another function. In the case of an orthogonal basis, the inner product of any two basis functions is zero if the functions don't exactly match. That's called _orthogonality_. These orthogonal functions look NOTHING like one another. That ensures if I change a coefficent of a basis function, I don't have to change any of the other coefficients. That's just saying, in our 3-d example,  I can move left or right independently of whether I move up/down or back/forth.
 
 The concept of orthogonality requires a 'dot' or inner product operation (the projection of one vector onto another.) For vectors, this is written as $\mathbf{r}_1\cdot \mathbf{r}_2$.  More generally, inner products can also be written as $(r_1,r_2)$ or $\left<r_1|r_2\right>$.
 

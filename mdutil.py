@@ -43,4 +43,5 @@ def build_markdown(name,start,end,image_path,body=[],width=300):
 		body.append(
 			html.Img(src=image_path, width=width)
 		)
+		
 	return

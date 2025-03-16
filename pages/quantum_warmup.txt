@@ -1,0 +1,223 @@
+[comment]: # (start_post)
+
+## Quantum Computing - Warm-Up
+
+#### Post 2 in the Quantum Computing [Series](quantum-computing-series)
+
+Prerequisites:
+* The [basis](basis) post
+* Complex numbers [what's up with 'i'](whats-up-with-i)
+
+Suggested (not needed for this post):
+* How encryption [works](how-encryption-works)
+
+Unless you were/are a physics major, the last part of the 'basis' post probably left you scratching your head a little bit.  I realize now that I have already done the physicist thing of _minimal information_. Physicists (and writers for _Star Trek_) love to boil really abstract things down to statements like '$x$, where $x$ represents the alignment of the tachyon grid. Make it so!' Like, ok, what?
+
+At the heart of quantum calculation is the [qubit](https://en.wikipedia.org/wiki/Qubit). And at the heart of a qubit are two quantum states, $\left|0\right>$ and $\left|1\right>$ (vs. ordinary numbers "0" and "1" for classical bits.) We need to make sure we understand exactly what these represent. Otherwise, when we step towards quantum computing we will fall off a cliff. Or worse, into one of the bad Season 1 _Star Trek - The Next Generation_ episodes.
+
+As we saw in the [Bell's Inequality](bell-predictions) post, the "states" of a two-level quanta can be as simple as horizontal and vertical [polarization](https://en.wikipedia.org/wiki/Polarization_(waves)) of a single photon. I am going to use single photon qubits in this post, because I think they are the most familiar, even if that isn't how most companies are pursuing quantum computers at the moment.
+
+Photons, like waves on a string, can wiggle left-to-right ("H" polarization, along the space dimension $\hat{x}$) or up-to-down ("V" polarization, along the space dimension $\hat{y}$.) The wave itself shoots away from us on the string in the $\hat{z}$ direction. In the case of a string, if I wiggle my hand back and forth along the diagonal of $\hat{x}$ and $\hat{y}$, the polarization can also be found along the diagonal. So I should be able to describe polarization with some combination of "how much" my hand wiggles along the two directions. 
+
+But what if I make clockwise circles with my hand holding the string? Then a spiral wave goes out along the string (I could also make counter-clockwise circles.) The hand motion is also both along $\hat{x}$ and $\hat{y}$, but now the times where $\hat{x}$ is maximum is where the direction along $\hat{y}$ is zero, and vice-versa. In fact, my hand can make an elliptical motion, so to fully describe the polarization we need to keep track of the angle of the ellipse as well. We can do this with an amplitude for each polarization (how far the hand moves in each direction) and a _phase_ (exactly _when_ each hand is at a maximum or minimum.)
+
+[comment]: # (Figure1)
+** Figure 1 **: Waves on colored strings. The arrows under the colored envelope lines point in the direction of the e.g. electric field of a photon for that polarization.
+
+So an arbitrary state of polarization is the superposition:
+
+$$\left|\psi\right> = a\left|H\right> + b\left|V\right>$$
+
+where $a$ and $b$ are [complex numbers](https://en.wikipedia.org/wiki/Complex_number). In quantum mechanics, the coefficients have the property that $|a|^2+|b|^2=1$ because they represent probability, not field strength (which can be anything.) 
+
+So in this sense, we can place a photon in a state where it is literally both "0" (H) and "1" (V) at the same time. But quanta have a another big surprise - we can only measure the (square) of the value along $\hat{x}$ _or_ $\hat{y}$ (or some other single vector direction.) That means, when I measure a photon it will either "be" in the "1" or "0" state, and I don't really have any idea what value $a$ or $b$ was, unless I measure a bunch of repeats to get the statistics. I know, crazy, but that is how the world works. Quantum computers take advantage of this fact, playing around with the relative complex values of $a$ and $b$ for each bit, to try to steer us to the correct answer. We will see how this generally works below, and get into the gory details in the subsequent posts in the series.
+
+So this is the big way in which quantum and classical bits are different. If we used photons for classical bits, we would have to restrict them to being only in two orthogonal states, one at a time, like for instance the simple $H$ and $V$ states, one _or_ the other, never somewhere in between.
+
+By the way, this property of being in a "superposition" of "1" and "0" doesn't just work with photons. We can also use electronic "two level" systems around [cold, isolated atoms](https://ionq.com/technology), defects in [diamonds](https://en.wikipedia.org/wiki/Nitrogen-vacancy_center), or even pairs of electrons in [superconducting qubits](https://en.wikipedia.org/wiki/Transmon). I put "two level" in quotes, because electrons have a lot of states around the nucleus (e.g. chemistry), but physicists can usually find a pair of states that live sufficiently long, isolated from all the others, to be considered "two level" in the forest of possibilities.
+
+There are advantages and disadvantages to using either photons or electrons as qubits. Photons seem more familiar (you can see them after all, and most people have played with string waves at some point.) Polarization seems almost too simple, convenient, and pure to work as the qubit state. However, photons are notoriously individualistic - they hate to influence one another unless they are interacting with another form of matter (i.e. electrons bound to other bits of matter.) That's a big problem. Photons are also hard to hold "in waiting", unlike electrons which will contentedly orbit an atom forever. Elaborate gizmos of mirrors and waveguides are used to route photons around, and these are hard to make very small.
+
+Electrons are easier to "grab" (with groups of photons, in the form of electromagnetic fields) because of their charge and spin, and as just mentioned, tend to be homebodies. And their charge (and/or spin) allows electronic qubits to talk to one another directly. However, easy interaction is also a curse, as every little damned thing will cause them to slosh around to unwanted places. Electronic qubits need to be carefully isolated from their environment and each other. That, too, is a big problem, but technically easier to fix at the moment than getting photons to talk to each other directly. Spectroscopists have gotten extremely good at [manipulating individual atoms](https://en.wikipedia.org/wiki/Magneto-optical_trap), so there is a huge amount of know-how already developed to create just the right amount of isolation between ionic qubits.
+
+No matter what type of qubit is used, there is probably some extremely cold thing somewhere in the system, because quantum phase is a very delicate thing. For atoms and superconductors, it means milli-Kelvin sort of cooling (not exactly convenient; Helium is liquid at 4.2 K, so getting the system even colder takes a lot of [dirty thermodynamic tricks](https://en.wikipedia.org/wiki/Dilution_refrigerator).) Individual ions in a "trap" can be cooled to nano-Kelvins ($10^{-9} K$), but this isn't quite so bad as you might guess. That just means the atom (in a very good vacuum) isn't moving very much. But to get skittery atoms to hold still, we still need some pretty elaborate optics, vacuum, and tracking. That's why it is tempting to use purely photonic systems: theoretically, they work at any temperature, but this benefit is also a curse that leads to some severe draw-backs, as we will see below. And, the best photon detectors also require cooling, so the lunch isn't quite free there either.
+
+So with that said, for this post we will stick with photons as exemplary qubits. What are the properties of these photonic qubit states, horizontal polarization "H" corresponding to $\left|0\right>$ and vertical polarization "V" corresponding to $\left|1\right>$? We first need to make sure the two states don't "look like" each other. As chosen, these two quantum states are orthonormal, meaning explicitly:
+
+$$\begin{matrix}\left<0|0\right> = \left<1|1\right> = 1 \\
+\left<1|0\right> = \left<0|1\right> = 0\end{matrix}$$
+
+That means the state $\left|0\right>$ is perpendicular (has no component that "projects" or "casts a shadow") to $\left|1\right>$ and vice-versa. For our polarization qubits, where a left-right polarization has no amplitude along up-down and vice-versa, these conditions are satisfied.
+
+In order to represent larger numbers, we need to group qubits together. A group of bits (or a group of qubits) is called a _register_ in both cases. How are classical and quantum registers different?
+
+Here is where I point out (that's JTP-speak for "rant") that "quantum computer" should really be named "quantum co-processor". In a modern Central Processing Unit ("CPU"), a separate floating point co-processor (or Unit, "FPU") can execute math operations faster than the CPU itself because its internal hardware is optimized for this. So in analogy, quantum co-processors promise to find answers to very specific problems much faster than a classical computer can. To get the value of some operation between two floating point numbers, I write the numbers (or lists of numbers) to registers in the FPU, the FPU does magic, then I read the result from another register in the FPU. It's usually much faster to do those read/write operations than try to do the calculation on the CPU (otherwise why bother?) But the FPU only does one thing very well - it wouldn't be useful for, e.g., sorting a big list of numbers, or other tedious things like that.
+
+Similarly, quantum co-processors work the same way. We take some classical numbers, write to the quantum registers, then read the result from another quantum register back into a classical register somewhere. In between, the quantum co-processor has performed an operation that just couldn't be done quickly on any of the classical processors at my disposal.
+
+This quantum writing and reading, though, is unfamiliar. Classically, when we write to a computer register, we fetch a value from memory and flip the bits in the register so the values match. Under the hood of the CPU, the wires route to transistors somewhere that get turned on or off. It is no more complicated than turning on a light switch. The light switch is "on" (in the classical "1" state) until it is turned off (back to the "0" state.) 
+
+A quantum bit is different. If we are using photons as our qubit, we can send a classical electrical signal pulse to a photon source [gizmo (1)](quantum-warmup-footnotes) and get it to produce a "0" state photon on command. That quanta triggered by my classical electric signal pulse, however, is in a definite state, so it is just like our classical "0" bit when we make it. That's probably not what we want.
+
+Believe it or not, turning the "0" $\left|H\right>$ photon into a qubit "both states at once" is almost comically simple for single photon qubits. We just need to rotate the axis of the polarization $45^o$. That puts it in the state:
+
+$$\left|s\right> = \frac{1}{\sqrt{2}}\left[\left|H\right>+\left|V\right>\right]$$
+
+I mean, that's like looking at a flag pole, tilting your head by $45^o$, and declaring the pole is in a magic "two states at once" both horizontal and vertical state (relative to your head.)
+
+But that is how it works! The difference between quanta and flag poles is that with quanta, we can only measure the probability that it is in $H$ or $V$ state. If we look at the detector in Figure 1, our new $\left|s\right>$ state (I use $s$ because it is some state between '0' and '1' now) will cause a click on _one_ and only one of the detectors. Even though I said it is somehow halfway between $H$ and $V$, at the moment we measure it, it "is" in that state! It would be like every time we blink our eyes with a tilted head, the flagpole would literally appear to (randomly) be "horizontal" (aligned with our two eyes) or "vertical" (chin to nose direction.)
+
+[comment]: # (Figure2)
+** Figure 2 **: Detecting a photon's polarization state after it has been rotated by $45^o$. Only one of the detectors will click for a single photon. "HWP" is Half-Wave-Plate, "PBS" is Polarizing Beam Splitter, "PMT" = photomultiplier tube.
+
+Ok that is pretty freaky, but here is were we start to leverage this effect. Let's get another single-photon source, and make it produce a second "0" photon. Before I rotate ("tilt my head"), here is the joint state of two "H" photons (again, my convention is "H" is "0") written in equivalent ways:
+
+$$\left|s_1s_2\right> = \left|0\right>_1\otimes\left|0\right>_2 = \left|0\right>\left|0\right>=\left|00\right>$$
+
+Here I subscripted the first states on the right to emphasize that they came from source 1 and source 2 respectively. I won't use these going forward as the _order_ of the $\left|\right>$ kets implies which qubit we are talking about. In fact I will write the joint state as $\left|00\right>$ where the orders of each digit (from left to right) correspond to which qubit we are talking about. States with more qubits can be written as $\left|000...0\right>$ etc.
+
+The "tilt by $45^o$" operation is so common that it has a name in quantum computing lingo: the Hadamard Gate. It is denoted by an "H" with a box around it and two wires:
+
+[comment]: # (Figure3)
+** Figure 3 **: Our first quantum "circuit", the Hadamard Gate. This is a "change of basis" function (rotation) for a single photon qubit. The "wires" represent flow of time. From left to right, time is increasing.
+
+The Hadamard gate does the following operation on $\left|0\right>$:
+
+$$U_H\left|0\right> = \frac{1}{\sqrt{2}}\left[\left|0\right>+\left|1\right>\right]$$
+
+If you have ever worked with optics in a lab, this is the operation of a half-wave plate with birefringent axis at $\pi/8$.
+
+For 2-qubits, the circuits would be written as:
+
+[comment]: # (Figure4)
+** Figure 4 **: Two Hadamard Gates, applied to each qubit. The resulting quantum state now has $2^2 = 4$ states. You can see where we are going with this I hope. That is, three qubits is $2^3 = 8$ possibilities, $2^4=16$ for four qubits, etc...the numbers boggle the mind.
+
+The two-Hadamard operation looks like:
+
+$$U_H\left|0\right>\otimes U_H\left|0\right> = (\frac{1}{\sqrt{2}}\left[\left|0\right>+\left|1\right>\right])\otimes(\frac{1}{\sqrt{2}}\left[\left|0\right>+\left|1\right>\right])$$
+
+Note that each $U_H$ only operates on the corresponding ket to the immediate right.
+
+So in general, applying $n$ Hadamard gates to $n$ qubits initially prepared in the ground state results in a $2^n$ term quantum superposition state. That is, the $n$ qubit register.
+
+This exponential explosion of states is what makes quantum computing so powerful. Even though a classical computer also has $2^n$ states for a register of $n$ bits, only _one_ of those values can be present at a time. Quantum computers have "all the states" to play with all at once! This is the most important difference between quantum and classical coprocessors, and the most important take-away from this post.
+
+By the way, we saw this little $\otimes$ before in the [basis](basis) post, and it means "outer product" (or alternatively "tensor product" which sounds even scarier.) It just means "take all the possibilities": 
+
+$$U_H\left|0\right>\otimes U_H\left|0\right> = \frac{1}{2}\left[\left|00\right>+\left|01\right>+\left|10\right>+\left|11\right>\right])$$
+
+Sometimes you will see repetitive states (in this case, the initial ground state) written with exponents (or products) of the $\otimes$ symbol. Here are a bunch of equivalent ways to write this state, just a matter of taste which is used:
+
+$$\left|\psi\right> = \left|0\right>^{\otimes n}=\underbrace{\left|0\right>\otimes\left|0\right>\otimes...\otimes\left|0\right>}_{\text{n times}}=\underbrace{\left|000...0\right>}_{\text{n times}} = \bigotimes\limits_{x\in \{0\}}^n\left|x\right>$$
+
+That notation is handy if we have a bunch of states that are all the same. We often run across the situation where it is easier to specify a single exception to an otherwise uniform state.
+
+OK enough about notation. I just showed you how to build the "all states at once" initial quantum register. How do I read this $2^n$ state back into a classical register?
+ 
+This is also straightforward - we put a polarizing beam splitter and a pair of detectors (one detector for "0" and one detector for "1") on each output. When we do this, we get one (and only one!) of my H ("0") or V ("1") detectors on each qubit to fire. If I am measuring the initial "all states at once" quantum register, since we carefully set our qubits to have a 50% chance of being measured in the H or V state, we've basically just built a random number generator! 
+
+[comment]: # (Figure5)
+** Figure 5 **: A quantum random number generator. Don't get too excited, this is basically not very useful. It does show, though, how to write and read a quantum register.
+
+Each time I send in a new set of "0" photons, they get transformed into this "I'm in both states equally state", which really means "I am in ALL states equally", and then my measurement gives me a random set of classical bits out. I end up only being able to measure one of the possible states with equal probability.
+
+So you probably figured by now, creating random number generators isn't why physicists are so excited about quantum co-processors. I mean, random number generators actually _are_ interesting to me because I like [mathematical broccoli](basis), but even I can't survive on brocolli alone. 
+
+So what exciting things might this quantum co-processor do? In reality, it can really only do one (albeit possibly complicated) thing: Apply a [unitary transformation](https://en.wikipedia.org/wiki/Unitary_transformation) $U$ to the quantum state. That link is probably not helpful, by the way. We've already met unitarity in the [post about $i$](whats-up-with-i). It basically means that quantum systems need to preserve overall probability to a "unit" value (that is, 1) because _stuff has to be somewhere_. It's one of the _postulates_ of quantum mechanics, so I don't have some sort of proof from other arguments, just an appeal to the common-sense idea that probability doesn't leak out anywhere. We saw how this assumption leads to "wavy exponentials", and then to the Schr&#0246dinger equation, and it is one of the many reasons we love $i$.
+
+So any unitary operation on the resulting $2^n$ quantum states can be written as a $2^n \times 2^n$ sized matrix. That's going to be enormous for any even modestly sized $n$, so let's keep it as simple as we can, and go back to our two qubit register ($2^2 = 4$ states) for now:
+
+$$\left|\psi'\right> = U\left|s_1s_2\right> = \begin{bmatrix} U_{11} & U_{12} & U_{13} & U_{14} \\U_{21} & U_{22} & U_{23} & U_{24} \\U_{31} & U_{32} & U_{33} & U_{34} \\ U_{41} & U_{42} & U_{43} & U_{44} \end{bmatrix}\begin{bmatrix} a_1 \\ a_2 \\ a_3\\ a_4 \end{bmatrix}$$
+
+where $a_n$ are the complex coefficients (satisfying $|a_1|^2+|a_2|^2+|a_3|^2+|a_4|^2=1$) of our two qubit product above (in the simple case, $a_1=a_2=a_3=a_4=1/2$, but they can be any complex numbers.) The only restriction on $U$ is that $U^{\dagger}U=1$, i.e., the operation has to be unitary (as we saw above, meaning that it preserves the overall probability of the system.)
+
+Each place in the column vector on the right is a different value of the qubit register. Explicitly, for our "all states available" 2-qubit register:
+
+$$\frac{1}{2}\begin{bmatrix} 1\\1\\1\\1\end{bmatrix}\rightarrow\begin{matrix}\left|00\right>\\
+\left|01\right>\\ \left|10\right>\\ \left|11\right>\end{matrix}$$
+
+so in some sense the matrix notation "flips" the circuit diagram by $90^o$- each row of the final vector corresponds to a specific joint state of all the $n$ qubits.
+
+Parenthetically, here's another thing to remember about notation: when we apply a series of unitary operations $U_A$, then $U_B$, then $U_C$ etc. we write the order of the operators such that the first operation is closest to the ket, then the apply the next, etc. So in this example, the final state $\left|\psi_f\right>$  from some initial state $\left|\psi_0\right>$ after applying three operations would be written as:
+
+$$\left|\psi_f\right>=U_CU_BU_A\left|\psi_0\right>$$
+
+In other words, matrix operators are written in right-to-left order! So we have circuits going left to right, operators going right to left, and matrix column vectors going top to bottom. Don't blame me, this is just how it is done!
+
+So back to $U$. What can $U$ actually do for us? It can transform any coefficient in the input column vector to a weighted sum using all the other input coefficients, causing "interference", like adding wave amplitudes. We can see this from the first element of the outcome. The top element $a'_1$ of the state vector resulting from the 4x4 matrix multiplication above is:
+
+$$a_1\left|00\right> \rightarrow\underbrace{(U_{11}a_1 + U_{12}a_2 + U_{13}a_3 + U_{14}a_4)}_{=a'_1}\left|00\right>$$
+
+Now, if all the original $a_i = \frac{1}{2}$ (uniform all states at once), and somehow we rigged the top row of the $U$ matrix to have elements with alternating signs, (e.g. $U_{11}=1$, $U_{12}=-1$, etc.) then $a'_1 = 0$. Ah ha! Now we see we can modify the probabilities, making some of the output states less (or more) likely than the others. Since $U$ preserves the overall probability, the other coefficients have to gain some probability somewhere. That would be accounted for in the other rows of the $U$ [matrix (2)](quantum-warmup-footnotes).
+
+In fact, we eventually want to write all the $U$'s such that we end up with an output vector that has $a'$ amplitudes zero (or really small) everywhere _except_ for one solution state $s$, which will be some specific product of our ket $|>$ basis states. Then when we measure this result (one qubit at a time on our detectors) we will _most likely_ get that state. In other words, we want our output qubit state vector of $2^n$ values to look like:
+
+$$\left.\begin{bmatrix}0 \\ ... \\ 0 \\ s \\ 0 \\ ... \\ 0 \end{bmatrix}\right\}2^n \text{ elements}$$
+
+This "causing interference" can be done classically, too, but you don't get to try "all input values at once" classically. A classical computer would only allow _one_ of those possibilities at once, and I would need a separate register to hold each row of the output. 
+
+This looks promising, but we need some concrete examples of $U$ to go further. A processor (classical or quantum) needs logic gates. Although all the quantum processors need to have unitary gates, that doesn't free them from the need to be able to perform the basic actions of logic to compute a result. With classical computers, we can show that starting with basic two (or one) bit AND, OR, and NOT operations, we can build all the way up to ChatGPT creating TikTok videos.
+
+We already met the Hadamard gate, but that doesn't let us logically compare two qubits together. Another gate that will get us most of the way through the next sections is called the CNOT gate, or "Controlled NOT". A NOT gate inverts a bit, i.e. "0" becomes "1" and vice-versa. The "control" part is a second line that determines whether or not the NOT operation gets executed. Logically, there are four input conditions and four corresponding output signals. It is an operation that does this:
+
+$$\begin{matrix} 
+\left|00\right> \rightarrow \left|00\right> \\
+\left|01\right> \rightarrow \left|01\right> \\
+\left|10\right> \rightarrow \left|11\right> \\
+\left|11\right> \rightarrow \left|10\right>\end{matrix}$$
+
+That leads us to a unitary matrix representation:
+
+$$U_\text{CNOT} = \begin{bmatrix} 
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 1 & 0 \end{bmatrix}$$
+
+Take a moment and convince yourself that this gate satisfies $U=U^\dagger$ and that $U^\dagger U=\mathbf{1}$.
+
+The CNOT unitary operation really "just" swaps two rows of the 4x4 identity matrix. But don't be fooled - this does an interesting thing. If I start with, say, $\frac{1}{\sqrt{2}}[\left|0\right> + \left|1\right>]$ on the control line, and a $\left|0\right>$ on the target line, then the input maps to the output like:
+
+$$U_\text{CNOT}(\frac{1}{\sqrt{2}}[\left|00\right> + \left|10\right>) = \frac{1}{\sqrt{2}}[\left|00\right> + \left|11\right>]$$
+
+That second state now has the two qubits _entangled_ with each other. I can no longer factor the two qubits into a simple product like we started with, i.e. $\frac{1}{\sqrt{2}}[\left|0\right>_1 + \left|1\right>_1]\otimes\left|0\right>_2$ (I brought back the subscripts just to explicitly show which ket belongs to which qubit.) So although the symbol might "look" like it doesn't do anything to the control line, the total state of the system is now altered in a very deep way. And also, don't be fooled that the control line "passes through" unchanged - that would allow us to snoop on the state of the control line with the target line, thus measuring the state of the control line without changing its quantum state. That is illegal and will get us sent to quantum jail. 
+
+At this point I think that we really need to have _some_ idea how this gate could be built before moving on.
+
+I told you above that photons are very anti-social (although they like to be "close" to each other in time and hang out in [bunches](https://en.wikipedia.org/wiki/Photon_antibunching), just not interacting, kind of like a middle school dance.) You are probably dying to know how we force them to interact (is there some remedial photon cocktail party they must attend?) It turns out we usually do need a substance (not ethanol, although that would be hilarious) to get photons to talk with each other.
+
+As a prelude to how this interaction might work in practice, let's look further at what the CNOT gate does logically. There are two inputs and two outputs - when the top line "control" $c$ is "0" then the bottom "target" $t$ line stays the same. When the top line is 1, the bottom line "inverts" (hence the name "controlled not"). In Boolean logic, this is a single bit addition operation, sometimes written as $\oplus$. So the input/output can be written for any general input superposition:
+
+$$\begin{matrix} 
+\left|c\right> \rightarrow \left|c\right> \\
+\left|t\right> \rightarrow \left|t\oplus c\right>\end{matrix}$$
+
+In other words, the top line has to affect the bottom line somehow. That means there is a "mixing" term somewhere, where the top $\left|1\right>$ state mixes with the bottom target states. So when using photons as qubits, I want my single photon state to have a _polarization dependent effect_ on the phase of the bottom line.
+
+Incidentally, the CNOT gate also has a circuit diagram, like this:
+
+[comment]: # (Figure6)
+** Figure 6 **: The circuit diagram of a quantum CNOT gate. The state of the top "control" $c$ line determines what happens on the bottom "target" $t$ line. Unlike a normal classical gate, the top (and bottom) lines can be in multiple states at once!
+
+So this is where we get to some of the issues with using photons as qubits. There are a _lot_ of different ways to get an interaction with electronic states, but not so much for photons directly. This is a (non-exhaustive) [list (3)](quantum-warmup-footnotes) of commercial companies (about 40 start-up companies at present) that are working on quantum coprocessors, and [very few, (4)](quantum-warmup-footnotes) are trying to use photonic qubits directly.  
+
+In order to couple two photonic qubits, a material "arbitrator" is needed. We are going to need some special, exotic material. For instance, a [quantum dot](https://www.nature.com/articles/s41467-024-51805-9) in a waveguide, or a [Rydberg atom](https://en.wikipedia.org/wiki/Rydberg_atom) in a [cavity](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.83.5166). The [Kerr Effect](https://en.wikipedia.org/wiki/Kerr_effect) has also been [proposed](https://arxiv.org/abs/quant-ph/0009110) for an all-photonic logic gate, but to my knowledge this has not been pursued (because it appears to be impractical.)
+
+So the preceeding examples represent a few possible (but not so great) ways to get photons to talk. There is actually another way, which lets us use ordinary "linear" optics (just beam-splitters and waveplates), but it also kind of sucks: We must give up deterministic behavior of the gate (and we don't want to do this, but stick with me for a second), _and_ we must use some ancillary photons that we measure at every gate (which allows us to narrow-down what state the gate output is in.) If we do those less-than-ideal things, then we don't need an optical nonlinearity (well, I lied: we still need non-linearity because detection is a non-linear operation, but at least detectors actually exist.) This is the so-called ["KLM"](https://en.wikipedia.org/wiki/KLM_protocol) protocol of optical quantum computing, still an area of research, but in my opinion mostly a curiosity. Basically, we send in qubits, get an uncontrolled random output that _might_ contain the state we want, and a classical readout that lets us know whether the output is "good" or not. Presumably after a number of tries we get what we want. In the mean time, we either have to coordinate the outputs of all the gates (basically, a memory) or swallow the statistical average (which means we get garbage most of the time, most likely nullifying the quantum advantage.)
+
+I bring all these details in because it reveals a dirty "secret" (although it's hardly a secret) about quantum co-processors. The elements of quantum logic are _awful_ compared to classical logic gates. They are comically error-prone. A good quantum CNOT gate at present might be 99% accurate after correction (although gates are getting better - see e.g. [this paper](https://arxiv.org/abs/2407.15783) using "fluxonium" superconductor qubits.) Compare this to a "classical gate", where, if certain input voltage ranges are met, basically _never_ gives the "wrong" answer. The computer on which you are reading this wouldn't work otherwise. The probability of ensuring the correct answer goes as the power of the number of sequential gates $n_g$. So the probability of making a mistake goes like $\epsilon = 1-F^{n_g}$. We can see if $F$ is 0.99 or even 0.9995, it doesn't take too many sequential gates to make the liklihood of getting the right answer pretty low. 
+
+The situation isn't quite as dire as it first appears, however. There are a couple things at our disposal to help "correct" these errors. First, as we saw above the output is probabilistic anyway - we only get some probability of success at the end. Even if it is 90% likely we got the right answer, then 10% of the time our answer will be incorrect. That is terrible, especially in cryptography where the answer has to be _exactly_ correct to be useful. Of course, we can run the circuit many times, and so narrow down the error. In the case of cryptography, each try at decryption isn't that expensive, so once I verify the correct answer I can stop. But that starts to eat away at the advantage of the quantum coprocessor. If I have to run my quantum coprocessor step a gazillion times then it might actually be _slower_ than the classical calculation. As it turns out, only just recently have any quantum processors broken the classical barrier for a non-trivial algorithm, and even [this demonstration](https://www.nature.com/articles/s41534-023-00794-6) was very much a "toy" calculation.
+
+Another way to fix errors is to use more than one qubit to represent a logical qubit. This is done in hard-drive storage where a logical "1" or "0" doesn't literally represent a single magnetic domain on the disk. But then we need more qubit registers and gates. And, as we are going to find out in the next few posts, it takes _a lot_ of gates and qubits to implement quantum computing logic operations.
+
+So, to summarize:
+
+* Quantum registers can hold a superposition of values, like a classical register that could hold more than one set of bits at a time.
+* We end up with $2^n$ possible states with $n$ qubits - so with a bit of cleverness we can calculate all $2^n$ numbers at the same time. That lets us work on problems with a mind bogglingly large number of values at once.
+* Quantum unitary operations let us "interfere" (and entangle) states with one another, so we can rig the calculation to steer the superposition coefficients toward giving us the "right answer" when we read back into our classical world.
+* We can build unitary operations from quantum logic gates (that perform "all states at once" calculations) if we can find some nonlinearities in nature, so our qubits can influence each other. This lets us build up logic functions much like we would with a classical computer.
+* Currently, quantum gates are error prone, so there are very real questions on how large a quantum co-processor can be in practice, before it no longer provides a significant advantage over classical computations. 
+* And don't forget about the goofy notation: quantum circuits are drawn left-to-right (and the "wires" represent time), operator order is applied right-to-left, and the state vectors of the unitary matrix operators are written top-to-bottom. So we need to keep our English, Hebrew, and Japanese straight! And I haven't even told you about the [_spherical_](https://en.wikipedia.org/wiki/Bloch_sphere) way to draw qubits yet!
+
+Ok, anyone still reading, go grab a beverage. Because this post was just a warm-up - I still haven't described how to actually calculate anything (besides generating a random number and some idea of how to make a CNOT gate.) In the [next post](quantum-logic) we find out how to do "real" quantum logic operations, at least in principle. Make it so!

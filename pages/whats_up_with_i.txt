@@ -123,9 +123,7 @@ In fact, for any function that has a first-order expansion like a Taylor series
 
 $$U(t) = 1 + at + ...$$
 
-And $Ndt = t$ then,
-
-Then 
+And $Ndt = t$, so:
 
 $$U(t) \sim (1+(at/N))^N = e^{at}$$
 

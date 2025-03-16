@@ -61,8 +61,8 @@ try:
 	mdutil.build_markdown(__name__,"start_post","Figure1","",pmd)
 	pmd.append(build_sim_layout())
 	mdutil.build_markdown(__name__,"Figure1","Figure2","assets/bell_detector.png",pmd)
-	mdutil.build_markdown(__name__,"Figure2","Figure3","assets/c_cor_bell.png",pmd,width=350)
-	mdutil.build_markdown(__name__,"Figure3","Figure4","assets/q_c_correl.png",pmd)
+	mdutil.build_markdown(__name__,"Figure2","Figure3","assets/Fig3_bell_predictions.png",pmd,width=350)
+	mdutil.build_markdown(__name__,"Figure3","Figure4","assets/Fig4_bell_predictions.png",pmd)
 	mdutil.build_markdown(__name__,"Figure4","Figure5","assets/q_cor_bell.png",pmd)
 	mdutil.build_markdown(__name__,"Figure5","",None,pmd)
 	

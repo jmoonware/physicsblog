@@ -48,7 +48,7 @@ where $\nu$ has to have units of inverse time (so that we are measuring how much
 
 Tons of processes can be described with exponentials. Radioactive decay, current in diodes, velocity-dependent forces, the density of the atmosphere with height, and on and on, are all exponential.
 
-But how do we get values for this function where the slope is equal to its value everywhere? We have to go back to how the interpolation tables are actually calculated in my 10th grade text book. Remember that we learned that damn near any function can be put together from polynomials like this:
+But how do we get values for this function where the slope is equal to its value everywhere? We have to go back to how the interpolation tables are actually calculated in my 10th grade text book. [Remember](what-is-a-function) that we learned that damn near any function can be put together from polynomials like this:
 
 $$f(x) = a_0 + a_1(x-x_0) + a_2(x-x_0)^2 + a_3(x-x_0)^3 + ...$$
 
@@ -119,20 +119,18 @@ All this sounds like gobbledygook if you haven't had a course in statistical mec
 
 Most other physical laws are a little more like the rate of change (or curvature, second derivative) of this thing is proportional to the same thing or some other set of things.
 
-Like $F=ma$ (the rate of change of velocity $a=dv/dt$ is proportional to a force.) So if we have a force proportional to velocity (like air resistance of something falling), then the velocity decays exponentially in time (or it takes a logarithmic time to get a linear change in velocity...)
+Like $F=ma$ (the rate of change of velocity $a=dv/dt$ is proportional to a force.) So if we have a force proportional to velocity (like air resistance of something falling), then the velocity decays exponentially in time (or it takes a logarithmic time to get a linear change in velocity...) So maybe the logarithm isn't that mysterious, if I can come up with an example as simple as Newton's Second Law.
 
-So maybe the logarithm isn't that mysterious, if I can come up with an example as simple as Newton's Second Law.
+So how can we understand the logarithm in the Second Law of Thermodynamics? First, let's understand just what a [microstate](https://en.wikipedia.org/wiki/Microstate_(statistical_mechanics)) is. You can click on that link, but basically how we are going to use it is as follows: a single "snapshot" of how particles are distributed at any point in time. Here, "distributed" could mean distributed in space, velocity, and/or energy. 
 
-Before we go further, just what is a [microstate](https://en.wikipedia.org/wiki/Microstate_(statistical_mechanics))? You can click on that link, but basically how we are going to use it is as follows: a single "snapshot" of how particles are distributed at any point in time. Here, "distributed" could mean distributed in space and/or energy. 
-
-Many books on statistical mechanics appeal to the fact that Entropy (whatever that is, but we know it is some extensive quantity like heat, i.e. it scales with the overall size of the system) scales linearly if a system doubles in size, but the number of microstates goes up as the product of two systems of the starting size. And quantities that sum that are related by their product are clearly exponential (or logarithmic; I could have titled this post "why is everything logarithmic" but that doesn't sound as cool.) 
+We will see below that the number of microstates represents the number of independent ways to arrange things in a particle system. Every time we add new ways to arrange things, we multiply the number of added ways with the number of original ways to get the total (new) ways to arrange things. But entropy is some extensive quantity like heat, i.e. it scales with the overall size of the system. So when we double the number of ways to arrange things, we just add the entropy values together (like two balloons of gas have twice the energy as one balloon.) That doubles the energy (and entropy), but the number of microstates goes up as the product of the number of microstates in each balloon. And anything that sums which is proportional to a product is clearly exponential (or logarithmic; I could have titled this post "why is everything logarithmic" but that doesn't sound as cool.) 
 
 But that sounds a little too hand-wavy. Let's approach this in another way: while we are on the subject of system doubling, is there an equation for "not in 10 billion years"? Turns out, there is.
 
-We were just talking about microstates, and one of the most non-intuitive things about microstates is that they are all equally likely to occur. That seems like it can't be true - the state where all the molecules are on one side of a room is equal to a state where the molecules are uniformly distributed in the room? I can't believe that is true. Even worse, the state where all the particles are crammed in one corner is just as likely as the one we always see, uniformly distributed everywhere.
+We were just talking about microstates, and one of the most non-intuitive things about microstates is that they are all equally likely to occur. That seems like it can't be true - the likelihood of observing the specific state where all the molecules are on one side of a room is equal to the specific state where the molecules are uniformly distributed in the room? I can't believe that is true. Even worse, the (single) specific state where all the particles are crammed in one corner is just as likely as the one we always see, uniformly distributed everywhere.
 
 [comment]: # (Figure4)
-** Figure 4 **: Equally likely arrangements of particles in a 2-d box. There are a _lot_ more ways to get something that looks "uniform" than the case where all the particles are on one side.
+** Figure 4 **: Equally likely specific arrangements of particles in a 2-d box. There are a _lot_ more ways to get something that looks "uniform" than the case where all the particles are on one side.
 
 But, yes, my friends, it is [true](everything-exponential-footnotes)! There is a reason, however, that we have never observed this in practice (you haven't, right?)
 
@@ -148,7 +146,7 @@ $$\Omega = \frac{N!}{(N-Np)!}$$
 
 I guess I could have also entitled this post as "why is  everything factorial". But that would be even less cool than logarithmic.
 
-We've glossed over something important here - the fact that we only allow one (or some number called $g$ for degeneracy) particle per state. Turns out that Quantum Mechanics will have something profound to say about this. But for now all we need is $g=1$. Also, another thing we fudged - we assumed one particle can be distinguished from another. That is, in our bag of starting marbles, each marble looks different (the green one, the white one, etc.) Quantum Mechanics also has something profound to say about this. In the mean time, though, it isn't unreasonable to assume that you really can't tell one, say, water molecule, from another, even in principle. So we have overcounted the states by $N_p!$ (that's $N_p$ factorial, not a surprising $N_p!$ Dammit, I mean $N_p$. Who uses exclamation points for math?) That is, once we add $N_p$ particles to the system, we have to ask how many ways we could have done this which end up with the same number of particles per state in the $N$ possibilities? If $N_p=2$, we could exchange the two positions and get the same answer. For 3 particles, we could swap any pair 3 times and get the same answer. For 4, we could swap sets of 3 particles (which could each have 3 sets of pairs exchanged) four times (so $4\cdot 3\cdot 2$.) So you can see where the overcounting by $N_p$ factorial comes from.
+We've glossed over something important here - the fact that we only allow one (or some number called $g$ for degeneracy) particle per state. Turns out that Quantum Mechanics will have something profound to say about this. But for now all we need is $g=1$. Also, another thing we fudged - we assumed one particle can be distinguished from another. That is, in our bag of starting marbles, each marble looks different (the green one, the white one, etc.) Quantum Mechanics also has something profound to say about this. In the mean time, though, it isn't unreasonable to assume that you really can't tell one, say, water molecule, from another, even in principle. So we have over-counted the states by $N_p!$ (that's $N_p$ factorial, not a surprising $N_p!$ Dammit, I mean $N_p$. Who uses exclamation points for math?) That is, once we add $N_p$ particles to the system, we have to ask how many ways we could have done this which end up with the same number of particles per state in the $N$ possibilities? If $N_p=2$, we could exchange the two positions and get the same answer. For 3 particles, we could swap any pair 3 times and get the same answer. For 4, we could swap sets of 3 particles (which could each have 3 sets of pairs exchanged) four times (so $4\cdot 3\cdot 2$.) So you can see where the over-counting by $N_p$ factorial comes from.
 
 So, finally, if we only allow one particle at a time in a state (true for, say, a system of hard spheres bouncing around in a volume V) and if particles are indistinguishable, then
 
@@ -231,4 +229,4 @@ OK that is a lot. In summary, let's go back to Dungeons and Dragons:
 
 So that is why there is a natural log in the Second Law of Thermodynamics.
 
-In the next post, we will find out other surprising ways things can be exponential.
+And in [this post](whats-up-with-i), we will find out other surprising ways things can be exponential.

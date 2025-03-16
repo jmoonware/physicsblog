@@ -98,11 +98,11 @@ C_{VV}&(\theta_L,\theta_R) \propto \\
 
 So, finally we are getting closer to the point of this post. Can we use the equation for $C_{VV}$ to see if Bell's Inequality is violated? Yes, we can!
 
-We can simplify this even further if we recall that since $r$ can be only 0 or 1, we only need to look at the first term of the equation (the second is equivalent, just with the $\theta$ values increased by $90^o$.
+We can simplify this even further if we recall that since $r$ can be only 0 or 1, the average value of any power of $r$ (or $1-r$) is 1/2. 
 
 So, 
 
-$$C_{VV}(\theta_L,\theta_R) \propto \cos^2(\theta_L)\sin^2(\theta_R)$$
+$$C_{VV}(\theta_L,\theta_R) \propto \frac{1}{2}[\cos^2(\theta_L)\sin^2(\theta_R)+\sin^2(\theta_L)\cos^2(\theta_R)]$$
 
 The form of Bell's Inequality for the classical correlation function is:
 

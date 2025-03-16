@@ -1,0 +1,35 @@
+[comment]: # (start_post)
+
+## The Quantum Computing Series
+
+#### Meta-post guide to all the posts on quantum computing (that will eventually be) found on JTP
+
+Seems like every day some [company](https://news.microsoft.com/source/features/ai/microsofts-majorana-1-chip-carves-new-path-for-quantum-computing/) or [another](https://www.nasa.gov/technology/computing/google-and-nasa-achieve-quantum-supremacy/) or [another](https://www.nature.com/articles/d41586-025-00765-1) makes an announcement about quantum mumbo jumbo. And, knowing my background, my friends are all like "hey JTP, how does this work?" Hence this series of posts, so I can just say "did you read my blog?"
+
+The posts have gotten longer than I wanted, but such is the life of a DIY physics enthusiast. I could have asked ChatGPT or some other nightmarish hellscape assistant, but that takes the fun out of it. And by "fun", I mean sweating out the details with a literal pen and paper, for which I have found no substitute, if true understanding is the goal.
+
+Behold, here are the quantum computing posts in their logical order:
+
+- ** Post 1: ** How Encryption [Works](how-encryption-works)
+  - Enough detail about public key encryption to understand why factoring big numbers is important, and maybe more about group theory than you ever wanted to know
+- ** Post 2: ** [Quantum Warmup](quantum-warmup)
+  - Introduction to quantum computing (qubits, operations, a couple elementary logic gates)
+  - With some discussion of how qubits and gates are actually implemented in the real world
+- ** Post 3: ** [Quantum Logic](quantum-logic)
+  - Process our first qubits with a complete set of logic gates
+  - How to build up to a complete set of quantum gates from a handful of simpler gates
+  - How to "mark" one of our superposition states based on the value from a classical register
+  - But we _still_ won't have computed anything yet
+- ** Post 4: **  Hail Caesar!
+  - Start to finish quantum solver of the Caesar Cipher (or maybe the Cae\*a* C\*\*he\* ) - actually completing a calculation!
+  - How to add numbers in superposition, and Grover's Algorithm for steering the superposition toward a single set of basis functions
+- ** Post 5: ** How to Factor Numbers In Less Time Than The Age of the Universe
+  - Finally! Using Shor's Algorithm to factor large numbers
+  - This is it folks - the Quantum Fourier Transform and Group Theory unite their powers, and destroy the financial system!
+- ** Post 6: ** Secure [Key Exchange](quantum-key-exchange)
+  - Having destroyed the financial system, quantum mechanics saves the financial system with unhackable weirdness.
+  - Provided you have a pile of fancy gizmos
+- ** Post 7: ** No, You Can't Send a Message Faster Than the Speed of Light
+  - How the Universe conspires to hamstring our apparently faster-than-light quantum entanglement
+  - And no, you can't have a pony, either  
+

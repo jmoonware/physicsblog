@@ -92,6 +92,8 @@ So let's highlight the left outcome of "left:ball(white), right:cube(white)." Th
 [comment]: # (Figure5)
 ** Figure 5: ** The orange boundary is the outcome $P(b_w,c_w)$, that is, left:ball, white; right:cube, white.
 
+By the way, if you look at the colors in the orange boundary, there is one white ball and one black cube, but we just said that this represents $P(b_w,c_w)$? Don't we mean $c_b$ for the second argument? This tripped me up the first time I encountered it, too. Remember, the Venn pictures represent the left hand side output - if there is a black cube on the left, then there is a _white_ cube on the right, and $P(x,y)$ is the probability of getting $x$ on the left and $y$ _on the right_. So keep this in mind below, it can get confusing!
+
 We can also choose a subset that includes _either_ outcome for the cubes, like this:
 
 [comment]: # (Figure6)

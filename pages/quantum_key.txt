@@ -1,0 +1,18 @@
+Part III Quantum Mechanics fixes encryption
+
+So we see that quantum spookiness is going to break RSA encryption (eventually.) That sucks. So we need a better way of sending messages.
+
+What if we had a way to send you the secret key that is guaranteed to be secure? Or at least, we will be able to detect with nearly 100% certainty that no one was listening?
+
+Remember the bizarre "extra" correlation you get between entangled photons? Turns out, you can use this to make sure no one is listening to your transmission.
+
+There are better ways to implement this, but just imagine I send off my random key carried on a stream of entangled photons. One particle goes to Bob, and the other I measure. Now I have a list of events, and so does Bob. I send Bob the list of events I measured. If someone was listening to what I just transmitted, when Bob correlates my list, the quantum correlation would be destroyed. So Bob will know definitively if his key is valid. If it is, he can encrypt the message with the key I just sent him and it is basically impossible to break (we never transmit the key classically.)
+
+Of course, you do need special hardware to make this work (standard transmitter/receivers on today's optical netorks aren't designed for single-photon communication.) 
+
+To paraphrase Homer Simpson: quantum mechanics - the cause of, and solution to all of our problems.
+
+* Can't help myself to violate my own Prime Directive: I will note here that you can see the foolishness of politicians calling for encryption with "master keys". Without a quantum computer, RSA encryption can be reconstructed by nearly any competent programmer easily. So a ban on encryption is a ban on math. 
+
+** I've glossed over a number of important details of course - like, how does one choose p and q, and since the encryption exponent has to be co-prime to p*q, how we find that info, etc.
+

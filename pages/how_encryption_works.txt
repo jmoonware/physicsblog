@@ -1,12 +1,12 @@
 [comment]: # (start_post)
 
-## Useful Spookiness - Part 1
+## Why encryption works and is unbreakable with a classical computer
 
-#### Why encryption works and is unbreakable with a classical computer
+#### Part 1 of the Quantum Computing [Series](quantum-computing-series)
 
-By now you are agog at the strangeness of the universe, and disappointed that we haven't yet found a way to use it for "subspace communication" as in Star Trek.
+By now you are agog at the [strangeness of the universe](bell-predictions), and disappointed that we haven't yet found a way to use it for "subspace communication" as in Star Trek.
 
-But this strangeness isn't just a profound curiosity. We can use it to really hurt ourselves! Before we go there however, we need to understand how how encryption makes the modern financial system possible. 
+But this strangeness isn't just a profound curiosity. We can use it to really hurt ourselves! Before we go there however, we need to understand how encryption makes the modern financial system possible. 
 
 Later, in other posts, we are going to show how quantum mechanics will ruin (and then save, at least partially) the financial system.
 
@@ -14,23 +14,23 @@ But first, we need to learn about how encryption works.
 
 If you have ever visited a website that started with "https", then the little "s" is supposed to vouch for the fact that your channel is secure. But what does the "s" actually do? It allows the person sending you info to encrypt their information (such as bank account numbers) into gibberish that only you can un-encrypt.
 
-Surely, given a big enough computer one could "break" this encryption, right? That's what all the movies tell me about some guy furiously typing on a keyboard while a missile approaches...
+Surely, given a big enough computer one could "break" this encryption, right? That's what all the movies tell me, as some guy furiously types on a keyboard while a missile approaches...
 
-As we are about to see, the magic of number theory and exponentials will make our current forms of encryption virtually unbreakable with a classical computer, in the same sense that we never observe all the air molecules in a room rushing to one side. We will see that compute power is _also_ scaling exponentially, but encryption should win that foot race too, at least for a while.
+As we are about to see, the magic of number theory and [exponentials](everything-exponential) will make our current forms of encryption virtually unbreakable with a classical computer, in the same sense that we never observe all the air molecules in a room rushing to one side. We will see that compute power is _also_ scaling exponentially, but encryption should win that foot race too, at least for a while.
 
 So encryption. Let's say I have a string of letters e.g. "My bank account PIN is 1234" (for the record, it isn't.) Let's just shorten the phrase to '1234' in this example so we can use the familiar base 10 number system. Now I am going to get a wheel that has 10 positions, 0-9, like a tumbler on a safe. If I "spin" each digit in the original number 1234 by some random (but known) amount, I could turn the phrase into another number, which would be gibberish to anyone else. I could use the amount I spun each number as the key - "reversing" the spin would give me back my original number. I could publish the gibberish any place I like now - you won't be able to use it unless you have the key (which consists of two pieces; the tumbler size and the amount of each "spin".)
 
-Couldn't I just try every combination to undo the gibberish? Well, if I make the number much bigger, then effectively you can't. That's a Monkey at Typewriters problem, like trying to crack a safe by trying all combinations. We can make both the size and the number of tumblers extremely large with modern computing. As a quick calculation, if I use a 2048 bit key (so $2^{2048} \sim 10^{614}$), and the biggest supercomputers [today, late 2024](https://www.rdworldonline.com/an-overview-of-the-late-2024-supercomputing-landscape-in-6-charts/) are _exaflop_ ($10^{18}$ floating point operations per second, or _flops_), and assuming each try is about one floating point operation (it isn't, but close enough for this argument), then we would need $10^{614-18} \sim 10^{600}$s to crack the combination via brute force on the fastest supercomputer (nation-state, or Google/Meta level) today. The lifetime of the universe is around $3\times 10^{17}$ s (let's round it up to $10^{18}$ s), so you can see just how impossible this would be (even if I am off several orders of magnitude in either direction.) We will come back to this below, but for now just accept that brute force isn't going to work.
+Couldn't I just try every combination to undo the gibberish? Well, if I make the number much bigger, then effectively you can't. That's a Monkey at Typewriters problem, like trying to crack a safe by trying all combinations. We can make both the size and the number of tumblers extremely large with modern computing. As a quick calculation, let's say I use a 2048 bit key (so $2^{2048} \sim 10^{614}$.) The biggest supercomputers [today, late 2024](https://www.rdworldonline.com/an-overview-of-the-late-2024-supercomputing-landscape-in-6-charts/) are _exaflop_ ($10^{18}$ floating point operations per second, or _flops_.) Assuming each try is about one floating point operation (it isn't, but close enough for this argument), then we would need $10^{614-18} \sim 10^{600}$s to crack the combination via brute force on the fastest supercomputer (nation-state, or Google/Meta level) today. The lifetime of the universe is around $3\times 10^{17}$ s (let's round it up to $10^{18}$ s), so you can see just how impossible this would be (even if I am off several orders of magnitude in either direction.) We will come back to this below, but for now just accept that brute force isn't going to work.
 
-This [one-time pad](https://en.wikipedia.org/wiki/One-time_pad) approach works well, but having a random number I need to keep around each and every time I want to encrypt a message is going to be a hassle. And anyway, how would I transmit the key to the other person securely? So I need a better method. That would be [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) (Rivest, Shamir, Adleman) encryption.
+Using a secret large random number to encrypt is called a  [one-time pad](https://en.wikipedia.org/wiki/One-time_pad). This approach works well and is basically unbreakable because it is like trying to guess a random number between 1 and $10^{600}$. Unfortunately, having a random number I need to keep around each and every time I want to encrypt a message is going to be a hassle. And anyway, how would I transmit the key to the other person securely? So I need a better method. That would be [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) (Rivest, Shamir, Adleman) public key encryption.
 
-We will show below that the security of RSA encryption depends on the fact that it hard to factor an integer into its set of prime numbers. That's basically it. And the fact that I can make cracking RSA take exponentially more operations by adding a linear amount to the keys - that guarantees as computers get faster and faster, I can say, double the key length (which only adds a linear amount of time to encrypt/decrypt) but nearly squares the time (and energy) it takes to brute-force the key. 
+We will show below that the security of RSA encryption depends on the fact that it hard to factor an integer into its set of prime numbers. That's basically it. And the fact that I can make cracking RSA take exponentially more operations by adding a linear amount to the keys - that guarantees as computers get faster and faster, I can say, double the key length (which only adds a linear-ish amount of time to encrypt/decrypt) but nearly squares the time (and energy) it takes to brute-force the key. 
 
 Except if you have a quantum computer. But let's not get ahead of ourselves.
 
 Let's look at exactly how public key encryption works. In public key encryption, there are two keys. The public key is like a mailbox - it lets you take a message and drop it easily into a box (the encrypted message) but makes it effectively impossible to get the message out without the mailman's key (the private key.) The mailman never needs to give out his key (of course, if someone steals his key and makes a copy, the thief can get in the mailbox too, so the private key shouldn't be written down on a sticky note on your monitor...)
 
-Consider 1234 again. I need a "tumbler" to encrypt 1234 - "modulo" arithmetic will help us here. If you work with computers, you already know that each byte can only contain a certain number of values before it "overflows". If I look at say 4 bits of an 8-bit byte (the "nibble") I can hold 0-15 (represented by 0-9,A-F), the hexadecimal system. If I add, say, 6 decimal to 10 decimal, the value I get is 16 decimal, or 10 hex. The lowest 4 bits are back to 0, so it "rolled over". "Modulo" arithmetic is basically looking at the rolled-over bits and ignoring the larger parts of the number. That's what a tumbler on a safe does too - once I spin it all the way around it comes back the the same value.
+Consider 1234 again. I need a "tumbler" to encrypt 1234 - "modulo" arithmetic will help us here. A tumbler on a safe spins all the way around, then comes back to the same position. In the same way, we can add or multiply numbers together, then look at the remainder "modulo" the tumbler size. So, for instance, if I had a 10 position tumbler, and I started at Position 4, and clicked it clockwise by 10 positions, the tumbler would end up back on Position 4. If I added 11 positions from 4, I would end up on the number 5. And so on.
 
 Formally, any number $a$ on my dial of $N$ positions, starting at a point $a'$ can be represented as:
 
@@ -38,35 +38,37 @@ $$a = a' + xN$$
 
 where $x$ is an integer (...,-2,-1,0,1,2,...). Every time I spin the dial all the way around to the beginning, I get the same number back. This is called a _congruence class_ in modular arithmetic. We will be using congruence a lot from here on. 
 
-If we agreed that our tumbler has say, $N>1234$, values (one piece of the public key), and I told you the message was "1235", the "key" would be -1 to get back to 1234 (our actual message.) Equivalently, I could have told you $-1\pm xN$, where $x$ is an integer, and that would work as well. 
+If we agreed that our (now large) tumbler has say, $N>1234$, values (one piece of the public key), and I told you the message was "1235", the "key" would be -1 to get back to 1234 (our actual message.) Equivalently, I could have told you $-1\pm xN$, where $x$ is an integer, and that would work as well. 
 
-In this case, there really isn't a way to guess "-1" is the solution. That's not the case in the "real world" of course, because our actual messages contain more than random numbers - a spy could try all the positions and look for, say, English words in the output, and crack our code. Still we could make this very hard by using a much larger key, but we haven't solved the problem of how to give the key to the sender (this is like having to give a copy of the mailbox key to the person putting the message in the box.) We need a "one-way" key that makes it easy to encrypt (drop mail in the box) but won't actually open the box.
+This kind of simple offset was used in ancient times: the famous [Caeser cipher](https://en.wikipedia.org/wiki/Caesar_cipher) using the 26 letters of the Roman alphabet. The "encryption" $f_e$ function of a message $m$ would be:
 
-So what we really want is a way to take a message $m$, turn it into gibberish with an agreed upon key, then transform it back into $m$ with another simple operation that relies on a "secret". 
+$$f_e = m + 3 \mod 26$$
+
+So, if letter in the alphabet is assigned a number ($A=1$, $B=2$, etc.), then $f_e(A) = D$. The letter "Z" rolls over to $f_e(Z) = C$. The big secret here is "3". And I can't give this out publicly, so it isn't what we want. 
+
+In this simple case, guessing the solution would be easy, because our actual messages contain more than just a set of random numbers. A spy could try many combinations and look for, say, English (or Latin) words in the output, and thus crack our code ("3"). Still we could make this harder by using a much larger modulus and key, but we haven't solved the problem of how to give the key to the sender (this is like having to give a copy of the mailbox key to the person putting the message in the box.) We need a "one-way" key that makes it easy to encrypt (drop mail in the box) but won't actually open the box.
+
+In other words, we really want to take a message $m$, turn it into gibberish with an agreed upon "public" key that we can give to anyone, then transform it back into $m$ with another simple operation that relies on a "secret". 
 
 Using math notation, we want to make a function pair:
 
 $$f_d(f_e(m)) = m$$
 
-where $f_e$ is our public _encryption_ function, and $f_d$ is our secret _decryption_ function.
+where $f_e$ is our public _encryption_ function, and $f_d$ is our secret _decryption_ function. Clearly, we don't want them to be like the Caesar Cipher, where it's trivial to derive the decryption function from $f_e$.
 
-That is, two different sequential functions turn the message back into itself. There are an infinite number of ways to do this. For instance, the famous [Caeser cipher](https://en.wikipedia.org/wiki/Caesar_cipher) using the 26 letters of the Roman alphabet is: 
+So, two different sequential functions to turn the message back into itself. 
 
-$$f_e = m + 3 \mod 26$$
-
-So, if letter in the alphabet is assigned a number ($A=1$, $B=2$, etc.), then $f_e(A) = D$. The letter "Z" rolls over to $f_e(Z) = C$. The big secret here is "3". And I can't give this out publicly, so even if we use a giant value it isn't what we want. 
-
-Enter some number theory. First, above we were talking about tumblers where we added or subtracted from the current positions. We could also multiply to find the next position. For example, take our 10 position tumbler again - if I was at Position 3, and wanted to go to Position 9, I would say "multiply 3 by 3". If I wanted to get to position 7, I'd have to find a multiplier of 3 that gives remainder 7 modulo 10 (that would be 9 because 9*3 = 27 (-20, for modulo 10) = 7. 
+Enter some number theory. First, above we were talking about tumblers where we added or subtracted from the current positions. We could also _multiply_ to find the next position. For example, take our 10 position tumbler again - if I was at Position 3, and wanted to go to Position 9, I would say "multiply 3 by 3". If I wanted to get to position 7, I'd have to find a multiplier of 3 that gives remainder 7 modulo 10 (that would be 9 because 9*3 = 27 (-20, for modulo 10) = 7. Parenthetically, we have to leave the value "0" off the tumbler when we use multiplication to find positions, otherwise we could get stuck (anything times 0 is always 0.)
 
 This is where we get to something you wouldn't have guessed in a million years. It turns out under certain restrictions outlined below, I can find a modulo basis $p$ (i.e. "tumbler size") where:
 
 $$a^p = a \mod p$$
 
-for almost any number $a < p$. It means that if I multiply $a$ by itself enough times (again, modulo some tumbler-size $p$), I will always come back to $a$. And it turns out, if $p$ is a prime number, then it is always $a$ times itself $p$ times. 
+for almost any number $a < p$. It means that if I multiply $a$ by itself enough times (again, modulo some tumbler-size $p$), I will always come back to $a$. And it turns out, if $p$ is a prime number, then any number $a < p$ times itself $p$ times, comes back to $a$. 
 
-This is Fermat's Little Theorem (not to be confused with [Fermat's Last Theorem](https://en.wikipedia.org/wiki/Fermat%27s_Last_Theorem).)
+This is [Fermat's Little Theorem](https://en.wikipedia.org/wiki/Fermat%27s_little_theorem) (not to be confused with [Fermat's Last Theorem](https://en.wikipedia.org/wiki/Fermat%27s_Last_Theorem).)
 
-How can I convince you this is true? To prove this formula, we need a trick - something called "induction". Induction works by proving something works for 1, then if it works for $a$, it also works for $a+1$ (so, starting with 1, we have proven 2, and then 2 proves 3, etc. forever.) For the statement above $1^p = 1 \mod p$, so of course it works. If it works for $a$, what about $a+1$, i.e.:
+How can I convince you this is true? To prove this formula, we need a trick - something called "induction". Induction works as follows: prove a formula using $a$ works for $a=1$. Then, assuming it works for some arbitrary value of $a$, prove that it also works for $a+1$ (so, starting with 1, we have proven 2, and then 2 proves 3, etc. forever.) For the statement above $1^p = 1 \mod p$, so of course it works. To prove the formula works for $a+1$ if it works for $a$, we need to show:
 
 $$(a+1)^p = a+1 \mod p$$
 
@@ -120,23 +122,23 @@ Believe it or not, that class we had in group theory in college is going to come
 
 Anyway, back to our group theory class. First, take an integer $N$. A number is coprime with $N$ if it has no prime factors in common. For example, for $N=3\times 7=21$, the numbers $\{2,4,5,8,10,11,13,16,17,19,20\}$ are all co-prime with $N$ because they do not share any common factors with 3 or 7 (and of course 21 since by definition the numbers are less than this.) 
 
-Now here is something that isn't going to be obvious unless you have thought about this before. The coprime integers with $N$ form a [_multiplicative group_](https://en.wikipedia.org/wiki/Multiplicative_group_of_integers_modulo_n). The count of these coprime factors is called the _totient_ of the group, denoted with the Greek letter $\phi$. In the above example, $\phi(21)=12$ (including 1 of course in the group).  
+Now here is something that isn't going to be obvious unless you have thought about this before. The coprime integers with $N$ form a [_multiplicative group_](https://en.wikipedia.org/wiki/Multiplicative_group_of_integers_modulo_n). The count of these coprime factors is called the [_totient_](https://en.wikipedia.org/wiki/Euler%27s_totient_function) of the group, denoted with the Greek letter $\phi$. In the above example, $\phi(21)=12$ (including 1 of course in the group).  
 
 By definition, each member of a group has a multiplicative inverse. This means there is one unique member of the group, maybe itself, that when multiplied yields $xN+1$, where $x$ is an integer (i.e. $x \in Z$). For instance, the multiplicative inverses of the above set of numbers are: ${11,16,17,8,19,2,13,4,5,10,20}$. You can check a few of these yourself, e.g. $2\times 11 = 22 = 21+1$; $20\times 20 = 400 = 19\times 21+1$; $8\times 8 = 64 = 21\times 3+1$, etc.
 
 Why do all the co-prime numbers less than $N$ form a multiplicative group? First we have to prove that for any two members of the group, $a$ and $b$, there is a $c$ coprime to $N$ such that $ab = c+xN$, $x \in Z$. That is, multiplying any two members of the group yields another member of the group modulo $N$ (so it is closed.) 
 
-That's actually not hard to understand on first look, as the group contains every co-prime, and a product of co-primes is still co-prime relative to $N$. However, just taking $ab$ is probably going to yield a value $c>N$, so it is part of a congruence class (we have to subtract integer numbers of $N$ to get a number less than $N$ for our "representative" group.) Is every member of the congruence class of any member $a'=a+xN$ also coprime to $N$? That is, $\gcd(a,N)=\gcd(a',N)$? Turns out, if some $d$ divides $a$ and $N$, then $g$ divides $a+xN$, and vice versa. So indeed, all members of the congruence class $ab\equiv a'b' \mod N$ are co-prime to $N$, which by definition means they are part of the group. Phew!  
+That's actually not hard to understand on first look, as the group contains every co-prime, and a product of coprimes is still coprime relative to $N$. However, just taking $ab$ is probably going to yield a value $c>N$, so it is part of a congruence class (we have to subtract integer numbers of $N$ to get a number less than $N$ for our "representative" group.) Is every member of the congruence class of any member $a'=a+xN$ also coprime to $N$? That is, $\gcd(a,N)=\gcd(a',N)$? Turns out, if some $d$ divides $a$ and $N$, then $d$ divides $a+xN$, and vice versa. So indeed, all members of the congruence class $ab\equiv a'b' \mod N$ are co-prime to $N$, which by definition means they are part of the group. Phew!  
 
 Next, we have to prove that there exists a case for every element $a$ a unique element $a_{inv}$ such that $aa_{inv}=1\mod N$. That requires yet another piece of esoterica called [Bezout's Identity](https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity). This states that there are integers $x$ and $y$ such that $ax + yN = 1$ when $a$ and $N$ are coprime. Since any number modulo $yN$ is a congruence class, then $ax$ is part of the group (from what we argued above), so we are left over with an integer multiple of $N$ different by one. So each inverse exists in the group.
 
-So I declare the integers co-prime to $N$ a multiplicative group.
+So I declare the integers coprime to $N$ a multiplicative group.
 
-OK, since we just showed that every element has an inverse, the product of all group members together modulo $N$ has to be 1 as well. Each member $a_i$ and it's inverse $a_j$ appears once in the product, and each of these member/inverse pairs is $a_ia_j = 1 \mod N$ by definition. So the complete product of all members must contain the inverse for each element somewhere in the chain. We can group these as $(a_ia_j)=1$ so we get $1\cdot 1...1$ $\phi/2$ times.
+OK, since we just showed that every element has an inverse, the product of all group members together times its inverse modulo $N$ has to be 1 as well. Each member $a_i$ and it's inverse $a_j$ appears once in the product, and each of these member/inverse pairs is $a_ia_j = 1 \mod N$ by definition. So the complete product of all members must contain the inverse for each element somewhere in the chain of pairs. We can group these as $(a_ia_j)=1$ so we get $1\cdot 1...1$ $\phi$ times, where $j=j(i)$ is the corresponding inverse for $a_i$.
 
 Also, any factor $a$ (member of the group) when multiplied in this product creates another member of the group, so any factor just rearranges the order of the set, which contains exactly $\phi$ members. Thus $a^\phi = 1 \mod N$. Mathematically, 
 
-$$\prod\limits_{i=1}^{\phi}a_i = 1 = \prod\limits_{i=1}^{\phi}aa_i = a^\phi\prod\limits_{i=1}^{\phi}a_i = a^\phi$$
+$$\prod\limits_{i=1,j=j(i)}^{\phi}(a_ia_j) = 1 = \prod\limits_{i=1,j=j(i)}^{\phi}(aa_i)(a_j) = a^\phi\prod\limits_{i=1,j=j(i)}^{\phi}a_ia_j = a^\phi$$
 
 That's the first part. The second part is that the totient $\phi(pq)$ is $(p-1)(q-1)$. Certainly, for any prime $\phi(p)=p-1$ (all the integers less than a prime number are co-prime by definition.) And since $p$ and $q$ are both prime, they by definition don't share any common factors. Thus all the combinations of the set of size $\phi(p)$ and $\phi(q)$ are valid members of the multiplicative group of co-primes to $pq$. So the overall totient has to be $\phi(pq)=\phi(p)\phi(q)$. That's the second part - $\phi(pq)=\phi(p)\phi(q) = (p-1)(q-1)$. And we just showed $a^\phi = 1 \mod pq$, so $a^{(p-1)(q-1)} = 1 \mod pq$.
 

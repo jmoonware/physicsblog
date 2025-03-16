@@ -1,0 +1,33 @@
+[comment]: # (start_post)
+
+## Hail Caesar!
+
+#### Post 4 in the Quantum Computing [Series](quantum-computing-series)
+
+#### In which we solve an actual problem with quantum logic
+
+By now we know how to do very basic things with a quantum computer. In this post we will do a start-to-finish, all-gory-details solution to a problem.
+
+We met the [Caesar Ciper](https://en.wikipedia.org/wiki/Caesar_cipher) in our [post](how-encryption-works) about encryption. Back in Roman times this was considered hot stuff for keeping communications private. It works like this: assign a number to each letter in an obvious way (A=1, B=2, etc.) and then add 3 (modulo 26 so $X\rightarrow A$, $Y\rightarrow B$, etc. In math, 
+
+$$f(x) = x + 3 \mod 26$$
+
+where $x$ is the number assigned to the letter in the alphabet.
+
+OK, so this is a trivial problem. But it will illustrate a number of important things about quantum computing we might not have suspected.
+
+1. Stuff we take for granted in classical computing (AND, OR, and NOT gates that are abundant and basically perfect) become a scarce commodity in quantum devices.
+2. Because operations are unitary, a surprising number of "extra" qubits are needed to do anything. For instance, every time a new AND gate gets added, another qubit is introduced to the processor (so every AND gate requires three qubits.) Since gate count can rise very quickly (as we are about to find out), that's going to give us pause about the practicality of any quantum co-processor at the moment.
+3. Operations that can be expressed simply with a unitary $U$ matrix don't always map in a straight-forward way to the circuit diagrams (how we would realize the layout of stuff in the real world, not some abstract Hilbert space.) We already saw this with the primitive quantum memory we had to build in the [quantum logic](quantum-logic) post.
+
+So let's go ahead and cross the Rubicon.
+
+We saw in the logic post how to "mark" a quantum state, that is, changing the state of one of the qubits depending on a "comparison" condition. We also saw that our quantum memory (an arbitrary look-up-table between an address and a value) must necessarily take around $2^n$ gates (or operations on gates) for $2^n$ independent arbitrary values. That's not ideal.
+
+But what if we don't have to load every value of an arbitrary function? We can actually store the information in a function that gets calculated "on the fly". We don't need to have hardware gates for each and every possibility in that case, because we can have $f$ encoded more compactly in the logic.
+
+Let's go back to our $U_f$ circuit. Instead of having a table of values, how would we add "$3 \mod 26$" to our incoming "all states" register?
+
+
+
+

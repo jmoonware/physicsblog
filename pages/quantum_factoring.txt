@@ -1,0 +1,90 @@
+[comment]: # (start_post)
+
+## Finally! How quantum computers can factor large numbers quickly
+
+#### Post 5 in the Quantum Computing [Series](quantum-computing-series)
+
+And how to wreck the world financial system.
+
+So far we have seen that quantum coprocessors, as cool as the science can be, seem to be pretty useless at present. Every time we try to do something a little interesting (like inverting a function with Grover's Algorithm) we run into a "well, but we need this nearly impossible thing to be true."
+
+In this post, we will go through an algorithm that is finally going to get us to a place where I am going to have to say, it might actually work, eventually. This would be Shor's Algorithm, proposed by Shor in 199x. It is a method to factor a large number into two large primes, which we showed earlier is the basis for cracking RSA public key encryption. 
+
+OK let's start with Fermat's Little Theorem, which we met [before](how-encryption-works):
+
+$$a^p = p\mod p$$
+
+where $p$ is prime. Let's switch $p$ over to $N$ which isn't necessarily prime. It turns out that there might be other, smaller, exponents (and strangely, even if p is prime) where this condition holds: 
+
+$$a^r = 1 \mod N (r < N-1)$$
+
+The smallest number $r$ where this is true is confusingly called the "order" of the integer $N$. Don't try Googling "order" because you will never find it in the on-line shopping apocalypse that the Internet has become. 
+
+How does this help us factor $N$? Briefly, if you know the order $r$, you can use this to calculate a divider of $N$ as follows: 
+
+First, rearrange the last equation as:
+
+$$a^r - 1 = 0 \mod N$$ 
+
+Now, if you remember your algebra, we can factor $x^2-1 = (x-1)(x+1)$. So the equation becomes:
+$$(a^{r/2}-1)(a^{r/2}+1)=0 \mod N$$
+
+The only numbers that are $0 \mod N$ are multiples of $N$. So one or the other sides of this product is a factor of $N$. If we know $N$ is the product of two primes, this factors $N$ completely.
+
+Great! So now we have moved factoring $N$ into finding the order $r$. The reason I think this isn't actually the dumbest thing ever is because $r$ is an exponent. That means we use the magic of exponentials to narrow down our choices _logarithmically_. In other words, we can represent $r$ with $\sim \log_2(N)$ qubits, or thousands. Not kajillions like we needed for an arbitrary quantum memory or factoring with Grover's Algorithm. 
+
+Now, the question is, how does one get $r$? You could of course try all the values of $r$ up to $N$. That will take you a while (more than the lifetime of the universe for $N$'s typically used in RSA encryption.) 
+
+But let's see how a classical algorithm might work on a smaller number. I don't know either $a$ or $r$, so that is the first problem. Turns out we can just guess an $a$ coprime to $N$ for now (later we will show that random guessing works way better than you might expect.) So guess $a$. Now we know the limit of the size of $r$ (say, $N$), so let's start calculating sets of $a^x$, where $2 < x < N$.
+
+For example, lets try to factor 15. I know, another toy problem, but this time I promise I am not leading you off a combinatorial cliff this time.
+
+Seems like 7 is coprime to 3*5, right?
+
+So let's calculate $7^x \mod 15$ and see what happens:
+
+We need $[7,7^2,7^3...7^14] \mod 15$. A couple lines at the Python terminal and viola:
+
+So, 4. 
+
+Just for fun, we could have used $a=2$ because that is coprime to 3*5 too. What is the result then?
+
+$$[2,4,8,1,2,4,8,1,...]$$
+
+So 4 again. Hmm, mighty suspicious, but lets move on for now.
+
+The one thing we notice - the pattern _repeats_ with a period of $r$. So really, if we have all the values of $a^x$ laying around, we can look for repeats and get $r$.
+
+And what is a good way to find a repetitive pattern you might ask? Well, our good buddy $e^{ix}$ is _phenomenally_ good at picking out repeated patterns.
+
+I even made a little audio file generator that lets you _hear_ the order of an integer. Check it out!
+
+What is going on with the tone you hear? 
+
+So, we are starting to see how we might actually be able to factor a big integer: First, calculate "all" the values of $a^x$ in a quantum register. Fortunately, we only need $\sim\log_a(N)$ qubits for this. Thousands of qubits for factoring RSA, but it's at least not an absurd amount.
+
+Then we need the quantum version of the Fourier Transform of this "many values" register. Here is how that would work:
+
+So pick out the peak, maybe polish up the value (classically), and check to see if the number we generate using $r$ factors N. If not, try some other $a$ values, but you won't have to run too many times it turns out.
+
+So, roughly speaking:
+
+* Recognize that there is an order $r$ where one of the two factors $(a^{r/2}-1)(a^{r/2}+1)$ will factorize $N$, if $a^r-1=0 \mod N$. Once we get $r$ it will be trivial to tell which factor is the one we want. 
+* Guess at $a$, which is coprime to $N$. Fortunately, this is fast and classical.
+* Calculate $a^x$ where $x<N$ in a quantum register of size $\log_2(N)$ qubits.
+* Quantum Fourier Transform the repeating result (needing ~$n^2$ registers)
+* Pick out the peak representing a repetitive pattern, which gives us a good guess at $r$
+* Polish up the $r$ value classically, and see if we have a factor of $N$!
+* If not, try again. But hopefully not too many more times.
+
+Ta dah! That is how we are going to destroy the world financial system!
+
+So how real is this at the moment? We are going to need a lot of quantum gates to make a QFT work. And even thousands of gates to represent numbers approaching $N$ in the first place. Remember, RSA 2048 is common now, which is 2048 bits. Most schemes require error-correcting bits and sequences, so a minimum of $2-3 \times$ 2048 is going to be necessary just to reliably generate the $a^x$ list. The very most optimistic count of "functioning" qubits at the moment is under 100, and these are a far cry from the error level and general addressability needed at the moment even to crack double-digit RSA (the record right now is, you guessed it, cracking $N=15$.)
+
+So I think (just my opinion) that we will have a quantum computer cracking meaningful RSA about the time we have a commercial nuclear fusion plant connected to the grid. Don't laugh. I think that Commonwealth Fusion has a pretty good shot of generating wall-socket break-even by the end of the decade (I bet a friend a sushi dinner that break-even would happen, so I am not a disinterested party.) But, even if I get my raw fish dinner, it will be a lot longer before a consumer gets electrons generated by terrestrial fusion energy.
+
+Which is about where I think quantum computing is at the moment. Rapid progress is being made on quantum information processing, but big challenges remain to practicality. One company is claiming (hoping) to have 100 logical qubits by 2030. And they are being optimistic, as is their job. So I think we easily have a decade before we have to take the encryption threat more seriously. And even then, only nation-states (or corporations that size) are going to have anything approaching a quantum system that can solve a "useful" problem. Which isn't that comforting frankly.
+
+OK, now that we have pooped our proverbial encryption pants, let's find out how quantum mechanics is going to save us from financial ruin. Well, at least some of us. Sort of.
+
+
