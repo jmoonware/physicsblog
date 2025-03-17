@@ -54,7 +54,7 @@ The two lists of detections at A and B might look like:
 
 So just a random list of H's and V's in each case.
 
-For a larger number of detections, here are plotted the results, where the big red points correspond to where the same value is detected in both places. The third plot shows the correlation function, which must be summed over a number of received pairs to make sense: 
+For a larger number of detections, here are plotted the results. The third plot shows the correlation function, which must be summed over a number of received pairs to make sense: 
 
 [comment]: # (Figure2)
 ** Figure 2 **: Example plot of received photon results at two locations, and the corresponding correlation functions. Here, the correlation function is binned for every 100 results. Column (a) aligned detectors, so perfect correlation, Column (b) is when detectors are different by $45^o$ (so it is a coin-flip if each detector receives the same value), and (c) is perfect anti-correlation. Note that if we had assigned (-1,1) to (H,V) instead of (0,1) the correlation functions would go between (-1,1) which is more in line with how "correlation" is normally defined. We will stick to (0,1) in this post.
