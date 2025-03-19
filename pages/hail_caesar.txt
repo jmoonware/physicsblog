@@ -6,7 +6,7 @@
 
 #### In which we solve an actual problem with quantum logic
 
-By now we know how to do very basic things with a quantum computer. In this post we will do a start-to-finish, all-gory-details solution to a problem.
+By now we know how to do very basic things with a quantum computer. In this post we will do a start-to-finish, all-gory-details solution to a problem that theoretically beats the classical computation limit.
 
 We met the [Caesar Ciper](https://en.wikipedia.org/wiki/Caesar_cipher) in our [post](how-encryption-works) about encryption. Back in Roman times this was considered hot stuff for keeping communications private. It works like this: assign a number to each letter in an obvious way (A=1, B=2, etc.) and then add 3 (modulo 26 so $X\rightarrow A$, $Y\rightarrow B$, etc. In math, 
 
@@ -14,7 +14,7 @@ $$f(x) = x + 3 \mod 26$$
 
 where $x$ is the number assigned to the letter in the alphabet.
 
-OK, so this is a trivial problem. But it will illustrate a number of important things about quantum computing we might not have suspected.
+OK, so this is a trivial problem with computers today. But it will illustrate a number of important things about quantum computing we might not have suspected.
 
 1. Stuff we take for granted in classical computing (AND, OR, and NOT gates that are abundant and basically perfect) become a scarce commodity in quantum devices.
 2. Because operations are unitary, a surprising number of "extra" qubits are needed to do anything. For instance, every time a new AND gate gets added, another qubit is introduced to the processor (so every AND gate requires three qubits.) Since gate count can rise very quickly (as we are about to find out), that's going to give us pause about the practicality of any quantum co-processor at the moment.
@@ -26,7 +26,172 @@ We saw in the logic post how to "mark" a quantum state, that is, changing the st
 
 But what if we don't have to load every value of an arbitrary function? We can actually store the information in a function that gets calculated "on the fly". We don't need to have hardware gates for each and every possibility in that case, because we can have $f$ encoded more compactly in the logic.
 
-Let's go back to our $U_f$ circuit. Instead of having a table of values, how would we add "$3 \mod 26$" to our incoming "all states" register?
+Let's go back to our $U_f$ circuit. Instead of having a table of values, how would we add "$3 \mod 26$" to our incoming "all states" register? 
+
+Remember from [our encryption](how-encryption-works) post, modulo arithmetic works like the tumbler on a safe. Any value beyond the modulus "rolls over". Spin the dial forever, we never get a number larger than the modulus.
+
+Binary counters made of bits naturally have this property. A digital counter will "roll over" to zero after it is triggered enough times to have all the bits set. So doing modulo arithmetic when the modulus is $2^n$ maps directly onto digital counters. If we want to do some other modulus, we need a division circuit to find out the remainder after dividing by the modulus. 
+
+We will get the point I am trying to make if instead of going through the complexity of a division circuit, we agree to use modulo $2^n$ arithmetic. Then I just have to choose $n$ large enough to contain all the letters of the alphabet. If I really wanted to use this modulus in a real problem with the Roman alphabet, we would have to add few other unique symbols to make the alphabet 32 symbols (so we could add in six whitespace and punctuation characters.) 
+
+I am going to be lazy and just use two qubits again. That's modulo 4, so I would only be able to encode A,B,C,D (or four other letters of my choosing, once I make a number to my letter choice.) I could choose A,L,E,S, so "Al seals leases less sea sales" might be our message. By not encrypting white space and punctuation the message is even less secure of course.
+
+So, adding 3 modulo 4 would take any incoming value $[0,1,2,3]$ and map it to $[3,0,1,2]$. We could just make a lookup table as in the [quantum logic](quantum-logic) post, but that isn't the point here. We are going to build a quantum addition circuit using a ripple-carry adder.
+
+One other thing to note about modulo addition - modulo subtraction is just modulo addition with a different number. Thus if the "encryption" function is 3, the "decryption" function is -3, which is the same as +1. It's turning the tumbler always in one direction. 
+
+So we are literally going to add 1. We will set up the adder, though, so it is more general. I am not _that_ lazy. 
+
+So, the first thing we need is a full adder circuit. A full adder has three inputs: the two bits to be added together, and a "carry in" bit. 
+
+[comment]: # (Figure1)
+** Figure 1 **: Classical full adder circuit.
+
+Remember that when we add 1+1 in binary, the result is "10". So we need to keep track of the overflow of each bit with a "carry" bit. That will go into the next stage of the adder as the "carry in" for that stage. We ignore the carry out in the last stage, which is the modulo-arithmetic part.
+
+Here is what the full quantum two-bit adder looks like. We've done enough of these in the previous posts that it shouldn't require much explanation.
+
+[comment]: # (Figure2)
+** Figure 2 **: Quantum full adder circuit.
+
+
+Now remember, the qubits $q_a1$ and $q_a2$ are put in _all states_ with the Hadamard gates. So when we add "3" (setting both $q_b$'s to "1") the addition happens _in parallel_ (each superposition state has a different path through the circuit, but they all happen at the same time.) 
+
+[comment]: # (Figure3)
+** Figure 3 **: Quantum ripple-carry circuit for two qubits. We put a definite state on the $q_b$ bits to add whatever number in parallel to the input qubits.
+
+So this is our first quantum speed up. Even though we just added two 2-bit numbers, using your imagination, we could basically build any function (our sine/cosine/exp power series, whatever) from this basic approach. Once we have adding, we have multiplying, and then we can rig up substraction and division, and we are off to the races.
+
+Now, we need the comparator circuit from the last post - we compare the message we have to the composed "input/output" superposition state. That lets us flip a "match" qubit $q_m$ just like we did in the [quantum logic](quantum-logic) post. We also saw that if we stopped here, figuring out which state was "flipped" takes as many readouts as it would if we just computed the result classically, which is pointless.
+
+So we need a way to make the "flipped" superposition be the dominant output somehow. 
+
+The first trick on our bag of dirty tricks is to set the $q_m$ qubit into a state $\left|X^{(-)}\right> = \frac{1}{\sqrt{2}}[\left|0\right>-left|1\right>]$. Now, rather than sending $\left|0\right> \ rightarrow \left|1\right>$, we send $\left|X^{(-)}\right>\rightarrow -\left|X^{(-)}\right>$. In other words, we put a $-180^o$ phase on the $q_m$ bit. Now recall, for any superposition state, the overall phase is the product of all single qubit output phases. Thus flipping one qubit in the superposition will multiply (here, '-1') the phase across all the qubits for that superposition state. In other words, our state vector looks like $(1,1,...-1,...1)$ where we flipped only one of the coefficients that matches.
+
+Of course, you might think at this point we are going backwards - I mean, at least we could read out the circuit before and figure out (after a gazillion tries) which state was marked. Our detectors, though are not able to read out quantum phase directly, so the minus sign is actually undetectable here! So how is this better than what we did before?
+
+Well, here is the next trick in our bag of dirty tricks. Recall that we eventually want to rig a unitary operation where the coefficients in the output superposition state peak for the solution we seek. How could we rig this up?
+
+After our phase flip of a single state, let's take our qubits back into the computational basis with another set of Hadamard gates. Recall that if we hadn't flipped our qubit, this would just undo the original states. So the output superposition vector would be $(1,0,0...0)$
+
+So the resulting unitary operation of $n$ Hadamard gates have to add up to 1 for the first coefficient, and 0 for all the rest.
+
+It's a little tricky to see how the $n$ Hadamard gates work in parallel for an arbitrary, possibly entangled state vector. But if we have flipped one (and only one) coefficient to negative in the state vector, then we know we are off-by-one in the sum that gives us $1+1+1...=2^n$ (which is normalized by $1/2^n$). Similarly for the rest of the elements that should have summed to 0 - we are off by $\pm 1$. So, we get $(N-1, \pm 1,\pm 1,...\pm 1)$ after the Hadamard gates when one of our phases is flipped. 
+
+Let's write this out explicitly for $2^3=8$ qubits to see if we can figure out how the signs work. After phase flipping one of the states, our state vector looks like $(1,1,1,1,-1,1,1,1)$. Here I took the 5'th state, or the number 4 (represented in binary as $\left|100\right>$) as the match state. Now how would we construct the $H^{\otimes 3}$ matrix? Let's start with the outer product $H^{\otimes 2}=H\otimes H$. That is:
+
+$H^{\otimes 2} = H\otimes H = \begin{bmatrix}
+H & H \\
+H & -H
+\end{bmatrix}$$
+
+Similarly for $H^{\otimes 3}=H\otimes H \otimes H$:
+
+$H^{\otimes 3} = \begin{bmatrix}
+H^{\otimes 2} & H^{\otimes 2} \\
+H^{\otimes 2} & -H^{\otimes 2}
+\end{bmatrix}$$
+
+and so on - this matrix grows exponentially so we aren't going to go any bigger.
+
+Explicitly, 
+
+$H^{\otimes 2} = \begin{bmatrix}
+1 & 1 & 1 & 1 \\
+1 & -1 & 1 & -1 \\
+1 & 1 & -1 & -1 \\
+1 & -1 & -1 & 1 \\
+\end{bmatrix}$$
+
+and
+
+$H^{\otimes 2} = \begin{bmatrix}
+1 &  1 &  1 &  1 &  1 &  1 &  1 &  1 \\ -7+1
+1 & -1 &  1 & -1 &  1 & -1 &  1 & -1 \\ -2
+1 &  1 & -1 & -1 &  1 &  1 & -1 & -1 \\ -2
+1 & -1 & -1 &  1 &  1 & -1 & -1 &  1 \\ -2
+1 &  1 &  1 &  1 & -1 & -1 & -1 & -1 \\ 2
+1 & -1 &  1 & -1 & -1 &  1 & -1 &  1 \\ 2
+1 &  1 & -1 & -1 & -1 & -1 &  1 &  1 \\ 2
+1 & -1 & -1 &  1 & -1 &  1 &  1 & -1 \\ 2
+\end{bmatrix}$$
+
+So we see across any row or column but the first, the numbers all sum to zero. So when we apply this to the "one state flipped" vector $\left|f\right>$, we get:
+
+$$H^{\otimes 3}\left|f\right> = \frac{1}{8}(7 - 1, -2, -2, -2, 2, 2, 2, 2)$$
+
+Ah, OK then! This looks promising! Each one of the rows in our combined Hadamard gates are summing together in a way that causes the main coefficient to be reduced, and "spreads out" the off-by-one everywhere else ("diffusing" it.) In other words, we added the _amplitudes_, where the relative sign between any two superpositions matters greatly! (This is why we went through all the trouble in the Toffoli gate derivation to get rid of any excess phases on the output states.)
+
+So now what? We can't just reapply the Hadamard gates again - that would simply undo what we just did and bring us back to where we started. So Grover's big insight was that we could flip the sign of the first term where most of the probability is contained with a (multi-qubit) Toffoli gate wired to the $\left|000...0\right>$ superposition state. Now when we "undo" our first Hadamard gates to go back to our "all values" qubit state, that little bit of probability _adds_ back on the phase flipped gate exactly $1/\sqrt(N)$ "extra" amplitude. This would have cancelled if we hadn't flipped the overall sign of the $\left|000...0\right>$ superposition first with our multi-input Toffoli gate. 
+
+That means, after we are all said and done with our operations we have $(1/8)(-7+1+2,-7+1+2,...,-7+1-2*7,...-7+1+2)=(1/8)(-4,-4,...,-3*7+1,...,-4)$ as the output vector (up to an overall factor of $\pm 1$, which doesn't matter since it applies to every superposition state.)
+
+In circuit form, these combined operations are:
+
+And, that my friends, is all she wrote. We just showed that the above circuit, called the Grover Diffusion Operator, to give us a little push in the right direction. 
+
+Of course, that is only a tiny boost for one pass when we have lots of qubits. To improve the boost, what is literally the most obvious thing to do? Run the exact same circuit again! And again, and again. Until the boost gets to a maximum. 
+
+Then we are done. We read out the superposition, and only one coefficient is left, our solution.
+
+But is the number of times we need to run the circuit actually less than the classical "try every value" number of times N? This is where we get into a more rigorous derivation.
+
+Once again, you can "trust me bro" and skip down to the answer (which I sort of let on above if you were reading carefully) or read the next section. I will also here recommend the excellent series by IBM or the textbook for other derivations that are similar. I will emphasize parts that I thought weren't clear to me in the above sources, but that could just be my own particulary density. I threw in some hyperdimensional tigers and monkeys if that is any incentive.
+
+##### How many licks does it take to get to the center of a Tootsie Pop, or Grover's Algorithm?
+
+It's not necessarily three, as the [wise old owl](https://en.wikipedia.org/wiki/Tootsie_Pop#Commercials) claimed. And don't lick your quantum computer, it's cold (talk about your tongue getting stuck to a millikelvin gate...)
+
+What exactly does the Grover Diffusion Operator do? Well, as it turns out, each application looks like a rotation by an angle $\theta$ toward our result state (with all components of the state vector zero except our solution.) How can we see this?
+
+So I keep talking about a "superposition vector". Remember from our basis post, vectors have numbers (sometime complex numbers) that keep track of each dimension. So the ordinary two dimensions of the screen you are looking at have two regular "real" numbers (x,y) to tell you where you are. For three dimensions, (x,y,z) for up/down, left right, forward/backward. I can usually draw 3-d objects on a screen and have something sensible to show, that you would understand, like this. 
+
+[comment]: # (Figure4)
+** Figure 4 **: A 2-d representation of a 3-d object. You are seeing this, right?
+
+Why is that? Well our brains and eyballs literally do this very thing for us automatically - we are optically projecting a 2-d image on our retina which tells us how far away the tiger is that is about to have a monkey for lunch. So monkeys got really good at doing this math operation automatically. Those of us who couldn't "see" it would be tiger dinner.
+
+In the new world, those of us who can't see $2^n$ dimensions might end up being a Google AI dinner. So learn how to do this or get munched down.
+
+I am going to leverage the tiger 2-d math coprocessor we already have. A $2^n$ hyper-space vector will be drawn like this:
+
+[comment]: # (Figure5)
+** Figure 5 **: A 2-d representation of an $2^n$ dimensional vector.
+
+Come on JTP, that's just a regular 2-d vector on my screen. What am I looking at? Well, you are really looking at the _shadow_ of a hyperdimensional vector on the screen. And just like we could see the shadow of a tiger on the cave wall and know to run, we will be able to (hopefully) use this shadow to figure out which way Grover is telling us to run to solve our problem. 
+
+One thing we can explain in 2-d, then 3-d, and then extend the math to $2^n$-d, is the concept of constructing a line (2-d) or plane (3-d) orthogonal to an arbitrary vector $\mathbf{v}$. 
+
+$$\mathbf{u}_\perp = \mathbf{u}-(\hat{v}\dot\mathbf{u})\hat{v}$$
+
+[comment]: # (Figure6)
+** Figure 6 **: Constructing a perpendicular vector $\mathbf{u}_\perp$, which is perpendicular to direction $\hat{v}$. 
+
+The proof that this is true is a single line (using $\hat{v}\dot\hat{v}=1$):
+
+$$\mathbf{u}_\perp\dot\hat{v}=\mathbf{u}\dot\hat{v}-(\hat{v}\dot\mathbf{u})\hat{v}\dot\hat{v}=0$$
+
+What happens is that $\mathbf{v}$ projects (or casts a shadow) onto $\mathbf{u}$ measured by their inner product (remember those from our [basis](basis) posts? Go back and munch on some broccoli if this seems unfamiliar.) That creates a vector of this length along $\hat{v}$. That projection is guaranteed to form a right-angle with the original vector - then we subtract that vector from the initial $u$, which _reflects_ the result around $u$.
+
+What does this have to do with our state vector with one element negated? We can define a hyper plane with the normal direction along $(1,1,1,...1)$. 
+
+
+
+
+##### The Answer
+
+Basically, we need to iterate $\sqrt{N}$ times. So for $n$ qubits, that's $2^{n/2}$ times. That may seem fairly modest, but a reduction by a power of two in an exponent can be tremendous. If our classical calculation takes $3\times 10^{17}$ s at one operation per second (the lifetime of the unviverse), Grover's could execute in $~5\times 10^{8}$ seconds, or about 6 months! That's an awesome speed up, I hope you agree.
+
+But as cool as this is, it still isn't nearly enough to crack RSA encryption! Factoring primes whose product is $2^{2048}$ is still gonna take many lifetimes of the universe, even with Grover's quantum speed-up. In the next post, we will finally see how Shor's alorithm with factor numbers using some dirty tricks from group theory, and yet another quantum circuit, the Quantum Fourier Transform.
+
+So, in summary:
+
+* We can add numbers in parallel, and just like before flip a comparison bit to get the input when we know the output
+* Using the phase-flipping trick, we can mark the superposition we want, then play a clever scatter-flip-collect trick to emphasize the flipped state. 
+* Repeating these tricks over and over $\sqrt{2^n}$ times for $n$ qubits results in solution of our problem. 
+* Yay! Finally we solved something, after all that! 
+* But we still haven't solved the prime factoring problem. That is next up, with yet more quantum circuits to untangle.
+
 
 
 

@@ -85,6 +85,6 @@ So I think (just my opinion) that we will have a quantum computer cracking meani
 
 Which is about where I think quantum computing is at the moment. Rapid progress is being made on quantum information processing, but big challenges remain to practicality. One company is claiming (hoping) to have 100 logical qubits by 2030. And they are being optimistic, as is their job. So I think we easily have a decade before we have to take the encryption threat more seriously. And even then, only nation-states (or corporations that size) are going to have anything approaching a quantum system that can solve a "useful" problem. Which isn't that comforting frankly.
 
-OK, now that we have pooped our proverbial encryption pants, let's find out how quantum mechanics is going to save us from financial ruin. Well, at least some of us. Sort of.
+OK, now that we have pooped our proverbial encryption pants, let's find out how quantum mechanics is going to [save us](quantum-key-exchange) from financial ruin. Well, at least some of us. Sort of.
 
 

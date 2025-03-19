@@ -290,7 +290,7 @@ So although we used this example for illustration of how the quantum gate logic 
 
 Now for the second circuit $U_C$. How do we tell the circuit which value to look for? Here, I fed in a qubit value that had "all the addresses" (since I don't know which value of $x$ is correct yet) and a single definite value of $f(x)$, here 3 (or "11" in binary.)
 
-What does $U_C$ look like inside? A classical comparator compares an input value $b_i$ with a compare value $b_c$, and would look something like this figure. Note that a multi-input AND gate can always be broken down into a series of $\log_2(n)$ two-input AND gate layers, like: 
+What does $U_C$ look like inside? A classical comparator compares an input value $A_i$ with a compare value $B_i$, and would look something like this figure. Note that a multi-input AND gate can always be broken down into a series of $\log_2(n)$ two-input AND gate layers, like: 
 
 [comment]: # (Figure16)
 ** Figure 16 **: A classical bitwise equality comparator. The corresponding bit pair of the input and compare value goes through XNOR gates. Unless all the XNOR gates produce "1", then there is a mis-match in the pattern of bits somewhere.    
