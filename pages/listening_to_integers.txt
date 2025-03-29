@@ -1,0 +1,131 @@
+[comment]: # (start_post)
+
+## Listening to the Integers
+
+#### Post 4.5 in the Quantum Computing [Series](quantum-computing-series)
+
+#### In which we generate some surprising sounds and images from the structure of the integers
+
+Let's take a quick break from Quantum Mechanics to have another look at the integers. Don't worry, there is a point to this - the properties of integers we will explore below are essential to understand how we are going to destroy the world financial system in the next post.
+
+I'll start with a quote (as I remember it) from an undergraduate math professor, Dr. Denlinger, who we met in the post [about encryption](how-encryption-works):
+
+"You can spend a lifetime studying the integers and still find surprises."
+
+This was spoken in my college algebra class (also known as 'group theory'), and I remember scoffing. Come on, "1,2,3,4.." are just the ordinary numbers, they are boring the hell out of me, right now.
+
+But as I got older and began pondering more universalities in mathematics and physics, I came to appreciate what he meant. In fact, the deepest thinking in physics is basically wrestling with number theory. It's all mighty suspicious, because the structure of numbers isn't at all obvious, at least to me.
+
+So here is the thing. We found out in our [encryption post](how-encryption-works)  that the set of integers coprime to some example integer $N$ form a _multiplicative group_ modulo $N$. That is, the numbers $a$ less than $N$ with greatest-common-divisors (gcd) of 1 (the $a$'s and $N$ have no common factors) form a group under multiplication modulo $N$. So any combination of $a$'s multiplied together give us another member of the group, and we can always find two $a$'s where the product is 1 (each $a$ has an inverse.) That was decidedly _not_ obvious at first glance (at least to me.) Heck, even the fact that integers have unique prime factorizations isn't particularly intuitive. 
+
+If we keep going down this road, we will end up back in our college dorm rooms, taking a hit off the bong, and saying "hey man what does the number '3' really _mean_?" We won't go all the way back to the drug-fueled speculation about the meaning of numbers, but we are about to look at some of the interesting repeating patterns that are buried in the integers.
+
+In particular, we can define the modular exponent $r$ of a number $a \mod N$ as:
+
+$$a^r = \underbrace{aaa...a}_{\text{r times}} \mod N$$
+
+We already met this in [Fermat's Little Theorem](https://en.wikipedia.org/wiki/Fermat%27s_little_theorem), so we know we are guaranteed that any number $a$ less than a prime $p$ satisfies:
+
+$$a^p = a \mod p$$
+
+So $a$ always "come back" to itself if we keep multiplying by $a$ enough times. 
+
+What is surprising (again, to me at least) is that there are _other_ exponents $r$ less than $p$ where this might happen, i.e.
+
+$$a^r = 1 \mod p$$
+
+where $r < p-1$. To demonstrate this, let's just brute force the first 200 or so primes:
+
+[comment]: # (Figure1)
+** Figure 1 **: Smallest integer $r$ where $a^r = 1 \mod p$ for a given prime $p$ up to $p-2$. Fermat's Little Theorem says $r=p-1$ must be a candidate, but it isn't the smallest value that works!
+
+Note that this isn't quite the [Charmichael Function](https://en.wikipedia.org/wiki/Carmichael_function). That is the smallest $r$ for _all_ coprimes to $N$ (not just a particular value.) And I am ignoring the largest value in the group $N-1$, because $(N-1)^2 = 1 \mod N$, so the order of the last element is always 2, even if $N$ isn't prime.
+
+The smallest value of $r$ for any particular number $a$ (modulo $N$, prime or otherwise) is called the "order" of the integer. Like prime factors themselves, there doesn't seem to be any general way to predict the order of a group element, besides trying out all the values.
+
+So we can choose some value $a$ coprime to an integer $N$, compute $a^x$ where $x \in (2,3,4...N-1)$ and look for repeating patterns. For instance, here is a plot of a selection of $a^x \mod p$ as a function of $x$. Many primes have a base $a < p$ which show remarkably low orders, but some (e.g. 167 and 179) have a minimum order which is surprisingly large, and the repeats in those cases exhibit a lot of structure.
+
+[comment]: # (Figure2)
+** Figure 2 **: Examples of $a^r$ that repeat forever (the smallest $r$ with corresponding $a$ is noted in the labels.) 
+
+The right hand side graphs are the _power spectral density_ of the corresponding $x$ traces. This is the Fourier Transform (magnitude) using [our hero](whats-up-with-i) $e^{i\omega t}$.
+
+Remember the post about [basis functions](basis)? Well, the Fourier transform is a basis made out of waves (sines and cosines basically.) We naturally use this basis in our hearing - the thing hitting our ears as sound is actually a sine wave of pressure. Our ears and then brain sample these waves and give us a feeling of loudness and frequency. At some point, the brain "demodulates" the waves. In math, we can do this with multiplying the incoming sound wave signal $s(t)$ with a "sine" wave of a specific frequency (actually, sine and cosine using $e^{i\omega t}$), and summing the result over time. The parts of $s(t)$ that don't match the frequency $\omega$ will also be sine waves, which average out to zero in our sum. If the frequencies match, then the result is a (complex) number that represents the "loudness" of the wave at that frequency. That is what the 'y' axis on the right hand side graphs mean. Single, relatively pure frequencies look like a "peak" around their corresponding frequency.  
+
+So I started playing around with this and it occurred to me: these repeating patterns look like sound waves. So, what would $a^x \mod N$ _sound_ like? 
+
+To make a sound out of each sequence, I first calculate the maximum frequency based on the audio sampling frequency $f_s=44.1$ kHz . In order to make sure I can "hear" every note, I assign the sample rate $dx=1$ to a time:
+
+$$dt = 2/f_s$$ 
+
+That makes the lowest "tone" for the integer $p$:
+
+$$f_{min} = \frac{1}{pdt}$$
+
+So, the range of tones in the integer $p$ would be: 
+
+$$[f_{min},f_{max}]=[\frac{f_s}{2p},\frac{f_s}{2}]$$
+
+I could leave the frequencies as-is, but by default I will assign $f_{min}$ to the closest note in the pentatonic E flat scale (the black keys on the piano.) Did I mention I am not a great musician?
+
+Note that as integers increase in this scheme, the fundamental tone gets lower. 
+
+For $p \sim 100$, $f_{min} \sim 2.2$ kHz. We can "mix in" the $a^x \mod p$ part with a pure $f_{min}$ tone as well. It is interesting to listen to just the tones and compare.
+
+Behold, here is the resulting spectrogram!
+
+[comment]: # (Figure3)
+** Figure 3 **: Spectrogram of audio sequence generated from a set of primes. The integers aren't as boring as I thought! 
+
+I put [the code](https://github.com/jmoonware/audibleintegers) and some example output on github for anyone's amusement. The default audio file is called 'integers.wave' (although there is a command line option to name it to whatever.)
+
+In the 'examples' folder in the above project there are a number of other audio '.wav' (and .png) files for the output under different conditions. Have a listen, it isn't very melodic, but it is interesting. 
+
+The integers with low orders have a high-pitched whine, lower and other complicated repeating structures are more 'buzzy'. 
+
+In addition to the wav file that gets created by running audioorder.py, seven columns of numbers get printed to the screen.
+
+|&#8195 $\tau$&#8195 |&#8195 $N$&#8195  |&#8195 $f$ (Hz)&#8195 |&#8195 $a$&#8195 |&#8195 $r$&#8195 |&#8195 $\lambda(N)$&#8195 |&#8195 $F$&#8195 | 
+|:------:|:----:|:--------:|:---:|:---:|:------------:|:---:|
+| 1.00 | 0209 | 103.83 | 0091 | 90 | 90 | 11  | 
+| 0.25 | 0221 | 103.83 | 0189 | 24 | 48 | 13 | 
+| 1.00 | 0247 | 92.50 | 0103 | 6 | 36 | 1 | 
+| 1.00 | 0253 | 92.50 | 0007 | 110 | 110 | 1 | 
+| 0.50 | 0299 | 77.78 | 0121 | 66 | 132 | 23 | 
+| 0.50 | 0319 | 69.30 | 0013 | 70 | 140 | 1 | 
+| 0.12 | 0323 | 69.30 | 0302 | 36 | 144 | 19 | 
+| 0.50 | 0341 | 69.30 | 0087 | 6 | 30 | 31 | 
+| 1.00 | 0377 | 58.27 | 0021 | 28 | 84 | 1 | 
+| 0.12 | 0391 | 58.27 | 0286 | 176 | 176 | 23 | 
+| 1.00 | 0403 | 51.91 | 0384 | 60 | 60 | 31 | 
+| 1.00 | 0407 | 51.91 | 0053 | 45 | 180 | 1 | 
+| 0.50 | 0437 | 51.91 | 0223 | 198 | 198 | 23 | 
+| 1.00 | 0451 | 46.25 | 0342 | 8 | 40 | 11 | 
+| 0.12 | 0473 | 46.25 | 0391 | 70 | 210 | 43 | 
+| 0.25 | 0481 | 46.25 | 0358 | 36 | 36 | 37 |
+ 
+** Table 1 **: Example output of audioorder.py using the '--prime_pairs' flag, using '-sip 200' (use pairs > 200), and randomly chosen base $a$ ('-rb'.) The columns are (in order): (1) Note duration $\tau$ (s), (2) The integer $N$, (3) The resulting base frequency in Hz $f$, (4) The base $a$ (here, randomly chosen from coprimes $< N$), (5) The order of $a$, $|a|=r$, (6) The Charmichael function $\lambda(N)$ for this $N$, and (7) An attempt at finding a prime factor $F$.
+
+So why all the fuss about orders and whatnot? Let's look at the case where $N$ is the product of two primes, $p$ and $q$, as in the table of numbers above. We know why this is an interesting case, because this is the basis of how [RSA encryption works](how-encryption-works).
+
+I can re-arrange $a^r=1 \mod pq$ as $a^r-1 = 0 \mod pq$. That just means that $a^r-1$ has to be a multiple of $pq$. Now, I use my high school algebra to write this as:
+
+$$a^r-1=(a^{r/2}-1)(a^{r/2}+1) = f_{-}f_{+} = 0 \mod pq$$
+
+So I have (just about) _factored_ $pq$ using the order of $a$ into two terms, $f_{\pm}=a^{r/2}\pm 1$. I say "just about", because all I really know is that the product $f_{-}f_{+}$  is a multiple of $pq$. One or the other side could contain $pq$, which is a trivial solution. If that isn't the case, then each side contains one of the factors. The greatest common divisor $\gcd(f_{-},pq)$ will be one of the factors of $pq$ (otherwise $f_{-}f_{+}$ wouldn't be zero mod $pq$.) Fortunately, the gcd is fast to compute using one of the greatest of oldtime math hits, the [Euclidean Algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm).
+
+The last column in the output of audioorder.py in Table 1 above is the prime factor $F$ obtained with this method. Use the '-rb' option to choose a random base $a$, and the '--prime_pairs' option to limit the integers used to prime pairs. As expected, a non-trivial factor (something other than '1') is obtained this way about half the time. So this method works well enough. Even if we didn't guess an $a$ that gave us a non-trivial solution, we can try again a couple more times and be more or less guaranteed that this process will eventually find us a factor.
+
+Thus we see, finding $r$ is the hard part of integer factorization. And the number $N=pq$ having an $r$ causes it to have a repetitive pattern that you can actually _hear_ if we turn the integers into sound waves. That's because our brains are really good at giving us a different sensation for each different sound wave frequency, as if we have built-in Fourier Transforms in our heads.
+
+All we need is a gizmo to find these repeats easily, and we can split up any pair of prime factors. 
+
+So in summary:
+
+* The integers aren't nearly as boring as I first suspected.
+* We can "hear" repetitive patterns by listening (if the repeat is in the range of our hearing, about 20Hz-20kHz.) Our brains have evolved to give us a sensation for each frequency we hear, which is essentially:
+* The Fourier Transform, which "picks out" these repeats mathematically. This turns a specific sine-wave-like repeating thing in time into a peak on a graph (or a sensation in your head) that can be detected in a straightforward way. 
+* Finding a repetitive pattern in the modular exponentiation of $a$ co-prime relative to $N$ is called the _order_ of $a$.
+* Once we have the order of $a$, we can try to factor $N$ using some dirty tricks.
+* Even if we made a bad guess at $a$, it's pretty likely that any other random guess will work. We have about even-odds of picking an $a$ at random and having it work the first time.
+* This suggests a method to factor prime pairs if we had a gizmo that could compute modular exponents quickly, and then look for repeating patterns. Hmmm...

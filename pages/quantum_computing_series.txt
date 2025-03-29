@@ -23,6 +23,10 @@ Behold, here are the quantum computing posts in their logical order:
 - ** Post 4: **  Hail Caesar!
   - Start to finish quantum solver of the Caesar Cipher (or maybe the Cae\*a* C\*\*he\* ) - actually completing a calculation!
   - How to add numbers in superposition, and Grover's Algorithm for steering the superposition toward a single set of basis functions
+- ** Post 4.5: **  [Listening to the Integers](listening-to-integers)
+  - Looking at repetitive structures in the integers under modular exponentiation
+  - Hearing this repetitive structure using sound waves, and seeing it with Fourier Transforms.
+  - Factoring prime pairs using this information, slowly
 - ** Post 5: ** How to Factor Numbers In Less Time Than The Age of the Universe
   - Finally! Using Shor's Algorithm to factor large numbers
   - This is it folks - the Quantum Fourier Transform and Group Theory unite their powers, and destroy the financial system!

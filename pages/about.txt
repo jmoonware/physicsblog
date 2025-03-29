@@ -13,6 +13,6 @@ I am not trying to monetize anything - I could care less if anyone ever reads th
 
 ##### Meta info about this site
 
-I wanted to avoid as much website platform framework mumbo-jumbo as possible. I also wanted some interactive plotting, animation, and navigation logic, so I use the [Dash/Plotly](https://dash.plotly.com/) framework. I use [Blender](https://www.blender.org/) for some of the animations. I am hosting this on a simple cloud instance - it's not going to scale or handle 10k requests per second. If that situation develops, something has going seriously wrong in my life.
+I wanted to avoid as much website platform framework mumbo-jumbo as possible. I also wanted some interactive plotting, animation, and navigation logic, so I use the [Dash/Plotly](https://dash.plotly.com/) framework. I use [Blender](https://www.blender.org/) for some of the animations. I am hosting this on a simple cloud instance - it's not going to scale or handle 10k requests per second. If that situation develops, something has gone seriously wrong in my life.
 
 Posts are edited in text markdown as the Good Lord intended, then individually included in the site contents, with Python code as needed for the interactive stuff. Don't judge me.
