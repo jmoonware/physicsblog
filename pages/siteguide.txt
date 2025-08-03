@@ -1,0 +1,28 @@
+[comment]: # (start_post)
+
+## Overall Site Guide to JTP
+
+#### Meta-post guide to all the posts that will (eventually) be found on JTP
+
+I generally post on topics that require multiple posts to explain. So this site has grown to the point that we need a "guide to the guides", which should encompass more or less everything that is here. 
+
+Don't worry, you can still sort on difficulty level or date (the default.) 
+
+So, without further ado, here is the guide to the guides!
+
+- ** Guide 1: ** A [summary](summary) of the site, with links to the basics
+  - Start here - it's perma-linked in the navigation gizmo
+  - Links to the posts that give the minimum amount of math to make sense of this site
+- ** Guide 2: ** [The Bell's Inequality Series](bell-series)
+  - All that spooky "action at a distance" stuff in Quantum Mechanics
+- ** Guide 3: ** [The Quantum Computing Series](quantum-computing-series)
+  - A lot more than you ever wanted to know about Quantum Computing
+  - Includes posts about RSA encryption, and some backgroun Group Theory information that is needed to understand some of the problems addressed with Quantum Computing
+- ** Guide 4: ** Quantum Field Theory
+  - Conjugates the verb "to quantize"
+  - Zero-point energy and why we shouldn't let infinity bother us (including some of the weirder implications, e.g. the Casimir Force.)
+  - Why everything is really a field, but insisting we don't use particles is pointy-headed
+- ** Guide 5: ** Financial Topics I Find Interesting
+  - Call options and Black-Scholes - how to make fancy side-bets at the stock market casino, and why I am an index investor
+  - Cryptocurrencies - why are we heating the planet to chase numbers?
+  - High speed trading - useful arbitrage, or everything that is wrong with Wall Street?

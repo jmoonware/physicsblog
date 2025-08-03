@@ -26,6 +26,7 @@ try:
 							html.H5("Filter by topic"),
 							html.Div(dcc.Dropdown(tocutil.get_topics(),multi=True,id='topic_dropdown')),
 #							html.Div(dbc.Button("Search",id='search_button')),
+							html.Div(dbc.CardLink("Site Guide",href='siteguide')),
 							html.Div(dbc.CardLink("Summary Page",href='summary')),
 						],title="Navigation"),
 						],

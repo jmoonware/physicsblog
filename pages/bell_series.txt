@@ -22,8 +22,8 @@ These posts will walk us through what all the fuss is really about, and hopefull
   - Compute both the classical and quantum outcomes of measuring widely separated, entangled quanta
   - With some discussion of how qubits and gates are actually implemented in the real world
 - ** Post 4: ** Loopholes in Bell's Inequality
-  - Some relatively absurd "loopholes", i.e. ways to explain Bell measurements that don't violate causality 
-  - Discussion of relatively recent experiments that have simultanously closed all the known loopholes 
+  - Some absurd "loopholes", i.e. ways to explain Bell measurements that don't violate causality 
+  - Discussion of recent experiments that have simultanously closed all the known loopholes 
   - And what loopholes might possibly remain
 - ** Post 5: ** No, You Can't Send a Message Faster Than the Speed of Light
   - How the Universe conspires to hamstring our apparently faster-than-light quantum entanglement
