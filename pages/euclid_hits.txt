@@ -10,7 +10,7 @@
 
 The title sounds like one of those tribute band albums advertised on [VHF](https://en.wikipedia.org/wiki/Very_high_frequency) channels in the 1970's (yes I am that old.) I think [K-Tel](https://en.wikipedia.org/wiki/K-tel) used to sell these. [Here's](https://mymusicthroughtheyears.wordpress.com/2022/01/08/the-rise-and-fall-of-k-tel-records/) more than you ever wanted to know about this subject.
 
-Anyway, if you read the post about [how encryption works](how-encryption-works), we went to a lot of trouble proving that the set of integers $\{a\}$ co-prime to $N$ form a multiplicative group modulo $N$. That means, among other things, that every time we multiply two numbers from the set $\{a\}$ together (modulo $N$), we get another member of the set. It also means that there exists an inverse for every member of the set (i.e., for each element there is another, possibly the same, element that when multiplied [modulo $N$] equals 1.)
+Anyway, if you read the post about [how encryption works](how-encryption-works), we went to a lot of trouble proving that the set of integers $\{a\}$ co-prime to $N$ form a multiplicative group modulo $N$. That means, among other things, that every time we multiply two numbers from the set $\{a\}$ together modulo $N$, we get another member of the set. It also means that there exists an inverse for every member of the set (i.e., for each element there is another, possibly the same, element that when multiplied modulo $N$, equals 1.)
 
 Proof of this last statement used a dirty trick called [B&#0233zout's Identity](https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity), namely:
 
