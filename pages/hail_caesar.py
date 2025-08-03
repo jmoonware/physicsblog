@@ -1,0 +1,37 @@
+import dash
+from dash import dcc, html, callback, Input, Output
+import dash_bootstrap_components as dbc
+import logging
+import mdutil
+
+try:
+	dash.register_page(__name__,title="John the Physicist")
+	
+	pmd = []
+	mdutil.build_markdown(__name__,"start_post","Figure1","assets/Fig1_hail_caesar.png",pmd)
+	mdutil.build_markdown(__name__,"Figure1","Figure2","assets/Fig2_hail_caesar.png",pmd)
+	mdutil.build_markdown(__name__,"Figure2","Figure3","assets/Fig3_hail_caesar.png",pmd,width=500)
+	mdutil.build_markdown(__name__,"Figure3","Figure4","assets/Fig4_hail_caesar.png",pmd,width=500)
+	mdutil.build_markdown(__name__,"Figure4","Figure5","assets/Fig5_hail_caesar.png",pmd)
+	mdutil.build_markdown(__name__,"Figure5","Figure6","assets/Fig6_hail_caesar.png",pmd)
+	mdutil.build_markdown(__name__,"Figure6","Figure7","assets/Fig7_hail_caesar.png",pmd)
+	mdutil.build_markdown(__name__,"Figure7","Figure8","assets/Fig8_hail_caesar.png",pmd)
+	mdutil.build_markdown(__name__,"Figure8","Figure9","assets/Fig9_hail_caesar.png",pmd)
+	mdutil.build_markdown(__name__,"Figure9","Figure10","assets/Fig10_hail_caesar.png",pmd)
+	mdutil.build_markdown(__name__,"Figure10","",None,pmd)
+	
+	layout = html.Div([
+		dbc.Row([
+			dbc.CardGroup([
+				dbc.Card([
+					dbc.CardBody(pmd),
+				]),
+			]),
+		],justify='center'),
+	])
+
+except Exception as ex:
+	logging.getLogger(__name__).error(__name__+" : Last chance exception:"+str(ex))
+	logging.getLogger(__name__).info(__name__+" : Exit on last-chance exception")
+finally:
+	logging.getLogger(__name__).info(__name__+" : Reached finally OK")

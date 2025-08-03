@@ -4,32 +4,13 @@
 
 #### Post 5 in the Quantum Computing [Series](quantum-computing-series)
 
-And how to wreck the world financial system.
+How to wreck the world financial system.
 
 So far we have seen that quantum coprocessors, as cool as the science can be, seem to be pretty useless at present. Every time we try to do something a little interesting (like inverting a function with Grover's Algorithm) we run into a "well, but we need this nearly impossible thing to be true."
 
 In this post, we will go through an algorithm that is finally going to get us to a place where I am going to have to say, it might actually work, eventually. This would be Shor's Algorithm, proposed by Shor in 199x. It is a method to factor a large number into two large primes, which we showed earlier is the basis for cracking RSA public key encryption. 
 
-OK let's start with Fermat's Little Theorem, which we met [before](how-encryption-works):
-
-$$a^p = p\mod p$$
-
-where $p$ is prime. Let's switch $p$ over to $N$ which isn't necessarily prime. It turns out that there might be other, smaller, exponents (and strangely, even if p is prime) where this condition holds: 
-
-$$a^r = 1 \mod N (r < N-1)$$
-
-The smallest number $r$ where this is true is confusingly called the "order" of the integer $N$. Don't try Googling "order" because you will never find it in the on-line shopping apocalypse that the Internet has become. 
-
-How does this help us factor $N$? Briefly, if you know the order $r$, you can use this to calculate a divider of $N$ as follows: 
-
-First, rearrange the last equation as:
-
-$$a^r - 1 = 0 \mod N$$ 
-
-Now, if you remember your algebra, we can factor $x^2-1 = (x-1)(x+1)$. So the equation becomes:
-$$(a^{r/2}-1)(a^{r/2}+1)=0 \mod N$$
-
-The only numbers that are $0 \mod N$ are multiples of $N$. So one or the other sides of this product is a factor of $N$. If we know $N$ is the product of two primes, this factors $N$ completely.
+Take a listen and look at [the integers](listening-to-integers).
 
 Great! So now we have moved factoring $N$ into finding the order $r$. The reason I think this isn't actually the dumbest thing ever is because $r$ is an exponent. That means we use the magic of exponentials to narrow down our choices _logarithmically_. In other words, we can represent $r$ with $\sim \log_2(N)$ qubits, or thousands. Not kajillions like we needed for an arbitrary quantum memory or factoring with Grover's Algorithm. 
 

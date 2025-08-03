@@ -12,6 +12,9 @@ Behold, here are the quantum computing posts in their logical order:
 
 - ** Post 1: ** How Encryption [Works](how-encryption-works)
   - Enough detail about public key encryption to understand why factoring big numbers is important, and maybe more about group theory than you ever wanted to know
+- ** Post 1.5: ** [Euclid and the Greatest Hits of Math](euclid-hits)
+  - OK, we need another intermediate post to explain B&#0233zout's Identity (which we used in Post 1)
+  - Feel free to come back to this after reading the other posts
 - ** Post 2: ** [Quantum Warmup](quantum-warmup)
   - Introduction to quantum computing (qubits, operations, a couple elementary logic gates)
   - With some discussion of how qubits and gates are actually implemented in the real world
@@ -20,9 +23,9 @@ Behold, here are the quantum computing posts in their logical order:
   - How to build up to a complete set of quantum gates from a handful of simpler gates
   - How to "mark" one of our superposition states based on the value from a classical register
   - But we _still_ won't have computed anything yet
-- ** Post 4: **  Hail Caesar!
-  - Start to finish quantum solver of the Caesar Cipher (or maybe the Cae\*a* C\*\*he\* ) - actually completing a calculation!
-  - How to add numbers in superposition, and Grover's Algorithm for steering the superposition toward a single set of basis functions
+- ** Post 4: **  [Hail Caesar!](hail-caesar)
+  - Start to finish quantum solver of the Caesar Cipher - actually completing a calculation!
+  - How to add numbers in superposition, and Grover's Algorithm for steering the superposition toward a single, dominant solution
 - ** Post 4.5: **  [Listening to the Integers](listening-to-integers)
   - Looking at repetitive structures in the integers under modular exponentiation
   - Hearing this repetitive structure using sound waves, and seeing it with Fourier Transforms.
@@ -33,7 +36,8 @@ Behold, here are the quantum computing posts in their logical order:
 - ** Post 6: ** Secure [Key Exchange](quantum-key-exchange)
   - Having destroyed the financial system, quantum mechanics saves the financial system with unhackable weirdness.
   - Provided you have a pile of fancy gizmos
-- ** Post 7: ** No, You Can't Send a Message Faster Than the Speed of Light
-  - How the Universe conspires to hamstring our apparently faster-than-light quantum entanglement
-  - And no, you can't have a pony, either  
-
+- ** Post 7: ** Mistakes were made
+  - Did we mention that current quantum circuits are almost comically imprecise?
+  - So let's put some boundaries on how good devices need to be (that is, how much and how long quantum phase needs to be preserved) for a given error rate
+  - Along with a discussion of error correction schemes
+  - And some thoughts on how close any of this is to reality 

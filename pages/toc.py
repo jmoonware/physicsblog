@@ -69,7 +69,7 @@ try:
 					dbc.CardHeader(r.date_iso),
 					dbc.CardBody([
 						html.H4(r.title),
-						html.P(r.description),
+						html.P(dcc.Markdown(r.description)),
 						dbc.CardLink("Read...",href=dash.page_registry[r.location]['path']),
 						dbc.Accordion([
 							dbc.AccordionItem([

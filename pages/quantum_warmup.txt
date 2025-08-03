@@ -117,7 +117,7 @@ OK enough about notation. I just showed you how to build the "all states at once
 This is also straightforward - we put a polarizing beam splitter and a pair of detectors (one detector for "0" and one detector for "1") on each output. When we do this, we get one (and only one!) of my H ("0") or V ("1") detectors on each qubit to fire. If I am measuring the initial "all states at once" quantum register, since we carefully set our qubits to have a 50% chance of being measured in the H or V state, we've basically just built a random number generator! 
 
 [comment]: # (Figure5)
-** Figure 5 **: A quantum random number generator. Don't get too excited, this is basically not very useful. It does show, though, how to write and read a quantum register.
+** Figure 5 **: A quantum random number generator. Don't get too excited, this is not very useful. It does show, though, how to write and read a quantum register.
 
 Each time I send in a new set of "0" photons, they get transformed into this "I'm in both states equally state", which really means "I am in ALL states equally", and then my measurement gives me a random set of classical bits out. I end up only being able to measure one of the possible states with equal probability.
 

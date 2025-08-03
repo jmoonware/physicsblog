@@ -6,6 +6,6 @@ toc = TocEntry(
 	title="The Quantum Computing Series", 
 	description="Guide to all the posts about quantum computing.",
 	logical_order=7, 
-	difficulty=2,
+	difficulty=0,
 	topics=["quantum computing"]
 )

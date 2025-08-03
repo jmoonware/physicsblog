@@ -1,0 +1,132 @@
+[comment]: # (start_post)
+
+## Euclid and the Greatest Hits of Math
+
+#### Post 1.5 in the Quantum Computing [Series](quantum-computing-series)
+
+##### In which we derive B&#0233zout's Identity
+
+##### A supplementary post to the [encryption post](how-encryption-works)
+
+The title sounds like one of those tribute band albums advertised on [VHF](https://en.wikipedia.org/wiki/Very_high_frequency) channels in the 1970's (yes I am that old.) I think [K-Tel](https://en.wikipedia.org/wiki/K-tel) used to sell these. [Here's](https://mymusicthroughtheyears.wordpress.com/2022/01/08/the-rise-and-fall-of-k-tel-records/) more than you ever wanted to know about this subject.
+
+Anyway, if you read the post about [how encryption works](how-encryption-works), we went to a lot of trouble proving that the set of integers $\{a\}$ co-prime to $N$ form a multiplicative group modulo $N$. That means, among other things, that every time we multiply two numbers from the set $\{a\}$ together (modulo $N$), we get another member of the set. It also means that there exists an inverse for every member of the set (i.e., for each element there is another, possibly the same, element that when multiplied [modulo $N$] equals 1.)
+
+Proof of this last statement used a dirty trick called [B&#0233zout's Identity](https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity), namely:
+
+$$ax + yN = 1$$
+
+where $x$ and $y$ are integers, and $a$ and $x$ are co-prime to $N$. This proves that there is always an inverse to $a$ under multiplication modulo $N$ (the $yN$ term is the 'modulo $N$' part.)
+
+The more general form of B&#0233zout's Identity is:
+
+$$xa + yb = \gcd(a,b)$$
+
+where $x$ and $y$ are again integers, and $\gcd(a,b)$ is the [greatest common divisor](https://en.wikipedia.org/wiki/Greatest_common_divisor) of $a$ and $b$.
+
+That's another one of those "kind of looks plausible, but really, why?" things. Why is there a linear combination of integers that can always be made to differ by one $\gcd$ unit? That bothered me enough that I decided I needed to make this supplementary post.
+
+To answer this question, let's go back to one of math's all-time greatest hits, the [Euclidean Algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm). Famously, Euclid came up with this around 300 BCE. Just imagine him hanging out on the Mediterranean somewhere and telling whoever would listen. As he didn't even have a blog - it's remarkable that he became such a well known influencer.
+
+The Euclidean algorithm computes the greatest common divisor between two integers. Amazingly, this algorithm converges in $\log(N)$ time, which means $N$ can be astronomically large ($\sim 2^{2048}$ for e.g. RSA encryption keys), but finding the greatest common divisor between this astronomical $N$ and another cosmic integer completes almost instantly on a modern computer.
+
+Contrast this to the general factorization problem of a single integer. Prime factorization of an arbitrary integer as large as those used in RSA encryption would take many universe lifetimes, if we just tried brute-force (i.e. try every value.)  
+
+Now, maybe this isn't so surprising, since finding a common factor of two numbers is different than essentially finding a common factor between _all the other_ numbers relative to a single number. Still, it bugs the crap out of me, and makes other people suspicious that there might be an undiscovered classical algorithm that factors integers quickly, lurking out there somewhere. I am not going to bother to hunt for this particular Moby Dick algorithm because (a) I am old and dense and (b) so many other smarter professional Ahabs have spent lifetimes looking for this mathematical whale. Discovering a new, efficient prime factorization algorithm would make anyone instantly famous (and also destroy the world financial system.) And we aren't talking just "math world" famous, but like, Euclid famous. So I am dubious that this pale cetacean really exists.
+
+Euclid's algorithm works like this: take two integers, $a$ and $b$, where $a > b$. Test if $b$ divides $a$ without a remainder (sometimes notated as $b|a$.) If it does, great, $b$ is the greatest common divisor of $a$ and $b$ ($\gcd(a,b)=b$.) That is, $a$ is composed of an integral number of "blocks" of $b$.
+
+If there is a non-zero remainder $r$, then we get:
+
+$$a = xb + r$$
+
+where $x$ is some integer. Now, here is one of the the big insights of Euclid: what if $r$ divides $a$ and $b$? Then $r$ would have to be a common factor ("block size") of $a$ and $b$. It would also in fact be the greatest common divisor, if we happen to get lucky and $r|a$ and $r|b$ on the first try.
+
+Why is that? Here is a diagram of line segments, where each line segment is composed of "blocks" that are the greatest size possible that divides up both line segments (i.e., the block is by definition the greatest common divisor):
+
+[comment]: # (Figure1)
+** Figure 1: ** Line segments composed of $\gcd$ "blocks". The remainder $r$ is also composed of at least one "block".
+
+The argument that this is the _greatest_ common divisor relies on what would happen if $r$ isn't a common factor of $a$ and $b$.
+
+Let's call the first $r$ that doesn't divide $a$ and $b$, $r=r_0$. Euclid's other big insight was that we can repeat the above procedure with $a\rightarrow b$ and $b\rightarrow r_0$, i.e.
+
+$$b = zr_0 + r_1$$
+
+where $z$ is some other integer. This is because $r_0$ is composed of the same blocks as $a$ and $b$, so the $\gcd$ of $r_0$ and $b$ is the $\gcd$ of $a$ and $b$, too.
+
+In this second stage, $r_1 < r_0$. So each time we repeat this procedure we get smaller and smaller remainders. The first time the remainder divides both numbers, we have found the $\gcd$. Because once that happens, the next step must yield a zero remainder (you have to be able to construct both numbers from the last remainder, because the last remainder is a single block, and so we are guaranteed that we can reconstruct the second-to-last remainder with this block.)
+
+Formally, we can use the notation:
+
+$$r_i = x_{i+2} r_{i+1}+r_{i+2}$$
+
+where $x_i$ is some integer that gives a remainder $r_i$ (which by definition has to be less than $r_{i+1}$). In this notation $r_{-2}=a$, and $r_{-1}=b$, our two starting numbers.
+
+Note that each step progresses by setting $r_i\rightarrow r_{i+1}$, $r_{i+1}\rightarrow r_{i+2}$. Explicitly:
+
+$$\begin{matrix}
+a = r_{-2} = x_0b+r_0\\
+b = r_{-1} = x_1r_0+r_1\\
+r_0 = x_2r_1+r_2\\
+r_1 = x_3r_2+r_3\\
+...\\
+\end{matrix}$$
+
+Note that this series of equations finds the $\gcd$ iteratively, where the next step depends on the previous step and an if/then decision (as opposed to, say, a formula like the [Pythagorean Theorem](https://en.wikipedia.org/wiki/Pythagorean_theorem), where we just plug in numbers.) This makes it an _algorithm_, and it is one of the earliest problems to be solved this way. There must have been something in the water in ancient Greece because Eratosthenes came up with his [sieve](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes) for prime numbers about the same time, which is also an algorithm. If the Greeks had had computers, and humans weren't so prone to murdering each other, we'd already have flying cars.
+
+Now let's reverse Euclid's Algorithm - how is the $\gcd(a,b)$ related to the original two numbers $a$ and $b$, besides being a divisor of both? At the final step, we have:
+
+$$r_{i} = x_{i+2} r_{i+1} + \gcd(a,b)$$
+
+[comment]: # (Figure2)
+** Figure 2: ** Final step of Euclid's Algorithm.
+
+So how did we get the remainders in the first place? The first remainder $r_0$ is:
+
+$$r_0 = a - x_0b = lc_{j_0k_0}(a,b)$$ 
+
+The second remainder is:
+
+$$r_1 = b - x_1r_0 = b- x_1(a-x_0b) = -x_1a + (1+x_0x_1)b = lc_{j_1k_1}(a,b)$$ 
+
+where I have introduced the notation of $lc_{jk}(a,b)$ to mean a _linear combination_ of the variables $a$ and $b$, i.e. 
+
+$$lc_{jk}(a,b)=ja+kb$$
+
+where $j$ and $k$ are integers.
+
+The third remainder is:
+
+$$r_2 = r_0-x_2r_1 = lc_{j_2k_2}(a,b)$$ 
+
+and so on.
+
+We can keep going like this until we get to the last remainders $r_i$ and $r_{i+1}$. We just showed each of those remainders are a linear combination of $a$ and $b$, so $r_i-x_{i+2}r_{i+1}$ is yet another linear combination of $a$ and $b$, too.
+
+So the last step of Euclid's Algorithm becomes:
+
+$$\gcd(a,b) = lc_{j_Bk_B}(a,b)$$
+
+where $j_B$ and $k_B$ are integers. 
+
+This is B&#0233zout's Identity, and it is practically staring you in the face once you write down Euclid's Algorithm in formal notation. The numbers $j_B$ and $k_B$ are the B&#0233zout Coefficients. Note that they aren't unique - we can choose many different values of our $x_i$ and converge to the same answer each time.
+
+One other note: Any linear combination of two integers has to be a multiple of their respective $\gcd$'s. That's because each integer is composed of a number of $\gcd$ "blocks", so the resulting linear combination has the $\gcd$ as a common factor. B&#0233zout's Identity is the special case where the linear combination is a single $\gcd$ block.
+
+So we are about done. Once we have B&#0233zout's Identity, we have one of the keys to proving that the set of integers $\{a\}$ co-prime to $N$ form a multiplicative group modulo $N$. By definition, the $\gcd$ of $a$ and $N$ is 1, since $a$ is co-prime to $N$. So we can write the linear combination as:
+
+$$xa + yN = 1$$
+
+And in a linear combination including $yN$ in a modulo-$N$ group, the $yN$ term is effectively zero. Furthermore, both $x$ and $a$ must be co-prime to $N$ for this to hold (because we can just reverse the meaning of $x$ and $a$, i.e. pretend $a$ is the B&#0233zout coefficient.) So $x$ must be the inverse of $a$ modulo $N$. 
+
+That's it.
+
+In summary:
+
+* The Euclidean Algorithm allows us to calculate the greatest common divisor of two numbers in a ridiculously efficient way
+* It is one of the earliest known algorithms (a step-by-step procedure vs. just a simple formula) dating back to 300 BCE, when Greeks and the rest of humanity were cheerfully murdering each other (some things don't change, apparently...)
+* We have been able to find common factors this way for thousands of years, yet finding a factor of a _single_ number (not a common factor of two numbers) is incredibly difficult, and why we can have nice things like on-line banks. But it is mighty suspicious that no one has found a way to factor a single number into primes easily. 
+* The final remainder in the Euclidean Algorithm is a linear combination of the original numbers, which immediately yields the form B&#0233zout's Identity that let's us prove that the integers $a$ coprime to $N$ always have a multiplicative inverse modulo $N$. 
+
+So that is my tribute-band rendition of B&#0233zout's Identity. I also do weddings and bar mitvahs.

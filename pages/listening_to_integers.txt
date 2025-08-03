@@ -77,7 +77,7 @@ Behold, here is the resulting spectrogram!
 [comment]: # (Figure3)
 ** Figure 3 **: Spectrogram of audio sequence generated from a set of primes. The integers aren't as boring as I thought! 
 
-I put [the code](https://github.com/jmoonware/audibleintegers) and some example output on github for anyone's amusement. The default audio file is called 'integers.wave' (although there is a command line option to name it to whatever.)
+I put [the code](https://github.com/jmoonware/audibleintegers) and some example output on github for anyone's amusement. The default audio file is called 'integers.wav' (although there is a command line option to name it to whatever.)
 
 In the 'examples' folder in the above project there are a number of other audio '.wav' (and .png) files for the output under different conditions. Have a listen, it isn't very melodic, but it is interesting. 
 

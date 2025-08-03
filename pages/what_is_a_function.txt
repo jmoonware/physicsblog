@@ -107,7 +107,7 @@ The second derivative similarly is
 
 $$\frac{d^2}{dx^2}f(x) = 2f^3$$
 
-and so on; the $n$th derivative is $n!$ (when evaluated at $x=x_0=0.) 
+and so on; the $n$th derivative is $n!$ (when evaluated at $x=x_0=0$.) 
 
 Substituting into the Taylor formula gives the pretty result (the $n!$ cancel top and bottom):
 

@@ -1,0 +1,34 @@
+[comment]: # (start_post)
+
+## The Bell's Inequality Series
+
+#### Meta-post guide to all the posts on Bell's Inequality that will (eventually) be found on JTP
+
+One of the crazier parts of Quantum Mechanics is the implication that there are ways to disturb a distant object that has immediate consequences to another far-away object, faster than the speed of light allows. This was a huge scandal in the early days of quantum theory, and no less than Albert Einstein went to his grave believing that the currently formulated quantum theory must be hiding something deeper.
+
+Here we are, a century later, and all that has happened are better and better experiments basically verifying that quantum mechanics _works_ more or less exactly as it was formulated back then.
+
+These posts will walk us through what all the fuss is really about, and hopefully, by the end, understand that the math behind the Universe implies something very weird really is going on. 
+
+- ** Post 1: ** A gentle-ish introduction to the facts about measurement in Quantum Mechanics 
+  - What is a measurement according to Classical and Quantum mechanics
+  - Some interpretations of how quantum measurements happen
+  - Why we can't get around using math to describe the Universe (at least if we want to make testable predictions), and why all the interpretations end up using the exact same math.
+- ** Post 2: ** [The puzzle of Bell's Inequality](bell-puzzle)
+  - Explaining the logic of Bell's Inequality without any Quantum Mechanics
+  - Including some interactive simulations
+- ** Post 3: ** [Does Quantum Measurement follow Bell's Inequality?](bell-predictions)
+  - What is entanglement again? 
+  - Compute both the classical and quantum outcomes of measuring widely separated, entangled quanta
+  - With some discussion of how qubits and gates are actually implemented in the real world
+- ** Post 4: ** Loopholes in Bell's Inequality
+  - Some relatively absurd "loopholes", i.e. ways to explain Bell measurements that don't violate causality 
+  - Discussion of relatively recent experiments that have simultanously closed all the known loopholes 
+  - And what loopholes might possibly remain
+- ** Post 5: ** No, You Can't Send a Message Faster Than the Speed of Light
+  - How the Universe conspires to hamstring our apparently faster-than-light quantum entanglement
+  - And no, you can't have a pony, either 
+- ** Post 6: ** Bell's original paper
+  - A deep-dive on Bell's surprisingly short, single-author paper published in 1964
+  - In which I finally understand one of the graphs of correlation vs. angle that float around the internet. 
+
