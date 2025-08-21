@@ -10,17 +10,17 @@ Here we are, a century later, and all that has happened are better and better ex
 
 These posts will walk us through what all the fuss is really about, and hopefully, by the end, understand that the math behind the Universe implies something very weird really is going on. 
 
-- ** Post 1: ** A gentle-ish introduction to the facts about measurement in Quantum Mechanics 
+- ** Post 1: ** A gentle-ish [introduction](bell-introduction) to the facts about measurement and entanglement in Quantum Mechanics 
   - What is a measurement according to Classical and Quantum mechanics
-  - Some interpretations of how quantum measurements happen
-  - Why we can't get around using math to describe the Universe (at least if we want to make testable predictions), and why all the interpretations end up using the exact same math.
+  - Some interpretations of how quantum measurements happen, and why all the interpretations end up using the exact same math.
+  - Entanglement and why we can't get around using math to describe the Universe (at least if we want to make testable predictions) 
 - ** Post 2: ** [The puzzle of Bell's Inequality](bell-puzzle)
   - Explaining the logic of Bell's Inequality without any Quantum Mechanics
   - Including some interactive simulations
 - ** Post 3: ** [Does Quantum Measurement follow Bell's Inequality?](bell-predictions)
   - What is entanglement again? 
   - Compute both the classical and quantum outcomes of measuring widely separated, entangled quanta
-  - With some discussion of how qubits and gates are actually implemented in the real world
+  - Turns out that the Universe doesn't dispense quanta with a sensible vending machine
 - ** Post 4: ** Loopholes in Bell's Inequality
   - Some absurd "loopholes", i.e. ways to explain Bell measurements that don't violate causality 
   - Discussion of recent experiments that have simultanously closed all the known loopholes 

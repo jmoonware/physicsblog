@@ -4,7 +4,7 @@
 
 #### Post 5 in the Quantum Computing [Series](quantum-computing-series)
 
-How to wreck the world financial system.
+And, how to wreck the world financial system.
 
 So far we have seen that quantum coprocessors, as cool as the science can be, seem to be pretty useless at present. Every time we try to do something a little interesting (like inverting a function with Grover's Algorithm) we run into a "well, but we need this nearly impossible thing to be true."
 
@@ -12,13 +12,13 @@ In this post, we will go through an algorithm that is finally going to get us to
 
 Take a listen and look at [the integers](listening-to-integers).
 
-Great! So now we have moved factoring $N$ into finding the order $r$. The reason I think this isn't actually the dumbest thing ever is because $r$ is an exponent. That means we use the magic of exponentials to narrow down our choices _logarithmically_. In other words, we can represent $r$ with $\sim \log_2(N)$ qubits, or thousands. Not kajillions like we needed for an arbitrary quantum memory or factoring with Grover's Algorithm. 
+Great! So now we have moved factoring $N$ into finding the order $r$ of some randomly chosen co-prime to $N$. The reason I think this isn't actually the dumbest thing ever is because $r$ is an exponent. That means we use the magic of exponentials to narrow down our choices _logarithmically_. In other words, we can represent $r$ with $\sim \log_2(N)$ qubits, or thousands. Not kajillions like we needed for an arbitrary quantum memory or factoring with Grover's Algorithm. 
 
 Now, the question is, how does one get $r$? You could of course try all the values of $r$ up to $N$. That will take you a while (more than the lifetime of the universe for $N$'s typically used in RSA encryption.) 
 
 But let's see how a classical algorithm might work on a smaller number. I don't know either $a$ or $r$, so that is the first problem. Turns out we can just guess an $a$ coprime to $N$ for now (later we will show that random guessing works way better than you might expect.) So guess $a$. Now we know the limit of the size of $r$ (say, $N$), so let's start calculating sets of $a^x$, where $2 < x < N$.
 
-For example, lets try to factor 15. I know, another toy problem, but this time I promise I am not leading you off a combinatorial cliff this time.
+For example, lets try to factor 15. I know, another toy problem, but this time I promise I am not leading you off a combinatorial cliff.
 
 Seems like 7 is coprime to 3*5, right?
 
@@ -36,21 +36,125 @@ So 4 again. Hmm, mighty suspicious, but lets move on for now.
 
 The one thing we notice - the pattern _repeats_ with a period of $r$. So really, if we have all the values of $a^x$ laying around, we can look for repeats and get $r$.
 
-And what is a good way to find a repetitive pattern you might ask? Well, our good buddy $e^{ix}$ is _phenomenally_ good at picking out repeated patterns.
+And what is a good way to find a repetitive pattern you might ask? Well, our good buddy $e^{ix}$ is _phenomenally_ good at picking out repeated patterns. That's because $e^{ix}$ is a repeating pattern (sines and cosines), and when two repeating patterns match peak-and-valley-wise, multiplying them together and adding up the result gives a non-zero answer. If the repeats don't match peak-to-valley, then the answer sums up to zero on average. So we can sweep our repeat frequency and look for the "sum" needle to twitch.
 
-I even made a little audio file generator that lets you _hear_ the order of an integer. Check it out!
+So, we are starting to see how we might actually be able to factor a big integer: First, calculate "all" the values of $a^x$ in a quantum register. Fortunately, we only need $\sim\log_a(N)$ qubits for this. Thousands of qubits for factoring RSA, but it's at least not an absurd amount (well, absurd as of 2025, but still...)
 
-What is going on with the tone you hear? 
+##### Modular Exponents, Quantum Style 
 
-So, we are starting to see how we might actually be able to factor a big integer: First, calculate "all" the values of $a^x$ in a quantum register. Fortunately, we only need $\sim\log_a(N)$ qubits for this. Thousands of qubits for factoring RSA, but it's at least not an absurd amount.
+Unlike our decoding of the 8-character (Caeser Cipher)[hail-caesar], we can't be lazy and use $\mod 2^n$ directly, because $N$ is not going to be $2^n$ (it is going to be the product of two large primes $p$ and $q$.)
 
-Then we need the quantum version of the Fourier Transform of this "many values" register. Here is how that would work:
+##### Fourier Transforms
+
+This is where we are going to exhaustively use our introduction material regarding [basis functions](basis) and the complex number ($i$)[whats-up-with-i]. 
+
+As I stated above, we are going to take the product of $e^{ix}$ with our function that has a repeating pattern (here, the modular exponentiation $a^x$, but it could be any function) and sum up the result. 
+
+###### The good old classical Fourier Transform
+
+Before we get to the quantum part, let's briefly talk about how our exponential hero $e^{ix}$ is going to let us turn impossible wave problems into easy algebra problems.
+
+Recall that we can represent damned near any function $f(x)$ as:
+
+$$f(x) = \int_{S_k}{g(k)e^{ikx}dk}$$
+
+where the amplitude function (as a function of $k$) $g$ is a complex function that represents the "amount" of $f(x)$ at a give frequency $k$. Note that $k$ has units of $1/x$, so if $x$ represents distance, $k$ represents something called _spatial frequency_, which loosely corresponds to the amount of sine-wave peaks and valleys in a given distance. The wavelength $\lambda$ is related to $k$ via $k=2\pi/\lambda$, which guarantees each distance $x_\lambda = \lambda$ gives a full $2\pi$ around the unit circle of $e^{ikx}$.
+
+We can also get $g(k)$ from $f(x)$:
+
+$$g(k) = \int_{S_x}{f(x)e^{-ikx}dx}$$
+
+What is "S" in the above summation? This represents the "space" over which the sum is performed in $x$. Many physics problems correspond to space (or time) being infinite, $x \in [-\infty,\infty]$.  
+
+Note that we want 
+
+$$\int_{\infty}^{\infty}{e^{i(k_a-k_b)x}dx = \delta(k_a-k_b)$$
+
+Computers don't deal with infinity too well - registers representing a number are always limited to some maximum value, depending on the number of bits available. 
+
+So let's say I have a series of $N$ samples $f_j$, $j=1,2...N-1$. 
+
+I can write these samples as a continuous function like:
+
+$$f_j = f(x)\delta(x-x_j)$$
+
+so our sampled function $f_s$:
+
+$$f_s(x) = \sum_{j=0}^{N-1}{f_j}
+
+and then use our previous (continuous) definition of the Fourier Transform:
+
+$$g_k = \int_S{f_s}e^{ikx}dx = \sum_{j=0}^{N-1}{f(x_j)e^{ikx_j}}$$
+
+That says each $g_k$ amplitude is a sum of the sampled function times a complex exponential weight. We haven't restricted $k$ to anything in particular just yet. 
+
+So here is the thing: remember when we wanted our transforms to represent an orthonormal basis? We need to find a set of $k$'s that allow us to reconstruct an arbitrary sample in space $f_j$ (so, the equivalent of one-point delta function.)
+
+What if we require that our waves are an integral number of the range of $x$?
+
+Then I can represent each sample with a sum of complex numbers like:
+
+$$f_j =  \sum_{k=0}^{N-1}{g_k e^{2\pi ij \Kappa_k}}$$
+
+where $g_k$ is the complex amplitude of each basis function (and remember, $i$ is the complex number $\sqrt{-1}$, not another index...)
+
+The fact that there are exactly $N$ complex numbers that can make up each $f_j$ is not completely obvious.
+
+That makes this a "Discrete Fourier Transform", because unlike the continuous formulation above, it involves a finite set of discrete samples. And, the "weights" are now complex numbers of magnitude one, with a phase that is an integer multiple of $2\pi/N$.  
+
+This seems like an unnecessarily complicated transformation. I mean, I have this nice set of samples $f_j$ and now each one is a series of weighted complex numbers? Why would anyone do this?
+
+Let's look at several simple cases to help out. If $g_k = (0,...1,...0)$, i.e. for some sample $s$ $g_s=1$, and zero everywhere else, then $f_j$ = e^{ijs/N}$, or one of the basis functions. 
+
+A more interesting case might be when we have equally weighted basis functions: $g_k=(1,...,1)/N$. Then the sum is:
+
+$$f_j = \sum_{k=0}^{N-1}{e^{2\pi ijk/N}}= \sum_{k=0}^{N-1}{(e^{2\pi ij/N})^k}$$
+
+Now recall from our [function](what-is-a-function) post that: 
+
+$\frac{1}{1-x}=\sum{n=0}^{\infty}{x^n} = \sum_{n=0}^{N-1}x^n + \sum_{n=N}^{\infty}x^n$$
+
+We can factor $x^N$ out of the second sum, now making the sum go from $n=0$ to $\infty$. That's just our original $1/(1-x)$, so we can solve for the partial sum:
+
+$$S=\sum_{n=0}^{N-1}x^n=\frac{1-x^N}{1-x}$$
+
+Thus, when each complex weight is one:
+
+$$f_j = \frac{1-e^{2\pi ij}}{1-e^{2\pi ij/N}}$$
+
+Which is $N$ when $j=0$, and zero otherwise. So the "uniform" coefficients encode what is called a delta function, where only one sample is non-zero. I could have made the coefficient $g_k = e^{-2\pi ikM}$ as well (uniform phase). That would make sample $f_M = 1$, all the others zero. 
+
+Right away, we see that the sum has $N$ terms. And, there are $N$ samples, each of which needs to compute a sum of $N$ terms, so to get every point in the function, we need to compute $N\times N$ total terms, which makes the DFT an $O(N^2)$ operation. 
+
+By the way, unlike the continuous case, the units of the $x$'s above as written are the same. In practice, we multiply by the sampling length (or time) $1/2L$ or $1/2T$ ($L$ for total sampled length, $T$ for total sampled time.)
+
+###### The Fast Fourier Transform
+
+In 1965, when I was in diapers, Cooley and Tukey (re)invented a way to compute the discrete Fourier transform much, much faster. Let's look at the case where we have $N=2^n$ number of samples (it makes the math prettier, although it isn't too hard to use other values of $N$.) At each step of the calculation, the Fast Fourier Transform (FFT) breaks down the calculation into even and odd (so $N/2$ of each) values.
+
+This is the trick: Cooley and Tukey realized you can do two separate DFT's on the even and odd indices of the DFT sum, which limits the sum to $N/2-1$. That only works for $k < N/2-1$ as well, but the rest of the series is a simple multiplication away using the even/odd transforms we just calculated.
+
+So we reduced the problem of one DFT to calculating 2 DFT's each 1/2 the size. Now, where do we get those 1/2 sized DFTs? We could just calculate each smaller DFT directly, but a much better way is to break the 1/2 sized DFTs into more 1/2 sized DFTs (now sized N/4). We can continue this process until $N/2^r=1$, where $r$ is the number of times we call the FFT function recursively. That means we need $\log_2(N)$ stages to converge. Each stage still requires $O(N)$ operations, though, so overall the FFT converges in $O(N\log_2(N))$ operations, as opposed to $N^2$ for the good old direct DFT.
+
+Is that a big difference? You betcha!
+
+###### The Quantum (fast) Fourier Transform
+
+Now that we understand continuous, discrete, and Fast Fourier transforms, the time has come to add in Quantum Mechanics!
+
+Let's compare this performance to using a classical FFT - if I had somehow generated all traces of $a^x$, I would need on the order of $N$ evaluations of the FFT to find the order of $a$. That is overall (neglecting the time to calculate $a^x$) $O(N^2\log(N))$ operations. Once again, we see that there is an exponential difference compared to the QFT, which requires $O()$ evaluations.
+
+Now, sharp-eyed readers are going to see that although this is indeed a massive improvement in speed, there is a cost to be paid in terms of the _number_ of quantum gates needed. Roughly speaking, it is going to take $O(n\times n)$ quantum adders/multipliers to perform the QFT. If we are trying to crack RSA encryption, $n \sim 2048$, so like 10's of millions of quantum gates. And I am not including the multiplicative overhead of error correction (we will get to that in another post.) As of this writing (2025), that's so absurdly far away from the current state of the art (maybe 100 or so functioning quantum gates, but even these are error prone) that I think we can relax for now that RSA isn't going to be cracked any time soon using this method.
+
+##### Putting it all together
+
+
 
 So pick out the peak, maybe polish up the value (classically), and check to see if the number we generate using $r$ factors N. If not, try some other $a$ values, but you won't have to run too many times it turns out.
 
 So, roughly speaking:
 
-* Guess at $a$, which is coprime to $N$. Fortunately, this is fast and classical. 
+* Guess at $a$, which is coprime to $N$. This is a single step.
 * Recognize that there is an order $r$ where one of the two factors $(a^{r/2}-1)(a^{r/2}+1)$ will factorize $N$, if $a^r-1=0 \mod N$. Once we get $r$ it will be trivial to tell which factor is the one we want. 
 * Calculate $a^x$ where $x<N$ in a quantum register of size $\log_2(N)$ qubits.
 * Quantum Fourier Transform the repeating result (needing ~$n^2$ registers)
@@ -60,9 +164,9 @@ So, roughly speaking:
 
 Ta dah! That is how we are going to destroy the world financial system!
 
-So how real is this at the moment? We are going to need a lot of quantum gates to make a QFT work. And even thousands of gates to represent numbers approaching $N$ in the first place. Remember, RSA 2048 is common now, which is 2048 bits. Most schemes require error-correcting bits and sequences, so a minimum of $2-3 \times$ 2048 is going to be necessary just to reliably generate the $a^x$ list. The very most optimistic count of "functioning" qubits at the moment is under 100, and these are a far cry from the error level and general addressability needed at the moment even to crack double-digit RSA (the record right now is, yes, cracking $N=15$.)
+So how real is this at the moment? We are going to need a lot of quantum gates to make a QFT work. And even thousands of gates to represent numbers approaching $N$ in the first place. Remember, RSA 2048 is common now, which is 2048 bits. Most schemes require error-correcting bits and sequences, so a minimum of $2-3 \times$ 2048 is going to be necessary just to reliably generate the $a^x$ list. The very most optimistic count of "functioning" qubits at the moment is under 100, and these are a far cry from the error level and general addressability needed at the moment even to crack double-digit RSA (the record right now is, yes, factoring $N=15$.)
 
-So I think (just my opinion) that we will have a quantum computer cracking meaningful RSA about the time we have a commercial nuclear fusion plant connected to the grid. Don't laugh. I think that [Commonwealth Fusion](https://cfs.energy/technology/sparc) has a pretty good shot of generating wall-socket break-even by the end of the decade (I bet a friend a sushi dinner that break-even would happen, so I am not a disinterested party.) But, even if I get my raw fish dinner, it will be a lot longer before a consumer gets electrons generated by terrestrial fusion energy.
+So I think (just my opinion) that we will have a quantum computer cracking meaningful RSA about the time we have a commercial nuclear fusion plant connected to the grid. Don't laugh. I think that [Commonwealth Fusion](https://cfs.energy/technology/sparc) has a pretty good shot of generating wall-socket break-even by the end of the decade (I bet a friend a sushi dinner that break-even would happen, so I am not a disinterested party.) But, even if I get my raw fish dinner, it will be a lot longer before a consumer gets electrons generated by commercial terrestrial fusion energy.
 
 Which is about where I think quantum computing is at the moment. Rapid progress is being made on quantum information processing, but big challenges remain to practicality. One company is claiming (hoping) to have 100 logical qubits by 2030. And they are being optimistic, as is their job. So I think we easily have a decade before we have to take the encryption threat more seriously. And even then, only nation-states (or corporations that size) are going to have anything approaching a quantum system that can solve a "useful" problem. Which isn't that comforting frankly.
 

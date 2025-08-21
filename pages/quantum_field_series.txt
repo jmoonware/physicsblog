@@ -1,0 +1,15 @@
+[comment]: # (start_post)
+
+## Guide to the Quantum Field Theory Posts
+
+- ** Post 1: ** Field Theory vs. Quantum Field Theory
+  - What are fields (vs. particles)
+  - First quantization of particles
+  - Breaking the field down into tiny bits (second quantization) 
+  - So what does a photon look like?
+- ** Post 2: ** Zero Point Energy
+  - Why is everything infinite now?
+  - The work around - gauge theory
+  - Some implications of zero point energy
+    - Spontaneous emission
+    - Casimir Force and the internet crazies

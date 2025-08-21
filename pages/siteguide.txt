@@ -17,7 +17,7 @@ So, without further ado, here is the guide to the guides!
   - All that spooky "action at a distance" stuff in Quantum Mechanics
 - ** Guide 3: ** [The Quantum Computing Series](quantum-computing-series)
   - A lot more than you ever wanted to know about Quantum Computing
-  - Includes posts about RSA encryption, and some backgroun Group Theory information that is needed to understand some of the problems addressed with Quantum Computing
+  - Includes posts about RSA encryption, and some background Group Theory information that is needed to understand some of the problems addressed with Quantum Computing
 - ** Guide 4: ** Quantum Field Theory
   - Conjugates the verb "to quantize"
   - Zero-point energy and why we shouldn't let infinity bother us (including some of the weirder implications, e.g. the Casimir Force.)

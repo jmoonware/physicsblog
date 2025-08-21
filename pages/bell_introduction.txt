@@ -1,0 +1,133 @@
+[comment]: # (start_post)
+
+## A Gentle-Ish Introduction to Quantum Measurement and Entanglement
+
+#### Post 1 in the Bell's Inequality [Series](bell-series)
+
+##### In which we briefly soar toward the metaphysical Sun, then dip back to gliding along the surface of the mathematical ocean
+
+The itsy-bitsy things (quanta) that make up the world are described by some really strange math. In this two-section post, we will hopefully get a glimpse of how weird everything is.
+
+###### What is a Measurement?
+
+If someone throws a baseball at my head, we all take for granted that this happens whether the lights are on (so the trajectory can be "seen") or if it is dark. When that baseball hits me in the head, the lights aren't going to matter. The light bouncing off the ball into our eyes might move the trajectory infinitesimally, but we will eventually get smashed in the face if we don't duck in time. The ball hidden in darkness is really going to hurt even if we don't know it is coming. It exists whether or not we "know" it is there.
+
+If we shrink the baseball down to a single quantum, though, things are different. I can't "see" the trajectory of the ball without knocking it off (way, way off) the original trajectory, or disturbing it in some other way. Now, maybe this isn't _so_ strange, since by definition, a single quantum is the tiniest bit of stuff possible. It can't be split, or bar-coded, or just gently observed and put back on its merry way. The quantum has to, say, knock an electron out of an orbit to be detected, and the quantum (commonly also an electron or photon) is the exact same "size". In other words, the only way to detect a quantum is to force it to change the state of _another_ quantum, which means our quantum has to change _its_ state. 
+
+So the Universe is hopelessly tangled up at the very lowest levels. But that's not terribly hard to understand once we accept the _indivisibility_ of quanta. Forget about all the mumbo-jumbo about a human observer or a cat. The measurement "happens" at the change of quantum state, even though we can only predict the outcome with some probability before-hand. 
+
+But here is a big problem: the step between knocking an electron out of its orbit, and said electron crashing around until a large pulse (many quanta) of electricity causes our oscilloscope to go "blip", is imprecise. In fact, the quantum baseball can be put in the "hit my head" and "hasn't hit my head" _superposition_ state, with each outcome assigned some probability. As we will see in this series, it is a mistake to think that those probabilities represent a convenience where the baseball "in reality" has hit my head or not. Nevertheless, that baseball is definitely going to knock me out eventually.
+
+How can we interpret the quantum measurement process? Physicists have a number of ways (in words) that describe what is called "a measurement." 
+
+All of these interpretations follow the steps:
+
+1. Quantum state (which can be a superposition)
+2. Quantum state change
+3. ...
+4. Classical Result
+
+Here are three of the most popular ways to fill in the "..." part:
+
+* _Copenhagen Interpretation_ - The wave function "collapses" the instant anything is measured (the quantum changes state.) A measurement effectively forces the wave function into a single quantum state (the state that was "measured" into a classical system.) Most physicists don't like the fact this collapse seems ill-defined (non-deterministic) and requires messing about with probability coefficients that seems arbitrary, but as a matter of practical measurement, it works. 
+
+* _Many Worlds Interpretation_ - A measurement is the result of the Universe branching into multiple outcomes. The perceived result of our measurement is just the result confined to our Universe. There are other Universes where all the other outcomes were measured, but we are forever isolated from them, so there is no way of proving or disproving their existence. This avoids the collapse of the wave function problem. This interpretation is also _deterministic_, in the sense that all possibilities happen all the time (even though we experience a particular, seemingly random Universe.) But it sure seems messy - there must be one hell of an off-site Universe storage facility somewhere...
+
+* _Information-based Interpretation_ - In this picture, the wave function never collapses. The quantum is _entangled_ with the detector (many-quanta) state. We will define exactly what this means below, but for now, we can think of this as the detector and quantum state correlating (actually, _supercorrelating_) with one another. In its ultimate form, enthusiasts of this picture believe that correlation is the only thing that exists - so, literally, there is no physical stuff, it's all just correlations (which begs the question, what exactly is being correlated?) Unlike Copenhagen collapse (which is always a one-way trip), in theory, correlations can be reversed, which is a nice feature if conservation of energy (or probability) is important to you, without fudge factors. But the resulting state (where the quantum is entangled with the detector) "looks" just like the collapsed wave function or example universe in the other interpretations. We can think of a detector state that seems classical because all the quantum phase averages out (this picture doesn't formally differentiate between quantum and classical, another nice feature.) The many-quanta detector state is so overwhelmingly likely that it is for all intents and purposes a classical state, just like the reason that air molecules never rush to one side of the room suddenly - it's just [astronomically](everything-exponential) unlikely to happen. Contrast this to the sudden collapse in the Copenhagen interpretation - that is like an ideal threshold model (zero before certain randomly distributed time, infinite thereafter). The Information Interpretation preserves the softer (but still sudden) exponential threshold. However, once again, the Information interpretation leads to the same mathematical outcomes as Copenhagen and Many Worlds, just with less paradoxes (because once you remove all matter and are left with only correlations, all the spooky stuff no longer exists - Poof! Like magic!)
+
+There are even more exotic interpretations (QBism, Bohm Pilot Wave, Spontaneous Collapse, etc.) - maybe I'll have an entire separate post about these eventually, but for now just know that they lead to the exact same outcomes as the other interpretations, as far as I am aware.
+
+That last assertion (there are no mathematical or measureable differences in the various interpretations) is true for now, but may change eventually. Physicists are still looking pretty hard for ways to test which interpretation is "correct". It is kind of embarassing that physics, which is basically the science of creating models based on information from measurements, doesn't have a universally accepted, clearly-worded theory of measurement.
+
+Speaking of theories, there is one last interpretation (well, theory) that is different from the rest, because it leads to experiments that _can_ test its validity:
+
+* [_Local Hidden Variable Theory_](https://en.wikipedia.org/wiki/Local_hidden-variable_theory): This isn't just an "interpretation", but an actual theory. This is the one Einstein liked: he thought there must be "hidden variables" that affect the outcome of measurements. Quanta are local "elements of reality", that is, in a definite state that we just don't "know", and quanta can't affect each other faster than the speed of light allows (that's the "local" part.) This appeals to our intuition, as the classical world seems to work this way (e.g. the baseball referenced above.) It turns out this interpretation is one we actually _can_ test with experiments, and, as we will see in this series, it fails to live up to the blips we observe. 
+
+All the interpretations are trying to describe in words a quantum change of state. All of the interpretations have quanta changing states with time, each with its own way of expressing "what happened" during the transition. All of them provide exactly the same  mathematical result (except the Local Hidden Variable Theory.) 
+
+So, despite having perfectly good, quantitative math equations, intepretations of how a measurement actually "happens" is still being debated. The situation gets even worse when we measure multiple quanta, and this is what we are going to explore in this series.
+
+###### What is Entanglement?
+
+So let's look at two quanta, each having a state "0" or "1" (that could correspond to say, the polarization of a photon or the direction of spin of an electron.) This is where things really go off the rails.
+
+Here, I am forced to use some mathematical symbols. Don't worry if you don't get everything on the first try here, we will discuss it _ad nauseum_ in later posts. 
+
+Because we only use probabilities (well, probability amplitudes, which are squared to get probabilities) in Quantum Mechanics, I can represent all the possibilities of the states using a particle in the $i$'th quantum state at $x$ as $\psi_i(x)$, and a particle in the $j$'th state at $x'$ as $\phi_j(x')$:
+
+$$\Psi(x,x',t) = c_{00}(t)\psi_{0}(x)\phi_{0}(x') +c_{01}(t)\psi_{0}(x)\phi_{1}(x') +c_{10}(t)\psi_{1}(x)\phi_{0}(x') +c_{11}(t)\psi_{1}(x)\phi_{1}(x')$$
+
+where the coefficients $c_{ij}$ are complex numbers that statisfy $\sum_{ij}{|c_{ij}|^2}=1$. 
+
+That equation just says we will see one of the four combinations (quantum numbers 00, 01, 10, 11) when we make a measurement, with some corresponding liklihood that has to do with the details of each quantum's history.
+
+Now, here is the part that is a problem: the above equation cannot always be written as a product of two independent functions, i.e.
+
+$$\Psi_u = \psi(x,t)\phi(x',t)$$
+
+where the little $u$ subscript on $\Psi$ means the quanta are independent. 
+
+For instance, here is a famous example:
+
+$$\Psi^{(\pm)}(x,x',t) = \frac{1}{\sqrt{2}}[\psi_{0}\phi_{0}\pm\psi_{1}\phi_{1}]$$
+
+Go ahead, try to derive this from some product made from mixtures of $\phi_0,\phi_1$ and $\psi_0,\psi_1$. I'll wait...
+
+You can't, of course. Any quantum state that can't be factored into independent products is called _entangled_. This is the precise mathematical definition of entanglement.
+
+And the mathematical existence of entanglement underlies all the famous "spooky" stuff in Quantum Mechanics. Classically, the above state doesn't make sense. In classical mechanics, we just add in the other particle (i.e. superposition.) If we are dealing with classical probabilities, we multiply the two functions together, but still obey causality (i.e. a disturbance at Point A takes a finite amount of time to reach Point B.) But what happens at A doesn't affect B until at least a minimum amount of time (set by the speed of light) elapses.
+
+The $\Psi^{(\pm)}$ state implies that if I measure the first particle ($\psi$) in State 0, I will always get State 0 for particle two ($\phi$), _independent of the particles respective distance from each other_. This is the "supercorrelation" mentioned above. Einstein noticed this problem, and wrote a "gotcha" paper with two collaborators that now is called the [Einstein-Podolsky-Rosen](https://en.wikipedia.org/wiki/Einstein%E2%80%93Podolsky%E2%80%93Rosen_paradox) paradox.
+
+It's actually easy enough today to prove in an experiment that particles do indeed appear to have this long-range correlation of outcomes (that Einstein tried to prove made quantum mechanics incomplete.) We can measure this correlation nowadays using light quanta (photons) in a relatively ordinary [undergraduate physics](https://arxiv.org/abs/quant-ph/0205171) lab.
+
+The problem of time is at the heart of all these interpretations. If the wave function represents a probability of something that _might_ happen, at some point it becomes the representation of something that _did_ happen.
+
+Let's go back to our interpretations above. This is where we are going to start our climb toward the Metaphysical orb in the sky. Hold on!
+
+The idea that each moment in time is really just our brains fooling us, in that all things past and present are eternal, is an old idea that seems to have first been formalized in Buddhism, which itself is an offshoot of the older Hindu religion. Christians dabbled in this concept, with the predestination of Calvinism, but that never caught on much beyond the weirdos who settled New England. Still, you can go to a Christian service today and hear the words:
+
+"As it was in the beginning, is now, and ever shall be, world without end. Amen." 
+
+Kurt Vonnegut, not liking formal religion so much, invented the Tralfamadorans, and used them as a plot point in [Slaughterhouse Five](https://en.wikipedia.org/wiki/Slaughterhouse-Five). The Tralfamadorans are space aliens who see time like another spatial dimension, perceiving all different time points in the Universe, past present and future, as always existing, as if set in amber. 
+
+I'm on board with all of this, in the sense that quanta are eternal. I am just an arrangement of quanta which have organized into _me_, and will disorganize into _not me_ when they are done. Whether my timeline is in some sense static, set in amber, doesn't matter, because my quanta do not perceive time like the Tralfamadorans. I only have the hardware to perceive the single Universe that branches to each new time point, just a Vonnegutarian peep-hole that is open at this particular point in the amber. 
+
+As far as I can tell (and I am now crossing the line from metaphysics into possibly sacrilege), mathematics is the Atman, the Trinity, Yahweh, Buddhist Nirvana, you name it, rolled up into one. Eternal, pure, unchanging. This matter/energy stuff is just the instrument that the math notes are played on, if it even exists. World without end indeed. 
+
+I will note parenthetically, it seems mighty suspicious that all of the approaches (religious, physical - e.g. meditation, including chemical alteration -, or mathematical) end up putting us, if not in exactly the same place, at least in the same general blindingly-bright neighborhood of ideas.
+
+OK, the sun is getting pretty hot up here, my wings are starting to melt. Let's get down to a lower altitude... 
+
+Whew, that's better.
+
+So let's just say that quanta experience changes of state at some point (either with a collapse, universe shift, or sudden correlation), which can cause a blip in the world we experience. Whether this process looks like an ideal diode equation, an exponential statistical equation, or just the Universe we happen to be in, doesn't matter. It exists for me. Each way of looking at it will lead us to the same conclusions, so choose the interpretation that helps you sleep better at night, and avoid getting hit by baseballs. 
+
+But don't get seduced by local hidden variables - those theories don't work, at least as far as we can tell from our peep-holes in the amber.
+
+##### Postscript
+
+I've barely scratched the surface here of course, but frankly there isn't any need to go deeper unless you are a glutton for such punishment. Nevertheless, here is some further reading that I found interesting.
+
+###### Easier reading:
+
+* "Physicists disagree wildly on what quantum mechanics says about reality, Nature survey shows" [Gibney, 2025](https://www.nature.com/articles/d41586-025-02342-y)
+* "Thirty Years of 'Against Measurement'" [Baggott, 2020](https://physicsworld.com/a/thirty-years-of-against-measurement/)
+
+###### Intermediate:
+
+* "Against Measurement" [Bell, 1990](https://physicsworld.com/a/against-measurement-john-bell-on-our-continuing-struggles-with-quantum-mechanics/)
+* "The Ithaca Interpretation of Quantum Mechanics" [Mermin, 1996](https://arxiv.org/abs/quant-ph/9609013)
+* "What is Quantum Mechanics Trying to Tell Us?" [Mermin, 1998](https://arxiv.org/abs/quant-ph/9801057)
+* "What Information Theory Can Tell Us About Quantum Reality" [Adami and Cerf, 1998](http://arxiv.org/abs/quant-ph/9806047v1)
+
+###### Mind-bending:
+
+* "QBism and the Ithaca Desiderata" [Stacey, 2018](https://arxiv.org/abs/1812.05549)
+* "QBism: Quantum Theory as a Hero's Handbook" [Fuchs and Stacey, 2016](https://arxiv.org/abs/1612.07308)
+* "deBroglie-Bohm Theory" [Wikipedia](https://en.wikipedia.org/wiki/De_Broglie%E2%80%93Bohm_theory)
+* "Unified dynamics for microscopic and macroscopic systems" [Ghirardi, Rimini, Weber, 1986](https://journals.aps.org/prd/abstract/10.1103/PhysRevD.34.470)
+
+As they used to say at the end of the [K-Tel](https://en.wikipedia.org/wiki/K-tel) commercials, "and many, many more!"
+
+
